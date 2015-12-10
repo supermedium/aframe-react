@@ -1,0 +1,39 @@
+{
+  "name": "aframe-react",
+  "version": "1.0.0",
+  "description": "Core React components for A-Frame VR.",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "babel --presets es2015,react,stage-0 src -d lib",
+    "prepublish": "npm run build"
+  },
+  "devDependencies": {
+    "babel": "^6.3.13",
+    "babel-cli": "^6.3.15",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-preset-stage-0": "^6.3.13"
+  },
+  "peerDependencies": {
+    "react": "0.14.*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ngokevin/aframe-react.git"
+  },
+  "keywords": [
+    "aframe",
+    "react",
+    "vr",
+    "a-frame",
+    "aframevr",
+    "mozvr",
+    "webvr"
+  ],
+  "author": "Kevin Ngo <kngo@mozilla>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ngokevin/aframe-react/issues"
+  },
+  "homepage": "https://github.com/ngokevin/aframe-react#readme"
+}
