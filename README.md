@@ -4,7 +4,7 @@ Combining [A-Frame VR](https://aframe.io) with React.
 
 `aframe-react` is the core library. Check out the
 [aframe-react-boilerplate](https://github.com/ngokevin/aframe-react-boilerplate)
-for more guidance on usage.
+for example usage.
 
 ### Usage
 
@@ -56,6 +56,10 @@ holds all of the entities.
 </Scene>
 ```
 
+| Event | Description |
+| ----- | ----------- |
+| onLoaded | `onLoaded` handler is called when scene has loaded all entities. |
+
 #### \<Entity {...components}\/>
 
 The `Entity` React component is a wrapper around `<a-entity>`. Entities are
@@ -64,8 +68,16 @@ modified with components. `Entity` handles serialization of A-Frame components.
 A-Frame components can then be passed via props either via object or string.
 
 ```html
-<Entity geometry={{primitive: 'box'}} material='color: red'/>
+<Entity geometry={{primitive: 'box'}} material='color: red'
+        onClick={() => { console.log('clicked'); }}/>
 ```
+
+**Events**
+
+| Event | Description |
+| ----- | ----------- |
+| onClick | If using the cursor or raycaster, `onClick` handler is called when entity is clicked. |
+| onLoaded | `onLoaded` handler is called when entity is loaded. |
 
 Check out the [A-Frame docs](https://aframe.io) for A-Frame component usage.
 
@@ -76,6 +88,13 @@ The `Animation` React component is a thin wrapper around `<a-animation>`.
 ```html
 <Animation attribute="rotation" dur="10000" repeat="indefinite" to="0 360 360"/>
 ```
+
+**Events**
+
+| Event | Description |
+| ----- | ----------- |
+| onAnimationEnd | `onAnimationEnd` handler is called when animation ends. |
+| onAnimationStart | `onAnimationStart` handler is called when animation starts. |
 
 Check out the [A-Frame docs](https://aframe.io) for A-Frame animation usage.
 
