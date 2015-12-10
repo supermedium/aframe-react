@@ -59,6 +59,7 @@ export class Entity extends React.Component {
     let props = {};
     Object.keys(this.props).forEach(component => {
       if (component === 'children') { return; }
+      if (this.props[component].constructor === Function) { return; }
 
       if (this.props[component].constructor === Object) {
         // Stringify components passed as object.
