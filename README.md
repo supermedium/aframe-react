@@ -19,7 +19,7 @@ require that alongside `aframe-react`. Again, check out the boilerplate to see
 how to get everything set up with Webpack.
 
 ```js
-require('@mozvr/aframe-core');
+require('aframe-core');
 import {Animation, Entity, Scene} from 'aframe-react';
 
 class ExampleScene extends React.Component {
