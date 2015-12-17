@@ -81,6 +81,12 @@ A-Frame components can then be passed via props either via object or string.
 
 Check out the [A-Frame docs](https://aframe.io) for A-Frame component usage.
 
+#### \<NamedEntity mainComponent={mainComponent} {...otherComponents}>
+
+The `NamedEntity` React component is a wrapper around the `<Entity/>` React component.
+This allows for aliasing `<Entity/>` to another name to improve readability but maintain
+composability.
+
 #### \<Animation {...attributes}/>
 
 The `Animation` React component is a thin wrapper around `<a-animation>`.

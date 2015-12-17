@@ -1,3 +1,5 @@
+import components from 'aframe-core';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styleParser from 'style-attr';
@@ -29,9 +31,43 @@ export class Animation extends React.Component {
   }
 }
 
+/**
+ * Allow creating named entities like <Light/> while still maintaining composability.
+ * Like <Light type="directional" geometry="sphere"/>.
+ * TODO: Handle possible namespace clashes (e.g., support *-component="").
+ *
+ * @param {string} primaryComponent - Component to proxy attributes found in the schema into.
+ */
+export class NamedEntity extends React.Component {
+  static propTypes = {
+    mainComponent: React.PropTypes.string
+  };
+
+  render() {
+    const componentProperties = Object.keys(components[this.props.mainComponent].schema);
+    const mainComponentData = {
+      [this.props.mainComponent]: {}
+    };
+    const otherComponentData = {};
+
+    Object.keys(this.props).forEach(propName => {
+      if (propName in componentProperties) {
+        mainComponentData[this.props.mainComponent][property] = this.props[property];
+      } else {
+        otherComponentData[property] = this.props[property];
+      }
+    });
+
+    return (
+      <Entity {...mainComponentData} {...otherComponentData}/>
+    );
+  }
+}
+
 export class Entity extends React.Component {
   static propTypes = {
     children: React.PropTypes.array,
+    mixin: React.PropTypes.string,
     onClick: React.PropTypes.func,
     onLoaded: React.PropTypes.func
   };
@@ -58,7 +94,8 @@ export class Entity extends React.Component {
   serializeComponents() {
     let props = {};
     Object.keys(this.props).forEach(component => {
-      if (component === 'children') { return; }
+      if (['children', 'mixin'].indexOf(component) !== -1) { return; }
+
       if (this.props[component].constructor === Function) { return; }
 
       if (this.props[component].constructor === Object) {
@@ -73,8 +110,12 @@ export class Entity extends React.Component {
   }
 
   render() {
+    const mixinProp = this.props.mixin ? {mixin: this.props.mixin} : {}
+
     return (
-      <a-entity ref={this.attachEvents} {...this.serializeComponents()}>
+      <a-entity ref={this.attachEvents}
+                {...mixinProp}
+                {...this.serializeComponents()}>
         {this.props.children}
       </a-entity>
     );
@@ -83,7 +124,8 @@ export class Entity extends React.Component {
 
 export class Scene extends React.Component {
   static propTypes = {
-    onLoaded: React.PropTypes.func
+    onLoaded: React.PropTypes.func,
+    onTick: React.PropTypes.func
   };
 
   static defaultProps = {
@@ -94,6 +136,11 @@ export class Scene extends React.Component {
     el.addEventListener('loaded', event => {
       this.props.onLoaded(event);
     });
+    if (this.props.onTick) {
+      el.addBehavior({
+        update: this.props.onTick
+      });
+    }
   }
 
   render() {
