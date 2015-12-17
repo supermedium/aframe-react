@@ -60,7 +60,7 @@ holds all of the entities.
 | ----- | ----------- |
 | onLoaded | `onLoaded` handler is called when scene has loaded all entities. |
 
-#### \<Entity {...components}\/>
+#### \<Entity {...components}/>
 
 The `Entity` React component is a wrapper around `<a-entity>`. Entities are
 general purpose objects in the scene (e.g., tree, player, light, sky) that are
@@ -81,7 +81,7 @@ A-Frame components can then be passed via props either via object or string.
 
 Check out the [A-Frame docs](https://aframe.io) for A-Frame component usage.
 
-#### \<Animation {...attributes}\/>
+#### \<Animation {...attributes}/>
 
 The `Animation` React component is a thin wrapper around `<a-animation>`.
 
