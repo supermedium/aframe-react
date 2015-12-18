@@ -31,39 +31,6 @@ export class Animation extends React.Component {
   }
 }
 
-/**
- * Allow creating named entities like <Light/> while still maintaining composability.
- * Like <Light type="directional" geometry="sphere"/>.
- * TODO: Handle possible namespace clashes (e.g., support *-component="").
- *
- * @param {string} primaryComponent - Component to proxy attributes found in the schema into.
- */
-export class NamedEntity extends React.Component {
-  static propTypes = {
-    mainComponent: React.PropTypes.string
-  };
-
-  render() {
-    const componentProperties = Object.keys(components[this.props.mainComponent].schema);
-    const mainComponentData = {
-      [this.props.mainComponent]: {}
-    };
-    const otherComponentData = {};
-
-    Object.keys(this.props).forEach(propName => {
-      if (propName in componentProperties) {
-        mainComponentData[this.props.mainComponent][property] = this.props[property];
-      } else {
-        otherComponentData[property] = this.props[property];
-      }
-    });
-
-    return (
-      <Entity {...mainComponentData} {...otherComponentData}/>
-    );
-  }
-}
-
 export class Entity extends React.Component {
   static propTypes = {
     children: React.PropTypes.array,
