@@ -36,5 +36,8 @@
   "bugs": {
     "url": "https://github.com/ngokevin/aframe-react/issues"
   },
-  "homepage": "https://github.com/ngokevin/aframe-react#readme"
+  "homepage": "https://github.com/ngokevin/aframe-react#readme",
+  "dependencies": {
+    "style-attr": "^1.0.1"
+  }
 }

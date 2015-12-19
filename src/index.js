@@ -104,8 +104,10 @@ export class Scene extends React.Component {
       this.props.onLoaded(event);
     });
     if (this.props.onTick) {
-      el.addBehavior({
-        update: this.props.onTick
+      setTimeout(() => {
+        el.addBehavior({
+          update: this.props.onTick
+        });
       });
     }
   }
