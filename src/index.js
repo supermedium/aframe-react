@@ -114,7 +114,7 @@ export class Scene extends React.Component {
 
   render() {
     return (
-      <a-scene ref={this.attachEvents}>
+      <a-scene ref={this.attachEvents} {...this.props}>
         {this.props.children}
       </a-scene>
     );

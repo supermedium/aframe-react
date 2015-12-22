@@ -45,7 +45,7 @@ A-Frame components refers to components of the entity-component system.
 
 `aframe-react` ships only with components that are considered core to A-Frame.
 
-#### \<Scene/>
+#### \<Scene {...components}/>
 
 The `Scene` React component is a thin wrapper around `<a-scene>`. The scene
 holds all of the entities.
