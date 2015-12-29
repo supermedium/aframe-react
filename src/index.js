@@ -33,7 +33,7 @@ export class Animation extends React.Component {
 
 export class Entity extends React.Component {
   static propTypes = {
-    children: React.PropTypes.array,
+    children: React.PropTypes.any,
     mixin: React.PropTypes.string,
     onClick: React.PropTypes.func,
     onLoaded: React.PropTypes.func
