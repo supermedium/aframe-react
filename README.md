@@ -6,6 +6,15 @@ Combining [A-Frame VR](https://aframe.io) with React.
 [aframe-react-boilerplate](https://github.com/ngokevin/aframe-react-boilerplate)
 for example usage.
 
+> How is this different from react-three?
+
+`aframe-react` is an abstraction layer on top of A-Frame, and A-Frame is built
+on top of an **entity-component system** on top of the DOM. `react-three` tries to
+be a contained non-agnostic solution. Unfortunately, it doesn't fit well to
+wrap React around pure three.js, there are performance limitations to having a
+`requestAnimationFrame` for each object, and it is not as composable or
+extendable. React works better with A-Frame as A-Frame inherently utilizes the DOM.
+
 ### Usage
 
 `aframe-react` can be installed through `npm`.
