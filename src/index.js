@@ -16,12 +16,14 @@ export class Animation extends React.Component {
   };
 
   attachEvents = el => {
-    el.addEventListener('animationend', event => {
-      this.props.onAnimationEnd(event);
-    });
-    el.addEventListener('animationstart', event => {
-      this.props.onAnimationStart(event);
-    });
+    if (el) {
+      el.addEventListener('animationend', event => {
+        this.props.onAnimationEnd(event);
+      });
+      el.addEventListener('animationstart', event => {
+        this.props.onAnimationStart(event);
+      });
+    }
   }
 
   render() {
@@ -45,12 +47,14 @@ export class Entity extends React.Component {
   };
 
   attachEvents = el => {
-    el.addEventListener('click', event => {
-      this.props.onClick(event);
-    });
-    el.addEventListener('loaded', event => {
-      this.props.onLoaded(event);
-    });
+    if (el) {
+      el.addEventListener('click', event => {
+        this.props.onClick(event);
+      });
+      el.addEventListener('loaded', event => {
+        this.props.onLoaded(event);
+      });
+    }
   }
 
   /**
@@ -100,15 +104,17 @@ export class Scene extends React.Component {
   };
 
   attachEvents = el => {
-    el.addEventListener('loaded', event => {
-      this.props.onLoaded(event);
-    });
-    if (this.props.onTick) {
-      setTimeout(() => {
-        el.addBehavior({
-          update: this.props.onTick
-        });
+    if (el) {
+      el.addEventListener('loaded', event => {
+        this.props.onLoaded(event);
       });
+      if (this.props.onTick) {
+        setTimeout(() => {
+          el.addBehavior({
+            update: this.props.onTick
+          });
+        });
+      }
     }
   }
 
