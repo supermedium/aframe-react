@@ -13,7 +13,9 @@ on top of an **entity-component system** on top of the DOM. `react-three` tries 
 be a contained non-agnostic solution. Unfortunately, it doesn't fit well to
 wrap React around pure three.js, there are performance limitations to having a
 `requestAnimationFrame` for each object, and it is not as composable or
-extendable. React works better with A-Frame as A-Frame inherently utilizes the DOM.
+extendable.
+
+React works better with A-Frame as A-Frame inherently utilizes the DOM.
 
 ### Usage
 
@@ -49,6 +51,8 @@ class ExampleScene extends React.Component {
 Be aware of the difference between React components and A-Frame components.
 
 A-Frame components refers to components of the entity-component system.
+
+`aframe-react` preserves the entity-component system of A-Frame.
 
 ### Components
 
