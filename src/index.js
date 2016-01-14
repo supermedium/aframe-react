@@ -1,5 +1,3 @@
-import components from 'aframe-core';
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styleParser from 'style-attr';
