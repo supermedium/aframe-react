@@ -22,7 +22,7 @@ export class Animation extends React.Component {
         this.props.onAnimationStart(event);
       });
     }
-  }
+  };
 
   render() {
     return (
@@ -36,7 +36,9 @@ export class Entity extends React.Component {
     children: React.PropTypes.any,
     mixin: React.PropTypes.string,
     onClick: React.PropTypes.func,
-    onLoaded: React.PropTypes.func
+    onLoaded: React.PropTypes.func,
+    onMouseEnter: React.PropTypes.func,
+    onMouseLeave: React.PropTypes.func,
   };
 
   static defaultProps = {
@@ -52,8 +54,14 @@ export class Entity extends React.Component {
       el.addEventListener('loaded', event => {
         this.props.onLoaded(event);
       });
+      el.addEventListener('mouseenter', event => {
+        this.props.onMouseEnter(event);
+      });
+      el.addEventListener('mouseleave', event => {
+        this.props.onMouseLeave(event);
+      });
     }
-  }
+  };
 
   /**
    * Stringify components passed as an object.
@@ -114,7 +122,7 @@ export class Scene extends React.Component {
         });
       }
     }
-  }
+  };
 
   render() {
     return (

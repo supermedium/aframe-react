@@ -90,6 +90,8 @@ A-Frame components can then be passed via props either via object or string.
 | Event | Description |
 | ----- | ----------- |
 | onClick | If using the cursor or raycaster, `onClick` handler is called when entity is clicked. |
+| onMouseEnter | If using the cursor or raycaster, `onMouseEnter` handler is called when entity is collides with raycaster. |
+| onMouseLeave | If using the cursor or raycaster, `onMouseLeave` handler is called when entity is stops colliding with raycaster. |
 | onLoaded | `onLoaded` handler is called when entity is loaded. |
 
 Check out the [A-Frame docs](https://aframe.io) for A-Frame component usage.
