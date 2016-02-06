@@ -43,7 +43,9 @@ export class Entity extends React.Component {
 
   static defaultProps = {
     onClick: () => {},
-    onLoaded: () => {}
+    onLoaded: () => {},
+    onMouseEnter: () => {},
+    onMouseLeave: () => {},
   };
 
   attachEvents = el => {
