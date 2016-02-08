@@ -1,6 +1,6 @@
 {
   "name": "aframe-react",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Core React components for A-Frame VR.",
   "main": "lib/index.js",
   "scripts": {
