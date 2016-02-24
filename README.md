@@ -1,6 +1,14 @@
 ## aframe-react
 
-Combining [A-Frame VR](https://aframe.io) with React.
+Bridging [A-Frame VR](https://aframe.io) with React. `aframe-react` is an extremely thin wrapper. Pretty much all that it does is serialize objects, when passed as props to an A-Frame component, A-Frame component strings:
+
+```
+geometry={{ primitive: 'box', width: 5 }}
+
+to:
+
+geometry="primitive: box; width: 5"
+```
 
 `aframe-react` is the core library. Check out the
 [aframe-react-boilerplate](https://github.com/ngokevin/aframe-react-boilerplate)
