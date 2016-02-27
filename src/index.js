@@ -77,7 +77,10 @@ export class Entity extends React.Component {
 
       if (this.props[component].constructor === Function) { return; }
 
-      if (this.props[component].constructor === Object) {
+      if (this.props[component].constructor === Array) {
+        //Stringify components passed as array.
+        props[component] = this.props[component].join(' ');
+      } else if (this.props[component].constructor === Object) {
         // Stringify components passed as object.
         props[component] = styleParser.stringify(this.props[component]);
       } else {
