@@ -2,6 +2,32 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styleParser from 'style-attr';
 
+/**
+ * Stringify components passed as an object.
+ *
+ * {primitive: box; width: 10} to 'primitive: box; width: 10'
+ */
+function serializeComponents(props) {
+  let serialProps = {};
+  Object.keys(props).forEach(component => {
+    if (['children', 'mixin'].indexOf(component) !== -1) { return; }
+
+    if (props[component].constructor === Function) { return; }
+
+    if (props[component].constructor === Array) {
+      //Stringify components passed as array.
+      serialProps[component] = props[component].join(' ');
+    } else if (props[component].constructor === Object) {
+      // Stringify components passed as object.
+      serialProps[component] = styleParser.stringify(props[component]);
+    } else {
+      // Do nothing for components otherwise.
+      serialProps[component] = props[component];
+    }
+  });
+  return serialProps;
+};
+
 export class Animation extends React.Component {
   static propTypes = {
     onAnimationEnd: React.PropTypes.func,
@@ -26,7 +52,7 @@ export class Animation extends React.Component {
 
   render() {
     return (
-      <a-animation ref={this.attachEvents} {...this.props}></a-animation>
+      <a-animation ref={this.attachEvents} {...serializeComponents(this.props)}></a-animation>
     );
   }
 }
@@ -65,28 +91,6 @@ export class Entity extends React.Component {
     }
   };
 
-  /**
-   * Stringify components passed as an object.
-   *
-   * {primitive: box; width: 10} to 'primitive: box; width: 10'
-   */
-  serializeComponents() {
-    let props = {};
-    Object.keys(this.props).forEach(component => {
-      if (['children', 'mixin'].indexOf(component) !== -1) { return; }
-
-      if (this.props[component].constructor === Function) { return; }
-
-      if (this.props[component].constructor === Object) {
-        // Stringify components passed as object.
-        props[component] = styleParser.stringify(this.props[component]);
-      } else {
-        // Do nothing for components otherwise.
-        props[component] = this.props[component];
-      }
-    });
-    return props;
-  }
 
   render() {
     const mixinProp = this.props.mixin ? {mixin: this.props.mixin} : {}
@@ -94,7 +98,7 @@ export class Entity extends React.Component {
     return (
       <a-entity ref={this.attachEvents}
                 {...mixinProp}
-                {...this.serializeComponents()}>
+                {...serializeComponents(this.props)}>
         {this.props.children}
       </a-entity>
     );
@@ -128,7 +132,7 @@ export class Scene extends React.Component {
 
   render() {
     return (
-      <a-scene ref={this.attachEvents} {...this.props}>
+      <a-scene ref={this.attachEvents} {...serializeComponents(this.props)}>
         {this.props.children}
       </a-scene>
     );

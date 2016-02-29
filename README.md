@@ -1,6 +1,6 @@
 ## aframe-react
 
-Bridging [A-Frame VR](https://aframe.io) with React. `aframe-react` is an extremely thin wrapper. Pretty much all that it does is serialize objects, when passed as props to an A-Frame component, A-Frame component strings:
+Bridging [A-Frame VR](https://aframe.io) with React. `aframe-react` is an extremely thin wrapper. Pretty much all that it does is serialize objects and arrays passed as props to an A-Frame component as A-Frame component strings:
 
 ```
 geometry={{ primitive: 'box', width: 5 }}
@@ -8,6 +8,12 @@ geometry={{ primitive: 'box', width: 5 }}
 to:
 
 geometry="primitive: box; width: 5"
+
+and position={[0, 0, -5]}
+
+to:
+
+position="0 0 -5"
 ```
 
 `aframe-react` is the core library. Check out the
@@ -45,8 +51,8 @@ class ExampleScene extends React.Component {
   render () {
     return (
       <Scene>
-        <Entity geometry={{primitive: 'box'}} material="color: red" position="0 0 -5">
-          <Animation attribute="rotation" dur="5000" repeat="indefinite" to="0 360 360"/>
+        <Entity geometry={{primitive: 'box'}} material="color: red" position={[0, 0, -5]}>
+          <Animation attribute="rotation" dur="5000" repeat="indefinite" to={[0, 360, 360]}/>
         </Entity>
       </Scene>
     );
@@ -120,4 +126,3 @@ The `Animation` React component is a thin wrapper around `<a-animation>`.
 | onAnimationStart | `onAnimationStart` handler is called when animation starts. |
 
 Check out the [A-Frame docs](https://aframe.io) for A-Frame animation usage.
-
