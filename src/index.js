@@ -123,7 +123,8 @@ export class Scene extends React.Component {
       if (this.props.onTick) {
         setTimeout(() => {
           el.addBehavior({
-            update: this.props.onTick
+            tick: this.props.onTick,
+            el: el
           });
         });
       }
