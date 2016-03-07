@@ -107,16 +107,26 @@ export class Entity extends React.Component {
 
 export class Scene extends React.Component {
   static propTypes = {
+    onEnterVR: React.PropTypes.func,
+    onExitVR: React.PropTypes.func,
     onLoaded: React.PropTypes.func,
     onTick: React.PropTypes.func
   };
 
   static defaultProps = {
+    onEnterVR: () => {},
+    onExitVR: () => {},
     onLoaded: () => {}
   };
 
   attachEvents = el => {
     if (el) {
+      el.addEventListener('enter-vr', event => {
+        this.props.onEnterVR(event);
+      });
+      el.addEventListener('exit-vr', event => {
+        this.props.onExitVR(event);
+      });
       el.addEventListener('loaded', event => {
         this.props.onLoaded(event);
       });
