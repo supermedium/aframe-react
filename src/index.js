@@ -7,7 +7,7 @@ import styleParser from 'style-attr';
  *
  * {primitive: box; width: 10} to 'primitive: box; width: 10'
  */
-function serializeComponents(props) {
+function serializeComponents (props) {
   let serialProps = {};
   Object.keys(props).forEach(component => {
     if (['children', 'mixin'].indexOf(component) !== -1) { return; }
@@ -90,7 +90,6 @@ export class Entity extends React.Component {
       });
     }
   };
-
 
   render() {
     const mixinProp = this.props.mixin ? {mixin: this.props.mixin} : {}
