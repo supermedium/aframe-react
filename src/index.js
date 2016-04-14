@@ -65,6 +65,12 @@ export class Entity extends React.Component {
     onLoaded: React.PropTypes.func,
     onMouseEnter: React.PropTypes.func,
     onMouseLeave: React.PropTypes.func,
+    onChildAttached: React.PropTypes.func,
+    onComponentChanged: React.PropTypes.func,
+    onPause: React.PropTypes.func,
+    onPlay: React.PropTypes.func,
+    onStateAdded: React.PropTypes.func,
+    onStateRemoved: React.PropTypes.func,
   };
 
   static defaultProps = {
@@ -72,6 +78,12 @@ export class Entity extends React.Component {
     onLoaded: () => {},
     onMouseEnter: () => {},
     onMouseLeave: () => {},
+    onChildAttached: () => {},
+    onComponentChanged: () => {},
+    onPause: () => {},
+    onPlay: () => {},
+    onStateAdded: () => {},
+    onStateRemoved: () => {},
   };
 
   attachEvents = el => {
@@ -87,6 +99,24 @@ export class Entity extends React.Component {
       });
       el.addEventListener('mouseleave', event => {
         this.props.onMouseLeave(event);
+      });
+      el.addEventListener('child-attached', event => {
+        this.props.onChildAttached(event);
+      });
+      el.addEventListener('componentchanged', event => {
+        this.props.onComponentChanged(event);
+      });
+      el.addEventListener('pause', event => {
+        this.props.onPause(event);
+      });
+      el.addEventListener('play', event => {
+        this.props.onPlay(event);
+      });
+      el.addEventListener('stateadded', event => {
+        this.props.onStateAdded(event);
+      });
+      el.addEventListener('stateremoved', event => {
+        this.props.onStateRemoved(event);
       });
     }
   };
