@@ -138,8 +138,7 @@ export class Scene extends React.Component {
   static propTypes = {
     onEnterVR: React.PropTypes.func,
     onExitVR: React.PropTypes.func,
-    onLoaded: React.PropTypes.func,
-    onTick: React.PropTypes.func
+    onLoaded: React.PropTypes.func
   };
 
   static defaultProps = {
@@ -159,14 +158,6 @@ export class Scene extends React.Component {
       el.addEventListener('loaded', event => {
         this.props.onLoaded(event);
       });
-      if (this.props.onTick) {
-        setTimeout(() => {
-          el.addBehavior({
-            tick: this.props.onTick,
-            el: el
-          });
-        });
-      }
     }
   };
 
