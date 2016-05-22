@@ -88,16 +88,16 @@ export class Entity extends React.Component {
 
   attachEvents = el => {
     if (el) {
-      el.addEventListener('click', event => {
+      el.addEventListener('cursor-click', event => {
         this.props.onClick(event);
       });
       el.addEventListener('loaded', event => {
         this.props.onLoaded(event);
       });
-      el.addEventListener('mouseenter', event => {
+      el.addEventListener('cursor-mouseenter', event => {
         this.props.onMouseEnter(event);
       });
-      el.addEventListener('mouseleave', event => {
+      el.addEventListener('cursor-mouseleave', event => {
         this.props.onMouseLeave(event);
       });
       el.addEventListener('child-attached', event => {
