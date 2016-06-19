@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { components } from 'aframe';
 import styleParser from 'style-attr';
 
 /**
@@ -13,6 +14,10 @@ function serializeComponents (props) {
     if (['children', 'mixin'].indexOf(component) !== -1) { return; }
 
     if (props[component].constructor === Function) { return; }
+
+    var ind = Object.keys(components).indexOf(component);
+    // Discards props that aren't components.
+    if (ind === -1) { return; }
 
     if (props[component].constructor === Array) {
       //Stringify components passed as array.
