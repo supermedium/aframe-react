@@ -25,6 +25,18 @@ function serializeComponents (props) {
     } else if (props[component].constructor === Object) {
       // Stringify components passed as object.
       serialProps[component] = styleParser.stringify(props[component]);
+    } else if (props[component].constructor === Boolean) {
+      if (components[component].schema.type === 'boolean') {
+        // If the component takes one property and it is Boolean
+        // just passes in the prop.
+        serialProps[component] = props[component];
+      } else if (props[component] === true) {
+        // Otherwise if it is true, assumes component is blank.
+        serialProps[component] = "";
+      } else {
+        // Otherwise if false lets aframe coerce.
+        serialProps[component] = props[component];
+      }
     } else {
       // Do nothing for components otherwise.
       serialProps[component] = props[component];
