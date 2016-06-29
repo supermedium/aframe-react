@@ -1,35 +1,31 @@
 ## aframe-react
 
-Bridging [A-Frame VR](https://aframe.io) with React. `aframe-react` is an extremely thin wrapper. Pretty much all that it does is serialize objects and arrays passed as props to an A-Frame component as A-Frame component strings:
-
-```
-geometry={{ primitive: 'box', width: 5 }}
-
-to:
-
-geometry="primitive: box; width: 5"
-
-and position={[0, 0, -5]}
-
-to:
-
-position="0 0 -5"
-```
+Bridging [A-Frame](https://aframe.io) with React.
 
 `aframe-react` is the core library. Check out the
 [aframe-react-boilerplate](https://github.com/ngokevin/aframe-react-boilerplate)
 for example usage.
 
-> How is this different from react-three?
+`aframe-react` is a thin wrapper. It serializes objects passed as props to
+strings understandable by A-Frame components:
+
+```
+geometry={{ primitive: 'box', width: 5 }}
+```
+
+to:
+
+```
+geometry="primitive: box; width: 5"
+```
+
+> How is this better than react-three?
 
 `aframe-react` is an abstraction layer on top of A-Frame, and A-Frame is built
-on top of an **entity-component system** on top of the DOM. `react-three` tries to
-be a contained non-agnostic solution. Unfortunately, it doesn't fit well to
-wrap React around pure three.js, there are performance limitations to having a
-`requestAnimationFrame` for each object, and it is not as composable or
-extendable.
-
-React works better with A-Frame as A-Frame inherently utilizes the DOM.
+on top of an **entity-component system** on top of the DOM. `react-three` tries
+to skip the DOM completely, which misses a lot of the benefits of React.  There
+are also a lot of performance limitations to having a `requestAnimationFrame`
+for each object, and it is not as composable nor extendable.
 
 ### Usage
 
@@ -39,12 +35,12 @@ React works better with A-Frame as A-Frame inherently utilizes the DOM.
 npm install aframe-react
 ```
 
-`aframe-react` does not come with the `aframe-core` library. We will have to
-require that alongside `aframe-react`. Again, check out the boilerplate to see
-how to get everything set up with Webpack.
+`aframe-react` does not come with the `aframe` library. We will have to require
+that alongside `aframe-react`. Again, check out the boilerplate to see how to
+get everything set up with Webpack.
 
 ```js
-require('aframe-core');
+require('aframe');
 import {Animation, Entity, Scene} from 'aframe-react';
 
 class ExampleScene extends React.Component {
