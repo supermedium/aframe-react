@@ -8,11 +8,9 @@ top of [three.js](http://threejs.org). It serializes objects, passed as props,
 to strings understandable by [A-Frame
 components](https://aframe.io/docs/0.2.0/core/component/):
 
-```
+```js
 <Entity geometry={{primitive: 'box', width: 5}}/>
-
-// to
-
+// to:
 <Entity geometry="primitive: box; width: 5"/>
 ```
 
