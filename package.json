@@ -15,8 +15,8 @@
     "babel-preset-stage-0": "^6.3.13"
   },
   "peerDependencies": {
-    "react": "0.14.*",
-    "react-dom": "*"
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0"
   },
   "repository": {
     "type": "git",
