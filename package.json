@@ -1,6 +1,6 @@
 {
   "name": "aframe-react",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Core React components for A-Frame VR.",
   "main": "lib/index.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "babel-preset-stage-0": "^6.3.13"
   },
   "peerDependencies": {
-    "react": "0.14.*",
+    "react": "*",
     "react-dom": "*"
   },
   "repository": {
