@@ -1,14 +1,15 @@
 ## aframe-react
 
-Build VR with [A-Frame](https://aframe.io) with [React](https://facebook.github.io/react/).
+Build virtual reality experiences with **[A-Frame](https://aframe.io)** with
+[React](https://facebook.github.io/react/).
 
 A-Frame is a web framework for building virtual reality experiences on top of
 the DOM. Since it's HTML, React naturally abstracts well on top of that.
 
 ```js
 import 'aframe';
-import {Entity, Scene} from 'aframe-react';
 import 'aframe-bmfont-text-component';
+import {Entity, Scene} from 'aframe-react';
 
 class ExampleScene extends React.Component {
   render () {
@@ -46,6 +47,8 @@ React was built for large web apps to improve DOM performance. It wasn't meant
 for development of 3D scenes by itself. By attempting to wrap React directly
 over three.js or WebGL, you run into a lot of performance issues.
 
+#### Hooks into the Render Loop
+
 Without a framework focused around 3D and VR, there is **no structure to hook
 into the render loop**. React implementations generally just create a new
 `requestAnimationFrame` within the React components, which is very bad for
@@ -72,19 +75,27 @@ AFRAME.registerComponent('rotate-on-tick', {
 </Scene>
 ```
 
+#### Provides a DOM
+
 By providing a DOM, it gives React the purpose it was meant for, to provide
 quicker DOM updates. Although ideally, we use A-Frame directly since there may
 be performance quirks with React batching its updates which we don't want in
 90fps+ real-time rendering.
+
+#### Composability
 
 A-Frame provides composability over inheritance.  React is based around
 inheritance: to create a new type of object, we extend an existing one. In game
 development where objects are more complex, it is more appropriate to compose
 behavior in order to more easily build new types of objects.
 
+#### Community and Ecosystem
+
 Lastly, A-Frame is backed by a large community and ecosystem of tools and
 components. Don't be limited by what an assorted library provides when an
-extensible framework can provide much more.
+extensible framework can provide much more. There's even a [Redux
+component](https://github.com/ngokevin/kframe/tree/master/components/redux) for
+binding to A-Frame without using `react-redux`.
 
 `tl;dr`: Wrapping React directly around three.js/WebGL cuts corners and suffers
 as a result. A-Frame provides a proper bridge.
