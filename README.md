@@ -43,6 +43,10 @@ props to A-Frame's default component syntax:
 See [aframe-react-boilerplate](https://github.com/ngokevin/aframe-react-boilerplate)
 for example usage.
 
+### Built with aframe-react
+
+- [Fear of the Sky](http://360syria.com/) by Amnesty International UK
+
 ### Why A-Frame with React?
 
 React was built for large web apps to improve DOM performance. It wasn't meant
