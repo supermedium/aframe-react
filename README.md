@@ -1,21 +1,93 @@
 ## aframe-react
 
-Bridging [A-Frame](https://aframe.io) with [React](https://facebook.github.io/react/).
+Build VR with [A-Frame](https://aframe.io) with [React](https://facebook.github.io/react/).
 
-`aframe-react` is a thin layer on top of A-Frame, which is an
-[entity-component-system-based](https://aframe.io/docs/0.2.0/core/) layer on
-top of [three.js](http://threejs.org). It serializes objects, passed as props,
-to strings understandable by [A-Frame
-components](https://aframe.io/docs/0.2.0/core/component/):
+A-Frame is a web framework for building virtual reality experiences on top of
+the DOM. Since it's HTML, React naturally abstracts well on top of that.
+
+```js
+import 'aframe';
+import {Entity, Scene} from 'aframe-react';
+import 'aframe-bmfont-text-component';
+
+class ExampleScene extends React.Component {
+  render () {
+    return (
+      <Scene>
+        <Entity geometry={{primitive: 'box'}} material="color: red" position={[0, 0, -5]}/>
+        <Entity bmfont-text={{text: 'HELLO WORLD'}} position="{[0, 1, -5]}"/>
+      </Scene>
+    );
+  }
+}
+```
+
+A-Frame brings the [entity-component
+pattern](https://aframe.io/docs/0.3.0/core/) to HTML. Each HTML attribute maps
+to a *component* which are composable modules that plug in appearance,
+behavior, and functionality to *entities*.
+
+`aframe-react` itself is a very thin layer on top of A-Frame. It exposes an
+`<Entity/>` React component that serializes JavaScript objects passed as React
+props to A-Frame's default component syntax:
 
 ```js
 <Entity geometry={{primitive: 'box', width: 5}}/>
-// to:
-<Entity geometry="primitive: box; width: 5"/>
+
+<a-entity geometry="primitive: box; width: 5"></a-entity>
 ```
 
-See the [aframe-react-boilerplate](https://github.com/ngokevin/aframe-react-boilerplate)
+See [aframe-react-boilerplate](https://github.com/ngokevin/aframe-react-boilerplate)
 for example usage.
+
+### Why A-Frame with React?
+
+React was built for large web apps to improve DOM performance. It wasn't meant
+for development of 3D scenes by itself. By attempting to wrap React directly
+over three.js or WebGL, you run into a lot of performance issues.
+
+Without a framework focused around 3D and VR, there is **no structure to hook
+into the render loop**. React implementations generally just create a new
+`requestAnimationFrame` within the React components, which is very bad for
+performance. Because React only wants data to flow down with no child-to-parent
+communication, entities have a hard time communicating to the scene to hook new
+behaviors into the render loop.
+
+A-Frame, however, provides a `tick` method for components to hook into the
+scene render loop, and these components can be attached to any entity. Here
+is an example of using A-Frame to provide these facilities across multiple
+React components. Note how we can write a component that can be applied to
+different objects.
+
+```js
+AFRAME.registerComponent('rotate-on-tick', {
+  tick: function (t, dt) {
+    this.object3D.rotation.x += .001;
+  }
+});
+
+<Scene>
+  <Box rotate-on-tick/>  <!-- <Entity geometry="primitive: box" rotate-on-tick/> -->
+  <Sphere rotate-on-tick/> <!-- <Entity geometry="primitive: sphere" rotate-on-tick/> -->
+</Scene>
+```
+
+By providing a DOM, it gives React the purpose it was meant for, to provide
+quicker DOM updates. Although ideally, we use A-Frame directly since there may
+be performance quirks with React batching its updates which we don't want in
+90fps+ real-time rendering.
+
+A-Frame provides composability over inheritance.  React is based around
+inheritance: to create a new type of object, we extend an existing one. In game
+development where objects are more complex, it is more appropriate to compose
+behavior in order to more easily build new types of objects.
+
+Lastly, A-Frame is backed by a large community and ecosystem of tools and
+components. Don't be limited by what an assorted library provides when an
+extensible framework can provide much more.
+
+`tl;dr`: Wrapping React directly around three.js/WebGL cuts corners and suffers
+as a result. A-Frame provides a proper bridge.
 
 ### Installation
 
@@ -29,34 +101,14 @@ npm install --save aframe-react
 that alongside `aframe-react`. Check out the boilerplate to see how to get
 everything set up with Webpack.
 
-```js
-import 'aframe';
-import {Entity, Scene} from 'aframe-react';
-
-class ExampleScene extends React.Component {
-  render () {
-    return (
-      <Scene>
-        <Entity geometry={{primitive: 'box'}} material="color: red" position={[0, 0, -5]}/>
-      </Scene>
-    );
-  }
-}
-```
-
 ### API
 
-`aframe-react` ships with a `Scene` React component and an `Entity` React
-component, which are all we really need.
-
-Note the difference between React components and A-Frame components. [A-Frame
-components](https://aframe.io/docs/0.2.0/core/component.html) refers to
-components of the entity-component-system pattern.
+`aframe-react` ships with `Scene` and `Entity` React components, which are all
+we really need.
 
 #### \<Scene {...components}/>
 
-The `Scene` React component is a thin wrapper around `<a-scene>`. The scene
-holds `<Entity/>`s:
+The `Scene` React component wraps `<a-scene>`:
 
 ```html
 <Scene>
@@ -64,37 +116,10 @@ holds `<Entity/>`s:
 </Scene>
 ```
 
-| Event | Description |
-| ----- | ----------- |
-| onLoaded | `onLoaded` handler is called once scene has loaded all entities. |
-
 #### \<Entity {...components}/>
 
-The `Entity` React component is a wrapper around `<a-entity>`. `Entity` handles
-serialization of A-Frame components. A-Frame components can then be passed via
-props either via object or string.
+The `Entity` React component wraps `<a-entity>`.
 
 ```html
 <Entity geometry={{primitive: 'box'}} material='color: red'/>
 ```
-
-**Events**
-
-| Event    | Description                                         |
-| -----    | -----------                                         |
-| onLoaded | `onLoaded` handler is called when entity is loaded. |
-
-#### \<Animation {...attributes}/>
-
-The `Animation` React component is a thin wrapper around `<a-animation>`.
-
-```html
-<Animation attribute="rotation" dur="10000" repeat="indefinite" to="0 360 360"/>
-```
-
-**Events**
-
-| Event | Description |
-| ----- | ----------- |
-| onAnimationEnd | `onAnimationEnd` handler is called when animation ends. |
-| onAnimationStart | `onAnimationStart` handler is called when animation starts. |
