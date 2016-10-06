@@ -3,6 +3,8 @@
 Build virtual reality experiences with **[A-Frame](https://aframe.io)** with
 [React](https://facebook.github.io/react/).
 
+![aframe-react](https://cloud.githubusercontent.com/assets/674727/19173303/865a94ea-8bdb-11e6-9b4b-10c953f9f218.png)
+
 A-Frame is a web framework for building virtual reality experiences on top of
 the DOM. Since it's HTML, React naturally abstracts well on top of that.
 
