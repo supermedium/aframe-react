@@ -1,7 +1,7 @@
 {
   "name": "aframe-react",
   "version": "3.0.0",
-  "description": "Core React components for A-Frame VR.",
+  "description": "Build virtual reality experiences with A-Frame and React.",
   "main": "lib/index.js",
   "scripts": {
     "build": "babel --presets es2015,react,stage-0 src -d lib",
@@ -29,6 +29,7 @@
     "a-frame",
     "aframevr",
     "mozvr",
+    "reactvr",
     "webvr"
   ],
   "author": "Kevin Ngo <kngo@mozilla>",
