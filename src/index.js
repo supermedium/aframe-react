@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { components } from 'aframe';
 import styleParser from 'style-attr';
 
 /**
@@ -14,12 +15,28 @@ function serializeComponents (props) {
 
     if (props[component].constructor === Function) { return; }
 
+    var ind = Object.keys(components).indexOf(component);
+    // Discards props that aren't components.
+    if (ind === -1) { return; }
+
     if (props[component].constructor === Array) {
       //Stringify components passed as array.
       serialProps[component] = props[component].join(' ');
     } else if (props[component].constructor === Object) {
       // Stringify components passed as object.
       serialProps[component] = styleParser.stringify(props[component]);
+    } else if (props[component].constructor === Boolean) {
+      if (components[component].schema.type === 'boolean') {
+        // If the component takes one property and it is Boolean
+        // just passes in the prop.
+        serialProps[component] = props[component];
+      } else if (props[component] === true) {
+        // Otherwise if it is true, assumes component is blank.
+        serialProps[component] = "";
+      } else {
+        // Otherwise if false lets aframe coerce.
+        serialProps[component] = props[component];
+      }
     } else {
       // Do nothing for components otherwise.
       serialProps[component] = props[component];
