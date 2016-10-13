@@ -141,22 +141,22 @@ var Entity = exports.Entity = (function (_React$Component2) {
 
     return _ret2 = (_temp2 = (_this2 = _possibleConstructorReturn(this, (_Object$getPrototypeO2 = Object.getPrototypeOf(Entity)).call.apply(_Object$getPrototypeO2, [this].concat(args))), _this2), _this2.attachEvents = function (el) {
       if (el) {
-        el.addEventListener('cursor-click', function (event) {
+        el.addEventListener('click', function (event) {
           _this2.props.onClick(event);
         });
         el.addEventListener('loaded', function (event) {
           _this2.props.onLoaded(event);
         });
-        el.addEventListener('cursor-mouseenter', function (event) {
+        el.addEventListener('mouseenter', function (event) {
           _this2.props.onMouseEnter(event);
         });
-        el.addEventListener('cursor-mouseleave', function (event) {
+        el.addEventListener('mouseleave', function (event) {
           _this2.props.onMouseLeave(event);
         });
-        el.addEventListener('cursor-mousedown', function (event) {
+        el.addEventListener('mousedown', function (event) {
           _this2.props.onMouseDown(event);
         });
-        el.addEventListener('cursor-mouseup', function (event) {
+        el.addEventListener('mouseup', function (event) {
           _this2.props.onMouseUp(event);
         });
         el.addEventListener('child-attached', function (event) {
