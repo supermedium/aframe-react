@@ -26,8 +26,10 @@
 import 'aframe';
 import 'aframe-bmfont-text-component';
 import {Entity, Scene} from 'aframe-react';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-class WebVRScene extends React.Component {
+class VRScene extends React.Component {
   render () {
     return (
       <Scene>
