@@ -2,17 +2,20 @@
   "name": "aframe-react",
   "version": "3.0.0",
   "description": "Build virtual reality experiences with A-Frame and React.",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "build": "babel --presets es2015,react,stage-0 src -d lib",
-    "prepublish": "npm run build"
+    "build": "babel --presets es2015,react,stage-0 src -d dist",
+    "prepublish": "npm run build",
+    "test": "mocha --compilers js:babel-register tests/unit"
   },
   "devDependencies": {
     "babel": "^6.3.13",
     "babel-cli": "^6.3.15",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
-    "babel-preset-stage-0": "^6.3.13"
+    "babel-preset-stage-0": "^6.3.13",
+    "babel-register": "^6.16.3",
+    "mocha": "^3.1.2"
   },
   "peerDependencies": {
     "react": "*",

@@ -8,7 +8,7 @@ import styleParser from 'style-attr';
  *
  * {primitive: box; width: 10} to 'primitive: box; width: 10'
  */
-function serializeComponents (props) {
+export function serializeComponents (props) {
   let serialProps = {};
   Object.keys(props).forEach(component => {
     if (['children', 'mixin'].indexOf(component) !== -1) { return; }

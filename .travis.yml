@@ -1,0 +1,24 @@
+language: node_js
+
+node_js:
+  - '4.6'
+
+install:
+  - npm install
+
+script:
+  - $CI_ACTION
+
+env:
+  global:
+    - TEST_SUITE=unit
+  matrix:
+    - CI_ACTION="npm run test"
+
+branches:
+  only:
+    - master
+
+cache:
+  directories:
+    - node_modules
