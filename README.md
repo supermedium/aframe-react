@@ -77,7 +77,9 @@ props to A-Frame components:
 
 ### Built with aframe-react
 
-- [Fear of the Sky](http://360syria.com/) by Amnesty International UK
+<a href="http://360syria.com">
+<img width="320" alt="Fear of the Sky by Amnesty International UK" src="https://cloud.githubusercontent.com/assets/674727/19344336/a5830bbe-90ee-11e6-9f68-2c23a9be4e95.png">
+</a>
 
 ### Why A-Frame with React?
 
