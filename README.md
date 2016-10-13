@@ -16,9 +16,11 @@
   </a>
 </div>
 
-<div align="center" style="margin: 10px 0">
+<br/>
+<div align="center">
   <img src="https://cloud.githubusercontent.com/assets/674727/19173367/d6590832-8bdb-11e6-9336-658b00bc0460.png" height="320">
 </div>
+<br/>
 
 ```js
 import 'aframe';
