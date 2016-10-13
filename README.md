@@ -75,7 +75,7 @@ props to A-Frame components:
 <a-entity geometry="primitive: box; width: 5"></a-entity>
 ```
 
-### Built with aframe-react
+### Built with `aframe-react`
 
 <a href="http://360syria.com">
 <img width="320" alt="Fear of the Sky by Amnesty International UK" src="https://cloud.githubusercontent.com/assets/674727/19344336/a5830bbe-90ee-11e6-9f68-2c23a9be4e95.png">
@@ -139,18 +139,6 @@ binding to A-Frame without using `react-redux`.
 
 `tl;dr`: Wrapping React directly around three.js/WebGL cuts corners and suffers
 as a result. A-Frame provides a proper bridge.
-
-### Installation
-
-`aframe-react` can be installed through `npm`.
-
-```bash
-npm install --save aframe-react
-```
-
-`aframe-react` does not come with the `aframe` library. We will have to require
-that alongside `aframe-react`. Check out the boilerplate to see how to get
-everything set up with Webpack.
 
 ### API
 
