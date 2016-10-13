@@ -48,7 +48,7 @@ function serializeComponents(props) {
       return;
     }
 
-    var ind = Object.keys(components).indexOf(component);
+    var ind = Object.keys(components).indexOf(component.split('__')[0]);
     // Discards props that aren't components.
     if (ind === -1) {
       return;
