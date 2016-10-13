@@ -1,5 +1,15 @@
 import assert from 'assert';
-import {serializeComponents} from '../src/index.js';
+import {serializeComponents} from '../../src/index.js';
+
+global.AFRAME = {
+  components: {
+    camera: {},
+    geometry: {},
+    material: {},
+    position: {},
+    scale: {}
+  }
+};
 
 describe('serializeComponents', () => {
   it('serializes arrays', () => {
@@ -16,6 +26,12 @@ describe('serializeComponents', () => {
   it('serializes empty prop', () => {
     var output = serializeComponents({camera: {}});
     assert.equal(output.camera, '');
+  });
+
+  it('excludes props that are not components', () => {
+    var output = serializeComponents({rose: 'blah', geometry: {}});
+    assert.ok(!('rose' in output));
+    assert.ok('geometry' in output);
   });
 
   it('excludes children prop', () => {

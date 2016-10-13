@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { components } from 'aframe';
 import styleParser from 'style-attr';
 
 /**
@@ -9,6 +8,8 @@ import styleParser from 'style-attr';
  * {primitive: box; width: 10} to 'primitive: box; width: 10'
  */
 export function serializeComponents (props) {
+  var components = AFRAME.components;
+
   let serialProps = {};
   Object.keys(props).forEach(component => {
     if (['children', 'mixin'].indexOf(component) !== -1) { return; }

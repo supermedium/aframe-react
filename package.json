@@ -6,16 +6,29 @@
   "scripts": {
     "build": "babel --presets es2015,react,stage-0 src -d dist",
     "prepublish": "npm run build",
-    "test": "mocha --compilers js:babel-register tests/unit"
+    "test:ci": "mocha --compilers js:babel-register tests/unit",
+    "test": "npm run test:ci -- --watch",
+    "test:react:ci": "jest",
+    "test:react": "npm run test:react:ci -- --watch"
+  },
+  "jest": {
+    "testPathDirs": [
+      "tests/react"
+    ]
   },
   "devDependencies": {
     "babel": "^6.3.13",
     "babel-cli": "^6.3.15",
+    "babel-jest": "^16.0.0",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
     "babel-register": "^6.16.3",
-    "mocha": "^3.1.2"
+    "jest": "^16.0.1",
+    "mocha": "^3.1.2",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-test-renderer": "^15.3.2"
   },
   "peerDependencies": {
     "react": "*",
