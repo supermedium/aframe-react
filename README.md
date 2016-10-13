@@ -164,3 +164,11 @@ The `Entity` React component wraps `<a-entity>`.
 ```html
 <Entity geometry={{primitive: 'box'}} material='color: red'/>
 ```
+
+#### `events`
+
+To register an event handler, use the `events` prop:
+
+```html
+<Entity events={{click: () => { console.log('Clicked!'); }}}/>
+```
