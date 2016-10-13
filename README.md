@@ -1,19 +1,31 @@
-## aframe-react
+<h1 align="center">aframe-react</h1>
 
-Build virtual reality experiences with **[A-Frame](https://aframe.io)** and
-[React](https://facebook.github.io/react/).
+<h5 align="center">
+  Build virtual reality experiences with <b><a href="https://aframe.io">A-Frame</a></b> and <b><a href="https://facebook.github.io/react/">React</a></b>.
+</h5>
 
-<img src="https://cloud.githubusercontent.com/assets/674727/19173367/d6590832-8bdb-11e6-9336-658b00bc0460.png" height="320">
+<div align="center">
+  <a href="https://npmjs.org/package/aframe-react">
+    <img src="https://img.shields.io/npm/v/aframe-react.svg?style="flat-square" alt="npm" />
+  </a>
+  <a href="https://npmjs.org/package/aframe-react">
+    <img src="https://img.shields.io/npm/dm/aframe-react.svg?style="flat-square" alt="npm" />
+  </a>
+  <a href="http://travis-ci.org/ngokevin/aframe-react">
+    <img src="https://secure.travis-ci.org/ngokevin/aframe-react.svg?branch=master" alt="Travis CI" />
+  </a>
+</div>
 
-A-Frame is a web framework for building virtual reality experiences on top of
-the DOM. Since it's HTML, React naturally abstracts well on top of that.
+<div align="center" style="margin: 10px 0">
+  <img src="https://cloud.githubusercontent.com/assets/674727/19173367/d6590832-8bdb-11e6-9336-658b00bc0460.png" height="320">
+</div>
 
 ```js
 import 'aframe';
 import 'aframe-bmfont-text-component';
 import {Entity, Scene} from 'aframe-react';
 
-class ExampleScene extends React.Component {
+class WebVRScene extends React.Component {
   render () {
     return (
       <Scene>
@@ -25,23 +37,41 @@ class ExampleScene extends React.Component {
 }
 ```
 
-A-Frame brings the [entity-component
-pattern](https://aframe.io/docs/0.3.0/core/) to HTML. Each HTML attribute maps
-to a *component* which are composable modules that plug in appearance,
-behavior, and functionality to *entities*.
+See [aframe-react-boilerplate](https://github.com/ngokevin/aframe-react-boilerplate)
+for a basic example.
 
-`aframe-react` itself is a very thin layer on top of A-Frame. It exposes an
-`<Entity/>` React component that serializes JavaScript objects passed as React
-props to A-Frame's default component syntax:
+## Installation
 
-```js
-<Entity geometry={{primitive: 'box', width: 5}}/>
-
-<a-entity geometry="primitive: box; width: 5"></a-entity>
+```
+npm install --save aframe aframe-react react
 ```
 
-See [aframe-react-boilerplate](https://github.com/ngokevin/aframe-react-boilerplate)
-for example usage.
+## What `aframe-react` Does
+
+[A-Frame](https://aframe.io) is a web framework for building virtual reality
+experiences. Since A-Frame is built on top of the DOM, React is able to sit
+cleanly on top of A-Frame.
+
+If you are not familiar with the specifics of A-Frame, A-Frame is an
+[entity-component-system (ECS) framework on
+HTML](https://aframe.io/docs/0.3.0/core/). ECS is a pattern used in game
+development that favors composability over inheritance, which is more naturally
+suited to 3D scenes where objects are built of complex appearance, behavior,
+and functionality.
+
+In A-Frame, HTML attributes map to *components* which are composable modules
+that are plugged into **<a-entity>**s to attach appearance, behavior, and
+functionality. `aframe-react` is a very thin layer on top of A-Frame to bridge
+with React. It provides an `<Entity/>` React component that serializes React
+props to A-Frame components:
+
+```js
+// A-Frame + React
+<Entity geometry={{primitive: 'box', width: 5}}/>
+
+// to A-Frame.
+<a-entity geometry="primitive: box; width: 5"></a-entity>
+```
 
 ### Built with aframe-react
 
