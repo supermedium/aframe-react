@@ -1,13 +1,14 @@
 'use strict';
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Scene = exports.Entity = exports.Animation = undefined;
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+exports.serializeComponents = serializeComponents;
 
 var _react = require('react');
 
@@ -16,8 +17,6 @@ var _react2 = _interopRequireDefault(_react);
 var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _aframe = require('aframe');
 
 var _styleAttr = require('style-attr');
 
@@ -37,6 +36,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * {primitive: box; width: 10} to 'primitive: box; width: 10'
  */
 function serializeComponents(props) {
+  var components = AFRAME.components;
+
   var serialProps = {};
   Object.keys(props).forEach(function (component) {
     if (['children', 'mixin'].indexOf(component) !== -1) {
@@ -47,8 +48,8 @@ function serializeComponents(props) {
       return;
     }
 
-    var ind = Object.keys(_aframe.components).indexOf(component);
-    //Discards props that aren't components.
+    var ind = Object.keys(components).indexOf(component);
+    // Discards props that aren't components.
     if (ind === -1) {
       return;
     }
@@ -60,15 +61,15 @@ function serializeComponents(props) {
       // Stringify components passed as object.
       serialProps[component] = _styleAttr2.default.stringify(props[component]);
     } else if (props[component].constructor === Boolean) {
-      if (_aframe.components[component].schema.hasOwnProperty("type") && _aframe.components[component].schema.type === 'boolean') {
-        //If the component takes one property and it is Boolean
-        //just passes in the prop.
+      if (components[component].schema.type === 'boolean') {
+        // If the component takes one property and it is Boolean
+        // just passes in the prop.
         serialProps[component] = props[component];
       } else if (props[component] === true) {
-        //Otherwise if it is true, assumes component is blank.
+        // Otherwise if it is true, assumes component is blank.
         serialProps[component] = "";
       } else {
-        //Otherwise if false lets aframe coerce.
+        // Otherwise if false lets aframe coerce.
         serialProps[component] = props[component];
       }
     } else {
@@ -79,7 +80,7 @@ function serializeComponents(props) {
   return serialProps;
 };
 
-var Animation = exports.Animation = function (_React$Component) {
+var Animation = exports.Animation = (function (_React$Component) {
   _inherits(Animation, _React$Component);
 
   function Animation() {
@@ -113,7 +114,7 @@ var Animation = exports.Animation = function (_React$Component) {
   }]);
 
   return Animation;
-}(_react2.default.Component);
+})(_react2.default.Component);
 
 Animation.propTypes = {
   onAnimationEnd: _react2.default.PropTypes.func,
@@ -124,7 +125,7 @@ Animation.defaultProps = {
   onAnimationStart: function onAnimationStart() {}
 };
 
-var Entity = exports.Entity = function (_React$Component2) {
+var Entity = exports.Entity = (function (_React$Component2) {
   _inherits(Entity, _React$Component2);
 
   function Entity() {
@@ -195,7 +196,7 @@ var Entity = exports.Entity = function (_React$Component2) {
   }]);
 
   return Entity;
-}(_react2.default.Component);
+})(_react2.default.Component);
 
 Entity.propTypes = {
   children: _react2.default.PropTypes.any,
@@ -228,7 +229,7 @@ Entity.defaultProps = {
   onStateRemoved: function onStateRemoved() {}
 };
 
-var Scene = exports.Scene = function (_React$Component3) {
+var Scene = exports.Scene = (function (_React$Component3) {
   _inherits(Scene, _React$Component3);
 
   function Scene() {
@@ -269,7 +270,7 @@ var Scene = exports.Scene = function (_React$Component3) {
   }]);
 
   return Scene;
-}(_react2.default.Component);
+})(_react2.default.Component);
 
 Scene.propTypes = {
   onEnterVR: _react2.default.PropTypes.func,

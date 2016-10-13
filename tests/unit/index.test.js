@@ -7,7 +7,8 @@ global.AFRAME = {
     geometry: {},
     material: {},
     position: {},
-    scale: {}
+    scale: {},
+    sound: {}
   }
 };
 
@@ -26,6 +27,12 @@ describe('serializeComponents', () => {
   it('serializes empty prop', () => {
     var output = serializeComponents({camera: {}});
     assert.equal(output.camera, '');
+  });
+
+  it('serializes multiple components of the same type', () => {
+    var output = serializeComponents({sound__1: {}, sound__baa: {}});
+    assert.equal(output.sound__1, '');
+    assert.equal(output.sound__baa, '');
   });
 
   it('excludes props that are not components', () => {
