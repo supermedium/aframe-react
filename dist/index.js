@@ -1,13 +1,14 @@
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Scene = exports.Entity = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 exports.serializeComponents = serializeComponents;
 
 var _react = require('react');
@@ -17,6 +18,10 @@ var _react2 = _interopRequireDefault(_react);
 var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _case = require('case');
+
+var _case2 = _interopRequireDefault(_case);
 
 var _styleAttr = require('style-attr');
 
@@ -30,15 +35,40 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+function isFunction(thing) {
+  return Object.prototype.toString.call(thing) === '[object Function]';
+}
+
+function getAframeEventMappings(possibleEventHandlers) {
+  return Object.keys(possibleEventHandlers).filter(function (reactEventName) {
+    return !!reactEventName.match(/^on[A-Z]/) && isFunction(possibleEventHandlers[reactEventName]);
+  }).reduce(function (handlers, reactEventName) {
+    var aframeEventName = _case2.default.kebab(reactEventName.replace(/^on/, ''));
+    handlers[aframeEventName] = possibleEventHandlers[reactEventName];
+    return handlers;
+  }, {});
+}
+
+function attachAframeEventsToElement(el, eventMap) {
+  if (!eventMap) {
+    return;
+  }
+  Object.keys(eventMap).forEach(function (eventName) {
+    el.addEventListener(eventName, function (event) {
+      eventMap[eventName](event);
+    });
+  });
+}
+
 /**
  * <a-entity>
  */
 
-var Entity = exports.Entity = (function (_React$Component) {
+var Entity = exports.Entity = function (_React$Component) {
   _inherits(Entity, _React$Component);
 
   function Entity() {
-    var _Object$getPrototypeO;
+    var _ref;
 
     var _temp, _this, _ret;
 
@@ -48,15 +78,12 @@ var Entity = exports.Entity = (function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Entity)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.attachEvents = function (el) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Entity.__proto__ || Object.getPrototypeOf(Entity)).call.apply(_ref, [this].concat(args))), _this), _this.attachEvents = function (el) {
       if (!el) {
         return;
       }
-      Object.keys(_this.props.events).forEach(function (eventName) {
-        el.addEventListener(eventName, function (event) {
-          _this.props.events[eventName](event);
-        });
-      });
+      attachAframeEventsToElement(el, _this.props.events);
+      attachAframeEventsToElement(el, getAframeEventMappings(_this.props));
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -75,11 +102,12 @@ var Entity = exports.Entity = (function (_React$Component) {
   }]);
 
   return Entity;
-})(_react2.default.Component);
+}(_react2.default.Component);
 
 /**
  * <a-scene>
  */
+
 
 Entity.propTypes = {
   children: _react2.default.PropTypes.any,
@@ -87,11 +115,11 @@ Entity.propTypes = {
   mixin: _react2.default.PropTypes.string
 };
 
-var Scene = exports.Scene = (function (_React$Component2) {
+var Scene = exports.Scene = function (_React$Component2) {
   _inherits(Scene, _React$Component2);
 
   function Scene() {
-    var _Object$getPrototypeO2;
+    var _ref2;
 
     var _temp2, _this2, _ret2;
 
@@ -101,15 +129,12 @@ var Scene = exports.Scene = (function (_React$Component2) {
       args[_key2] = arguments[_key2];
     }
 
-    return _ret2 = (_temp2 = (_this2 = _possibleConstructorReturn(this, (_Object$getPrototypeO2 = Object.getPrototypeOf(Scene)).call.apply(_Object$getPrototypeO2, [this].concat(args))), _this2), _this2.attachEvents = function (el) {
+    return _ret2 = (_temp2 = (_this2 = _possibleConstructorReturn(this, (_ref2 = Scene.__proto__ || Object.getPrototypeOf(Scene)).call.apply(_ref2, [this].concat(args))), _this2), _this2.attachEvents = function (el) {
       if (!el) {
         return;
       }
-      Object.keys(_this2.props.events).forEach(function (eventName) {
-        el.addEventListener(eventName, function (event) {
-          _this2.props.events[eventName](event);
-        });
-      });
+      attachAframeEventsToElement(el, _this2.props.events);
+      attachAframeEventsToElement(el, getAframeEventMappings(_this2.props));
     }, _temp2), _possibleConstructorReturn(_this2, _ret2);
   }
 
@@ -125,13 +150,14 @@ var Scene = exports.Scene = (function (_React$Component2) {
   }]);
 
   return Scene;
-})(_react2.default.Component);
+}(_react2.default.Component);
 
 /**
  * Serialize React props to A-Frame components.
  *
  * {primitive: box; width: 10} to 'primitive: box; width: 10'
  */
+
 
 Scene.propTypes = {
   events: _react2.default.PropTypes.object
