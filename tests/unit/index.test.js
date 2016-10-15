@@ -1,5 +1,6 @@
 import assert from 'assert';
 import {serializeComponents} from '../../src/index.js';
+import {getAframeEventMappings} from '../../src/event-utils.js';
 
 global.AFRAME = {
   components: {
@@ -54,5 +55,33 @@ describe('serializeComponents', () => {
   it('excludes mixin', () => {
     var output = serializeComponents({mixin: 'red cube'});
     assert.ok(!('mixin' in output));
+  });
+});
+
+describe('getAframeEventMappings', () => {
+  it('converts TitleCase to kebab-case', () => {
+    var output = getAframeEventMappings({onFooBar: () => {}});
+    assert.ok('foo-bar' in output);
+  });
+
+  it('maintains the correct function', () => {
+    var func = () => {};
+    var output = getAframeEventMappings({onFooBar: func});
+    assert.ok(output['foo-bar'] === func);
+  });
+
+  it('excludes properties not beginning with "on[A-Z]"', () => {
+    var output = getAframeEventMappings({FooBar: () => {}});
+    assert.ok(!('foo-bar' in output));
+  });
+
+  it('excludes properties that are not functions', () => {
+    var output = getAframeEventMappings({onFooBar: true});
+    assert.ok(!('foo-bar' in output));
+  });
+
+  it('avoids double dashes', () => {
+    var output = getAframeEventMappings({'onFoo-Bar': () => {}});
+    assert.ok('foo-bar' in output);
   });
 });
