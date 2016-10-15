@@ -172,3 +172,13 @@ To register an event handler, use the `events` prop:
 ```html
 <Entity events={{click: () => { console.log('Clicked!'); }}}/>
 ```
+
+Or use the React-style syntactic sugar, which will infer the event name to
+register:
+
+```html
+<Entity
+  onClick={() => { console.log('click event'); }}
+  onChildAttached={() => { console.log('child-attached event'); }}
+  onComponentinitialized={() => { console.log('componentinitialized event'); }}/>
+```

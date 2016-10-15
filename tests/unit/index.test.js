@@ -1,6 +1,6 @@
 import assert from 'assert';
 import {serializeComponents} from '../../src/index.js';
-import {getAframeEventMappings} from '../../src/event-utils.js';
+import {getEventMappings} from '../../src/eventUtils.js';
 
 global.AFRAME = {
   components: {
@@ -58,30 +58,35 @@ describe('serializeComponents', () => {
   });
 });
 
-describe('getAframeEventMappings', () => {
+describe('getEventMappings', () => {
   it('converts TitleCase to kebab-case', () => {
-    var output = getAframeEventMappings({onFooBar: () => {}});
+    var output = getEventMappings({onFooBar: () => {}});
     assert.ok('foo-bar' in output);
   });
 
   it('maintains the correct function', () => {
     var func = () => {};
-    var output = getAframeEventMappings({onFooBar: func});
+    var output = getEventMappings({onFooBar: func});
     assert.ok(output['foo-bar'] === func);
   });
 
   it('excludes properties not beginning with "on[A-Z]"', () => {
-    var output = getAframeEventMappings({FooBar: () => {}});
+    var output = getEventMappings({FooBar: () => {}});
     assert.ok(!('foo-bar' in output));
   });
 
   it('excludes properties that are not functions', () => {
-    var output = getAframeEventMappings({onFooBar: true});
+    var output = getEventMappings({onFooBar: true});
     assert.ok(!('foo-bar' in output));
   });
 
   it('avoids double dashes', () => {
-    var output = getAframeEventMappings({'onFoo-Bar': () => {}});
+    var output = getEventMappings({'onFoo-Bar': () => {}});
     assert.ok('foo-bar' in output);
+  });
+
+  it('does not add dash if no case', () => {
+    var output = getEventMappings({'onComponentinitialized': () => {}});
+    assert.ok('componentinitialized' in output);
   });
 });

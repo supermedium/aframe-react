@@ -1,18 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styleParser from 'style-attr';
-import {getAframeEventMappings} from './event-utils';
-
-function attachEventsToElement(el, eventMap) {
-  if (!eventMap) {
-    return;
-  }
-  Object.keys(eventMap).forEach(eventName => {
-    el.addEventListener(eventName, event => {
-      eventMap[eventName](event);
-    });
-  });
-}
+import {getEventMappings} from './eventUtils.js';
 
 /**
  * <a-entity>
@@ -29,7 +18,7 @@ export class Entity extends React.Component {
     attachEventsToElement(el, Object.assign(
       {},
       this.props.events,
-      getAframeEventMappings(this.props)
+      getEventMappings(this.props)
     ));
   };
 
@@ -59,7 +48,7 @@ export class Scene extends React.Component {
     attachEventsToElement(el, Object.assign(
       {},
       this.props.events,
-      getAframeEventMappings(this.props)
+      getEventMappings(this.props)
     ));
   };
 
@@ -115,3 +104,15 @@ export function serializeComponents (props) {
   });
   return serialProps;
 };
+
+/**
+ * Register event handlers to ref.
+ */
+function attachEventsToElement(el, eventMap) {
+  if (!eventMap) { return; }
+  Object.keys(eventMap).forEach(eventName => {
+    el.addEventListener(eventName, event => {
+      eventMap[eventName](event);
+    });
+  });
+}

@@ -11,7 +11,7 @@ function titleToKebabCase(str) {
  * @param {object} possibleEventHandlers - React props object.
  * @returns {object} Events to register.
  */
-export function getAframeEventMappings(possibleEventHandlers) {
+export function getEventMappings(possibleEventHandlers) {
   return Object.keys(possibleEventHandlers)
     .filter(reactEventName => (
       !!reactEventName.match(/^on[A-Z]/))
