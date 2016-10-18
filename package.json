@@ -1,8 +1,8 @@
 {
   "name": "aframe-react",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "description": "Build virtual reality experiences with A-Frame and React.",
-  "main": "dist/index.js",
+  "main": "dist/aframe-react.js",
   "scripts": {
     "build": "webpack src/index.js -o dist/",
     "prepublish": "npm run build",
