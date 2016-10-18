@@ -23,11 +23,16 @@ export class Entity extends React.Component {
   };
 
   render() {
-    const mixinProp = this.props.mixin ? {mixin: this.props.mixin} : {}
+    // Allow through normal attributes..
+    const otherProps = {};
+    ['className', 'id', 'mixin'].forEach(propName => {
+      if (this.props[propName]) { otherProps[propName] = this.props[propName]; }
+    });
+
     return (
       <a-entity
         ref={this.attachEvents}
-        {...mixinProp}
+        {...otherProps}
         {...serializeComponents(this.props)}>
         {this.props.children}
       </a-entity>
@@ -53,8 +58,17 @@ export class Scene extends React.Component {
   };
 
   render() {
+    // Allow through normal attributes..
+    const otherProps = {};
+    ['className', 'id', 'mixin'].forEach(propName => {
+      if (this.props[propName]) { otherProps[propName] = this.props[propName]; }
+    });
+
     return (
-      <a-scene ref={this.attachEvents} {...serializeComponents(this.props)}>
+      <a-scene
+        ref={this.attachEvents}
+        {...otherProps}
+        {...serializeComponents(this.props)}>
         {this.props.children}
       </a-scene>
     );
@@ -71,7 +85,10 @@ export function serializeComponents (props) {
 
   let serialProps = {};
   Object.keys(props).forEach(component => {
-    if (['children', 'mixin'].indexOf(component) !== -1) { return; }
+    // Allow these.
+    if (['class', 'children', 'className', 'id', 'mixin'].indexOf(component) !== -1) {
+      return;
+    }
 
     if (props[component].constructor === Function) { return; }
 
@@ -80,7 +97,7 @@ export function serializeComponents (props) {
     if (ind === -1) { return; }
 
     if (props[component].constructor === Array) {
-      //Stringify components passed as array.
+      // Stringify components passed as array.
       serialProps[component] = props[component].join(' ');
     } else if (props[component].constructor === Object) {
       // Stringify components passed as object.

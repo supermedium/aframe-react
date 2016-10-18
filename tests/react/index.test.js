@@ -34,6 +34,27 @@ describe('Entity', () => {
     expect(tree.props.position).toBe('1 1 1');
     expect(tree.props.scale).toBe('2 2 2');
   });
+
+  it('renders <a-entity> with id', () => {
+    const tree = renderer.create(
+      <Entity id="box"/>
+    ).toJSON();
+    expect(tree.props.id).toBe('box');
+  });
+
+  it('renders <a-entity> with className', () => {
+    const tree = renderer.create(
+      <Entity className="box"/>
+    ).toJSON();
+    expect(tree.props.className).toBe('box');
+  });
+
+  it('renders <a-entity> with mixin', () => {
+    const tree = renderer.create(
+      <Entity mixin="box"/>
+    ).toJSON();
+    expect(tree.props.mixin).toBe('box');
+  });
 });
 
 describe('Scene', () => {
