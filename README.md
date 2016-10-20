@@ -83,6 +83,23 @@ props to A-Frame components:
 <img width="320" alt="Fear of the Sky by Amnesty International UK" src="https://cloud.githubusercontent.com/assets/674727/19344336/a5830bbe-90ee-11e6-9f68-2c23a9be4e95.png">
 </a>
 
+### Best Practices
+
+For performance reasons, it is heavily recommended to let A-Frame handle the
+3D, VR, rendering, and behavior pieces, and let React only handle what it's
+good at: views and state binding.
+
+For instance, if you wanted to do an animation, do not try to tween a property
+in React land. This is slower due to creating another `requestAnimationFrame`,
+being at the whims of React batched updates, and also due to the overhead of
+passing a property from React to HTML. A-Frame already has a render loop and
+`requestAnimationFrame` set up, write an A-Frame component using the `tick`
+method to hook into the render loop.
+
+Try to use React sparingly in regards to the actual 3D and VR bits. React has a
+bit of overhead and some concerns with the batched updates since it was created
+with the 2D DOM in mind. Do use it for as a view layer and to manage state.
+
 ### Why A-Frame with React?
 
 React was built for large web apps to improve DOM performance. It wasn't meant
