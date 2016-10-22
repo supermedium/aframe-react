@@ -25,7 +25,7 @@ export class Entity extends React.Component {
   render() {
     // Allow through normal attributes..
     const otherProps = {};
-    ['className', 'id', 'mixin'].forEach(propName => {
+    ['id', 'mixin'].forEach(propName => {
       if (this.props[propName]) { otherProps[propName] = this.props[propName]; }
     });
 
@@ -60,7 +60,7 @@ export class Scene extends React.Component {
   render() {
     // Allow through normal attributes..
     const otherProps = {};
-    ['className', 'id', 'mixin'].forEach(propName => {
+    ['id', 'mixin'].forEach(propName => {
       if (this.props[propName]) { otherProps[propName] = this.props[propName]; }
     });
 
@@ -86,7 +86,14 @@ export function serializeComponents (props) {
   let serialProps = {};
   Object.keys(props).forEach(component => {
     // Allow these.
-    if (['class', 'children', 'className', 'id', 'mixin'].indexOf(component) !== -1) {
+    if (['class', 'children', 'id', 'mixin'].indexOf(component) !== -1) {
+      return;
+    }
+
+    // className to class.
+    if (component === 'className') {
+      serialProps.class = props[component];
+      serialProps.className = props[component];
       return;
     }
 

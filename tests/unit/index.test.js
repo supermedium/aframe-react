@@ -56,6 +56,11 @@ describe('serializeComponents', () => {
     var output = serializeComponents({mixin: 'red cube'});
     assert.ok(!('mixin' in output));
   });
+
+  it('converts className to class', () => {
+    var output = serializeComponents({className: 'my-cube'});
+    assert.ok(output.class, 'my-cube');
+  });
 });
 
 describe('getEventMappings', () => {

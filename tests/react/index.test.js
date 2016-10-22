@@ -46,6 +46,7 @@ describe('Entity', () => {
     const tree = renderer.create(
       <Entity className="box"/>
     ).toJSON();
+    expect(tree.props.class).toBe('box');
     expect(tree.props.className).toBe('box');
   });
 
