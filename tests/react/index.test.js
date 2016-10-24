@@ -56,6 +56,13 @@ describe('Entity', () => {
     ).toJSON();
     expect(tree.props.mixin).toBe('box');
   });
+
+  it('renders custom entity name', () => {
+    const tree = renderer.create(
+      <Entity entityName='a-sphere'/>
+    ).toJSON();
+    expect(tree.type).toBe('a-sphere');
+  });
 });
 
 describe('Scene', () => {
