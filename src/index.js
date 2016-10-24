@@ -11,11 +11,7 @@ export class Entity extends React.Component {
     children: React.PropTypes.any,
     events: React.PropTypes.object,
     mixin: React.PropTypes.string,
-    entityName: React.PropTypes.string
-  };
-
-  static defaultProps = {
-    entityName: 'a-entity'
+    primitve: React.PropTypes.string
   };
 
   attachEvents = el => {
@@ -35,9 +31,9 @@ export class Entity extends React.Component {
     });
 
     return React.createElement(
-      this.props.entityName,
+      this.props.primitive || 'a-entity',
       Object.assign(
-        { ref: this.attachEvents },
+        {ref: this.attachEvents},
         otherProps,
         serializeComponents(this.props)
       ),

@@ -182,6 +182,15 @@ The `Entity` React component wraps `<a-entity>`.
 <Entity geometry={{primitive: 'box'}} material='color: red'/>
 ```
 
+#### Primitives
+
+To render A-Frame primitives with all of the `aframe-react` magic, pass the
+`primitive` prop with the name of the primitive:
+
+```html
+<Entity primitive='a-box' onClick={() => { console.log('Clicked!'); }}/>
+```
+
 #### `events`
 
 To register an event handler, use the `events` prop:

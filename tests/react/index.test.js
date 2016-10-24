@@ -57,11 +57,12 @@ describe('Entity', () => {
     expect(tree.props.mixin).toBe('box');
   });
 
-  it('renders custom entity name', () => {
+  it('renders primitive', () => {
     const tree = renderer.create(
-      <Entity entityName='a-sphere'/>
+      <Entity primitive='a-sphere' material={{color: 'red'}}/>
     ).toJSON();
     expect(tree.type).toBe('a-sphere');
+    expect(tree.props.material).toBe('color:red');
   });
 });
 
