@@ -47,7 +47,7 @@ for a basic example.
 ## Installation
 
 ```
-npm install --save aframe aframe-react react
+npm install --save aframe aframe-react react react-dom
 ```
 
 ## What `aframe-react` Does
