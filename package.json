@@ -1,6 +1,6 @@
 {
   "name": "aframe-react",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "description": "Build virtual reality experiences with A-Frame and React.",
   "main": "dist/index.js",
   "scripts": {
