@@ -11,7 +11,7 @@ export class Entity extends React.Component {
     children: React.PropTypes.any,
     events: React.PropTypes.object,
     mixin: React.PropTypes.string,
-    primitve: React.PropTypes.string
+    primitive: React.PropTypes.string
   };
 
   attachEvents = el => {
