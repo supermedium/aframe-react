@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styleParser from 'style-attr';
-import {getEventMappings} from './eventUtils.js';
+import {getEventMappings} from './eventUtils';
 
 /**
  * <a-entity>
@@ -83,10 +83,15 @@ export class Scene extends React.Component {
  * {primitive: box; width: 10} to 'primitive: box; width: 10'
  */
 export function serializeComponents (props) {
-  var components = AFRAME.components;
+  const components = AFRAME.components;
+  const serialProps = {};
 
-  let serialProps = {};
   Object.keys(props).forEach(component => {
+    const value = props[component];
+    const { constructor } = value;
+    const definition = components[component];
+    const schema = definition ? definition.schema : {};
+
     // Allow these.
     if (['class', 'children', 'id', 'mixin'].indexOf(component) !== -1) {
       return;
@@ -94,38 +99,34 @@ export function serializeComponents (props) {
 
     // className to class.
     if (component === 'className') {
-      serialProps.class = props[component];
-      serialProps.className = props[component];
+      serialProps.class = value;
+      serialProps.className = value;
       return;
     }
 
     if (props[component].constructor === Function) { return; }
 
-    var ind = Object.keys(components).indexOf(component.split('__')[0]);
-    // Discards props that aren't components.
-    if (ind === -1) { return; }
-
-    if (props[component].constructor === Array) {
+    if (constructor === Array) {
       // Stringify components passed as array.
-      serialProps[component] = props[component].join(' ');
-    } else if (props[component].constructor === Object) {
+      serialProps[component] = value.join(' ');
+    } else if (constructor === Object) {
       // Stringify components passed as object.
-      serialProps[component] = styleParser.stringify(props[component]);
-    } else if (props[component].constructor === Boolean) {
-      if (components[component].schema.type === 'boolean') {
+      serialProps[component] = styleParser.stringify(value);
+    } else if (constructor === Boolean) {
+      if (schema.type === 'boolean') {
         // If the component takes one property and it is Boolean
         // just passes in the prop.
-        serialProps[component] = props[component];
-      } else if (props[component] === true) {
+        serialProps[component] = value;
+      } else if (value === true) {
         // Otherwise if it is true, assumes component is blank.
         serialProps[component] = "";
       } else {
         // Otherwise if false lets aframe coerce.
-        serialProps[component] = props[component];
+        serialProps[component] = value;
       }
     } else {
       // Do nothing for components otherwise.
-      serialProps[component] = props[component];
+      serialProps[component] = value;
     }
   });
   return serialProps;
