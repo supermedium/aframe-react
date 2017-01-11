@@ -66,6 +66,11 @@ describe('serializeComponents', () => {
     var output = serializeComponents({position: null});
     assert.ok(output);
   });
+
+  it('allows antialias', () => {
+    var output = serializeComponents({antialias: 'true'});
+    assert.equal(output.antialias, 'true');
+  });
 });
 
 describe('getEventMappings', () => {
