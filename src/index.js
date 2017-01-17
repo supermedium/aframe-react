@@ -99,6 +99,8 @@ export function serializeComponents (props) {
       return;
     }
 
+    if (props[component] === undefined) { return; }
+
     if (props[component].constructor === Function) { return; }
 
     var ind = Object.keys(components).indexOf(component.split('__')[0]);
