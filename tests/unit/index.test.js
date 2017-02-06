@@ -36,12 +36,6 @@ describe('serializeComponents', () => {
     assert.equal(output.sound__baa, '');
   });
 
-  it('excludes props that are not components', () => {
-    var output = serializeComponents({rose: 'blah', geometry: {}});
-    assert.ok(!('rose' in output));
-    assert.ok('geometry' in output);
-  });
-
   it('excludes children prop', () => {
     var output = serializeComponents({children: 'whatever'});
     assert.ok(!('children' in output));
