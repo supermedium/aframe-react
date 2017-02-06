@@ -4,7 +4,7 @@
   "description": "Build virtual reality experiences with A-Frame and React.",
   "main": "dist/index.js",
   "scripts": {
-    "build": "babel --presets es2015,react,stage-0 src -d dist",
+    "build": "babel src -d dist",
     "prepublish": "npm run build",
     "test:ci": "mocha --compilers js:babel-register tests/unit",
     "test": "npm run test:ci -- --watch",
