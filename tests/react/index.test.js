@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 
 import {Entity, Scene} from '../../src/index.js';
 
-jest.mock('react/lib/ReactDefaultInjection');
+jest.mock('react-dom');
 
 global.AFRAME = {
   components: {
