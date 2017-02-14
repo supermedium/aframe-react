@@ -61,6 +61,11 @@ describe('serializeComponents', () => {
     var output = serializeComponents({className: 'my-cube'});
     assert.ok(output.class, 'my-cube');
   });
+
+  it('handles null prop values', () => {
+    var output = serializeComponents({position: null});
+    assert.ok(output);
+  });
 });
 
 describe('getEventMappings', () => {
