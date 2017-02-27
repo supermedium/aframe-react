@@ -5,16 +5,6 @@ import {Entity, Scene} from '../../src/index.js';
 
 jest.mock('react-dom');
 
-global.AFRAME = {
-  components: {
-    camera: {},
-    geometry: {},
-    material: {},
-    position: {},
-    scale: {}
-  }
-};
-
 describe('Entity', () => {
   it('renders <a-entity>', () => {
     const tree = renderer.create(

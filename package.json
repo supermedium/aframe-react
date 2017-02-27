@@ -17,6 +17,7 @@
     ]
   },
   "devDependencies": {
+    "aframe": ">= 0.5.0",
     "babel": "^6.3.13",
     "babel-cli": "^6.3.15",
     "babel-jest": "^16.0.0",
@@ -31,6 +32,7 @@
     "react-test-renderer": "^15.3.2"
   },
   "peerDependencies": {
+    "aframe": ">= 0.5.0",
     "react": "*",
     "react-dom": "*"
   },

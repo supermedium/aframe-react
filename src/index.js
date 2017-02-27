@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styleParser from 'style-attr';
 import {getEventMappings} from './eventUtils.js';
+import AFRAME from 'aframe';
 
 /**
  * <a-entity>
