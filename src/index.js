@@ -101,13 +101,15 @@ export function serializeComponents (props) {
 
     if (props[component] === undefined) { return; }
 
-    if (props[component].constructor === Function) { return; }
+    if (props[component] && props[component].constructor === Function) { return; }
 
     var ind = Object.keys(components).indexOf(component.split('__')[0]);
     // Discards props that aren't components.
     if (ind === -1) { return; }
 
-    if (props[component].constructor === Array) {
+    if (props[component] === null) {
+      serialProps[component] = null;
+    } else if (props[component].constructor === Array) {
       // Stringify components passed as array.
       serialProps[component] = props[component].join(' ');
     } else if (props[component].constructor === Object) {

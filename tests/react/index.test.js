@@ -57,6 +57,13 @@ describe('Entity', () => {
     expect(tree.props.mixin).toBe('box');
   });
 
+  it('renders <a-entity> with null component', () => {
+    const tree = renderer.create(
+      <Entity position={null} />
+    ).toJSON();
+    expect(tree.props.position).toBe(null);
+  });
+
   it('renders primitive', () => {
     const tree = renderer.create(
       <Entity primitive='a-sphere' material={{color: 'red'}}/>
