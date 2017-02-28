@@ -83,4 +83,15 @@ describe('Scene', () => {
     expect(tree.type).toBe('a-scene');
     expect(tree.children[0].type).toBe('a-entity');
   });
+
+  it('renders <a-scene antialias="true">', () => {
+    const tree = renderer.create(
+      <Scene antialias='true'>
+        <Entity/>
+      </Scene>
+    ).toJSON();
+    expect(tree.type).toBe('a-scene');
+    expect(tree.props.antialias).toBe('true');
+  });
+
 });
