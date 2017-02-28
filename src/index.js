@@ -62,7 +62,7 @@ export class Scene extends React.Component {
   render() {
     // Allow through normal attributes..
     const otherProps = {};
-    ['id', 'mixin'].forEach(propName => {
+    ['id', 'mixin', 'antialias'].forEach(propName => {
       if (this.props[propName]) { otherProps[propName] = this.props[propName]; }
     });
 
