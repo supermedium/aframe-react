@@ -86,7 +86,7 @@ Entity.propTypes = {
   children: _react2.default.PropTypes.any,
   events: _react2.default.PropTypes.object,
   mixin: _react2.default.PropTypes.string,
-  primitve: _react2.default.PropTypes.string
+  primitive: _react2.default.PropTypes.string
 };
 
 var Scene = exports.Scene = (function (_React$Component2) {
@@ -118,7 +118,7 @@ var Scene = exports.Scene = (function (_React$Component2) {
 
       // Allow through normal attributes..
       var otherProps = {};
-      ['id', 'mixin'].forEach(function (propName) {
+      ['id', 'mixin', 'antialias'].forEach(function (propName) {
         if (_this4.props[propName]) {
           otherProps[propName] = _this4.props[propName];
         }
@@ -163,7 +163,11 @@ function serializeComponents(props) {
       return;
     }
 
-    if (props[component].constructor === Function) {
+    if (props[component] === undefined) {
+      return;
+    }
+
+    if (props[component] && props[component].constructor === Function) {
       return;
     }
 
@@ -173,7 +177,9 @@ function serializeComponents(props) {
       return;
     }
 
-    if (props[component].constructor === Array) {
+    if (props[component] === null) {
+      serialProps[component] = null;
+    } else if (props[component].constructor === Array) {
       // Stringify components passed as array.
       serialProps[component] = props[component].join(' ');
     } else if (props[component].constructor === Object) {
