@@ -124,7 +124,7 @@ different objects.
 ```js
 AFRAME.registerComponent('rotate-on-tick', {
   tick: function (t, dt) {
-    this.object3D.rotation.x += .001;
+    this.el.object3D.rotation.x += .001;
   }
 });
 
