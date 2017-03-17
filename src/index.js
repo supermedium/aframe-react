@@ -103,6 +103,12 @@ export function serializeComponents (props) {
 
     if (props[component] && props[component].constructor === Function) { return; }
 
+    // Antialias is not a component, but is supported at startup
+    if (component === 'antialias') {
+      serialProps.antialias = props[component];
+      return;
+    }
+
     var ind = Object.keys(components).indexOf(component.split('__')[0]);
     // Discards props that aren't components.
     if (ind === -1) { return; }
@@ -132,6 +138,7 @@ export function serializeComponents (props) {
       serialProps[component] = props[component];
     }
   });
+
   return serialProps;
 };
 
