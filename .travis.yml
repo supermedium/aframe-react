@@ -13,7 +13,7 @@ env:
   global:
     - TEST_SUITE=unit
   matrix:
-    - CI_ACTION="npm run test:react:ci"
+    # - CI_ACTION="npm run test:react:ci"
     - CI_ACTION="npm run test:ci"
 
 branches:

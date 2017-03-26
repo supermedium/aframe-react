@@ -24,7 +24,7 @@
 
 ```js
 import 'aframe';
-import 'aframe-bmfont-text-component';
+import 'aframe-particle-system-component';
 import {Entity, Scene} from 'aframe-react';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -33,8 +33,11 @@ class VRScene extends React.Component {
   render () {
     return (
       <Scene>
-        <Entity geometry={{primitive: 'box'}} material="color: red" position={[0, 0, -5]}/>
-        <Entity bmfont-text={{text: 'HELLO WORLD'}} position="{[0, 1, -5]}"/>
+        <Entity geometry={{primitive: 'box'}} material={{color: 'red'}} position={{x: 0, y: 0, z: -5}}/>
+        <Entity particle-system={{preset: 'snow'}}/>
+        <Entity light={{type: 'point'}}/>
+        <Entity gltf-model={{src: 'virtualcity.gltf'}}/>
+        <Entity text={{value: 'Hello, WebVR!'}}>
       </Scene>
     );
   }
@@ -57,24 +60,28 @@ experiences. Since A-Frame is built on top of the DOM, React is able to sit
 cleanly on top of A-Frame.
 
 If you are not familiar with the specifics of A-Frame, A-Frame is an
-[entity-component-system (ECS) framework on
-HTML](https://aframe.io/docs/0.3.0/core/). ECS is a pattern used in game
-development that favors composability over inheritance, which is more naturally
-suited to 3D scenes where objects are built of complex appearance, behavior,
-and functionality.
+[entity-component-system (ECS) framework on HTML](https://aframe.io/docs/). ECS
+is a pattern used in game development that favors composability over
+inheritance, which is more naturally suited to 3D scenes where objects are
+built of complex appearance, behavior, and functionality.
 
 In A-Frame, HTML attributes map to *components* which are composable modules
 that are plugged into **<a-entity>**s to attach appearance, behavior, and
 functionality. `aframe-react` is a very thin layer on top of A-Frame to bridge
-with React. It provides an `<Entity/>` React component that serializes React
-props to A-Frame components:
+with React. `aframe-react` takes React updates, bypasses the DOM, and directly
+modifies the underlying A-Frame entities.
 
 ```js
-// A-Frame + React
-<Entity geometry={{primitive: 'box', width: 5}}/>
+// aframe-react's <Entity/> React Component
+<Entity geometry={{primitive: 'box', width: 5}} position="0 0 -5"/>
 
-// to A-Frame.
-<a-entity geometry="primitive: box; width: 5"></a-entity>
+// renders
+<a-entity>
+
+// and then applies the data directly to the underlying 3D scene graph, bypassing the DOM.
+// A-Frame's `.setAttribute`s more or less directly modify the underlying 3D objects.
+<a-entity>.setAttribute('geometry', {primitive: 'box', width: 5});
+<a-entity>.setAttribute('position', '0 0 -5');
 ```
 
 ### Built with `aframe-react`
@@ -85,9 +92,9 @@ props to A-Frame components:
 
 ### Best Practices
 
-For performance reasons, it is heavily recommended to let A-Frame handle the
-3D, VR, rendering, and behavior pieces, and let React only handle what it's
-good at: views and state binding.
+aframe-react lets A-Frame and three.js handle the heavy lifting 3D, VR,
+rendering, and behavior pieces. React is delegated to what it was primarily
+meant for: views and state binding.
 
 For instance, if you wanted to do an animation, do not try to tween a property
 in React land. This is slower due to creating another `requestAnimationFrame`,
@@ -161,12 +168,14 @@ as a result. A-Frame provides a proper bridge.
 
 ### API
 
-`aframe-react` ships with `Scene` and `Entity` React components, which are all
-we really need.
+`aframe-react` has a thin API of just two React Components: `<Entity/>` and
+`<Scene/>`.
 
 #### \<Scene {...components}/>
 
-The `Scene` React component wraps `<a-scene>`:
+The `Scene` React component renders `<a-scene>`. Under the hood, `<Scene/>` is
+the exact same React Component as `<Entity/>`, except it renders `<a-scene>` as
+the DOM element.
 
 ```html
 <Scene>
@@ -176,35 +185,42 @@ The `Scene` React component wraps `<a-scene>`:
 
 #### \<Entity {...components}/>
 
-The `Entity` React component wraps `<a-entity>`.
+The `Entity` React component renders `<a-entity>`. Then we attach A-Frame
+components as props. A-Frame component values can be passed either as objects
+or strings. Either way, a direct `.setAttribute()` will be called on the
+entity, bypassing DOM serialization for good performance.
 
 ```html
 <Entity geometry={{primitive: 'box'}} material='color: red'/>
 ```
 
-#### Primitives
+#### `primitive`
 
-To render A-Frame primitives with all of the `aframe-react` magic, pass the
-`primitive` prop with the name of the primitive:
+To use A-Frame [primitives](https://aframe.io/docs/0.5.0/primitives/), provide
+the `primitive` prop with the primitive's element name (e.g., `a-sphere):
 
 ```html
-<Entity primitive='a-box' onClick={() => { console.log('Clicked!'); }}/>
+<Entity primitive='a-box' color="red" position="0 0 -5"/>
+<Entity primitive='a-sphere' color="green" position="-2 0 -3"/>
+<Entity primitive='a-cylinder' color="blue" position="2 0 -3"/>
+<Entity primitive='a-sky' src="sechelt.jpg"/>
 ```
 
 #### `events`
 
-To register an event handler, use the `events` prop:
+To register an event handler, use the `events` prop. For example, using the
+synthetic `click` event provided by A-Frame's `cursor` component, or a
+`collided` event possibly provided by a physics component.
 
 ```html
-<Entity events={{click: () => { console.log('Clicked!'); }}}/>
+<Entity events={{
+  click: () => { console.log('Clicked!'); },
+  collided: { console.log('Collided!'); }
+}}/>
 ```
 
-Or use the React-style syntactic sugar, which will infer the event name to
-register:
-
-```html
-<Entity
-  onClick={() => { console.log('click event'); }}
-  onChildAttached={() => { console.log('child-attached event'); }}
-  onComponentinitialized={() => { console.log('componentinitialized event'); }}/>
-```
+`aframe-react` currently does not support the React-style `onX` event handlers
+(e.g., `onClick`). Unlike 2D web sites, VR sites are composed entirely of
+custom event names (which could have hyphens, be all lowercase, be camelCase,
+all uppercase, etc.,).  It is necessary to defining events through a single
+object to be explicit.

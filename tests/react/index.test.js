@@ -93,5 +93,4 @@ describe('Scene', () => {
     expect(tree.type).toBe('a-scene');
     expect(tree.props.antialias).toBe('true');
   });
-
 });

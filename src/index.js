@@ -1,10 +1,34 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import styleParser from 'style-attr';
-import {getEventMappings} from './eventUtils.js';
 
 /**
- * <a-entity>
+ * Call `.setAttribute()` on the `ref`, filtering out what's not relevant to A-Frame.
+ */
+function doSetAttribute (el, props, propName) {
+  if (propName === 'className') {
+    el.setAttribute('class', props.className);
+  } else if (props[propName].constructor === Function) {
+    return;
+  } else {
+    el.setAttribute(propName, props[propName]);
+  }
+}
+
+/**
+ * Batch `.setAttribute()`s.
+ */
+function doSetAttributes (el, props) {
+  // Set attributes.
+  const nonEntityPropNames = ['children', 'events', 'primitive'];
+  Object.keys(props).filter(
+    propName => propName.indexOf(nonEntityPropNames) === -1
+  ).forEach(propName => { doSetAttribute(el, props, propName); });
+}
+
+/**
+ * Render <a-entity>.
+ * Tell React to use A-Frame's .setAttribute() on the DOM element for all prop initializations
+ * and updates.
  */
 export class Entity extends React.Component {
   static propTypes = {
@@ -14,135 +38,116 @@ export class Entity extends React.Component {
     primitive: React.PropTypes.string
   };
 
-  attachEvents = el => {
-    if (!el) { return; }
-    attachEventsToElement(el, Object.assign(
-      {},
-      this.props.events,
-      getEventMappings(this.props)
-    ));
-  };
+  componentDidUpdate(prevProps, prevState) {
+    const el = this.el;
+    const props = this.props;
 
+    // Update events.
+    updateEventListeners(el, prevProps.events, props.events);
+
+    // Update entity.
+    doSetAttributes(el, props);
+  }
+
+  /**
+   * In response to initial `ref` callback.
+   */
+  updateDOM = el => {
+    const props = this.props;
+
+    // Store.
+    this.el = el;
+
+    // Attach events.
+    if (props.events) {
+      Object.keys(props.events).forEach(eventName => {
+        addEventListeners(el, eventName, props.events[eventName]);
+      });
+    }
+
+    // Update entity.
+    doSetAttributes(el, props);
+  }
+
+  /**
+   * Render A-Frame DOM with ref: https://facebook.github.io/react/docs/refs-and-the-dom.html
+   */
   render() {
-    // Allow through normal attributes..
-    const otherProps = {};
-    ['id', 'mixin'].forEach(propName => {
-      if (this.props[propName]) { otherProps[propName] = this.props[propName]; }
-    });
-
-    return React.createElement(
-      this.props.primitive || 'a-entity',
-      Object.assign(
-        {ref: this.attachEvents},
-        otherProps,
-        serializeComponents(this.props)
-      ),
-      this.props.children
-    );
+    const elementName = this.isScene ? 'a-scene' : (this.props.primitive || 'a-entity');
+    return React.createElement(elementName, {ref: this.updateDOM}, this.props.children);
   }
 }
 
 /**
- * <a-scene>
+ * Render <a-scene>.
+ * <a-scene> extends from <a-entity> in A-Frame so we reuse <Entity/>.
  */
-export class Scene extends React.Component {
-  static propTypes = {
-    events: React.PropTypes.object
-  };
-
-  attachEvents = el => {
-    if (!el) { return; }
-    attachEventsToElement(el, Object.assign(
-      {},
-      this.props.events,
-      getEventMappings(this.props)
-    ));
-  };
-
-  render() {
-    // Allow through normal attributes..
-    const otherProps = {};
-    ['id', 'mixin', 'antialias'].forEach(propName => {
-      if (this.props[propName]) { otherProps[propName] = this.props[propName]; }
-    });
-
-    return (
-      <a-scene
-        ref={this.attachEvents}
-        {...otherProps}
-        {...serializeComponents(this.props)}>
-        {this.props.children}
-      </a-scene>
-    );
+export class Scene extends Entity {
+  constructor(props) {
+    super(props);
+    this.isScene = true;
   }
 }
 
 /**
- * Serialize React props to A-Frame components.
+ * Handle diffing of previous and current event maps.
  *
- * {primitive: box; width: 10} to 'primitive: box; width: 10'
+ * @param {Element} el
+ * @param {Object} prevEvents - Previous event map.
+ * @param {Object} events - Current event map.
  */
-export function serializeComponents (props) {
-  var components = AFRAME.components;
+function updateEventListeners (el, prevEvents, events) {
+  if (!prevEvents || !events || prevEvents === events) { return; }
 
-  let serialProps = {};
-  Object.keys(props).forEach(component => {
-    // Allow these.
-    if (['class', 'children', 'id', 'mixin'].indexOf(component) !== -1) {
-      return;
+  Object.keys(events).forEach(eventName => {
+    // Didn't change.
+    if (prevEvents[eventName].toString() === events[eventName].toString()) { return; }
+
+    // If changed, remove old previous event listeners.
+    if (prevEvents[eventName]) {
+      removeEventListeners(el, eventName, prevEvents[eventName]);
     }
 
-    // className to class.
-    if (component === 'className') {
-      serialProps.class = props[component];
-      serialProps.className = props[component];
-      return;
-    }
-
-    if (props[component] === undefined) { return; }
-
-    if (props[component] && props[component].constructor === Function) { return; }
-
-    var ind = Object.keys(components).indexOf(component.split('__')[0]);
-    // Discards props that aren't components.
-    if (ind === -1) { return; }
-
-    if (props[component] === null) {
-      serialProps[component] = null;
-    } else if (props[component].constructor === Array) {
-      // Stringify components passed as array.
-      serialProps[component] = props[component].join(' ');
-    } else if (props[component].constructor === Object) {
-      // Stringify components passed as object.
-      serialProps[component] = styleParser.stringify(props[component]);
-    } else if (props[component].constructor === Boolean) {
-      if (components[component].schema.type === 'boolean') {
-        // If the component takes one property and it is Boolean
-        // just passes in the prop.
-        serialProps[component] = props[component];
-      } else if (props[component] === true) {
-        // Otherwise if it is true, assumes component is blank.
-        serialProps[component] = "";
-      } else {
-        // Otherwise if false lets aframe coerce.
-        serialProps[component] = props[component];
-      }
-    } else {
-      // Do nothing for components otherwise.
-      serialProps[component] = props[component];
-    }
+    // Add new event listeners.
+    addEventListeners(el, eventName, events[eventName]);
   });
-  return serialProps;
-};
+
+  // See if event handlers were removed.
+  Object.keys(prevEvents).forEach(eventName => {
+    if (!events[eventName]) { removeEventListeners(el, eventName, prevEvents[eventName]); }
+  });
+}
 
 /**
- * Register event handlers to ref.
+ * Register event handlers for an event name to ref.
+ *
+ * @param {Element} el - DOM element.
+ * @param {string} eventName
+ * @param {array|function} eventHandlers - Handler function or array of handler functions.
  */
-function attachEventsToElement(el, eventMap) {
-  if (!eventMap) { return; }
-  Object.keys(eventMap).forEach(eventName => {
-    el.addEventListener(eventName, event => {
-      eventMap[eventName](event);
-    });
-  });
+function addEventListeners (el, eventName, handlers) {
+  if (!handlers) { return; }
+
+  // Convert to array.
+  if (handlers.constructor === Function) { handlers = [handlers]; }
+
+  // Register.
+  handlers.forEach(handler => { el.addEventListener(eventName, handler); });
+}
+
+/**
+ * Unregister event handlers for an event name to ref.
+ *
+ * @param {Element} el - DOM element.
+ * @param {string} eventName
+ * @param {array|function} eventHandlers - Handler function or array of handler functions.
+ */
+function removeEventListeners (el, eventName, handlers) {
+  if (!handlers) { return; }
+
+  // Convert to array.
+  if (handlers.constructor === Function) { handlers = [handlers]; }
+
+  // Unregister.
+  handlers.forEach(handler => { el.removeEventListener(eventName, handler); });
 }

@@ -1,14 +1,11 @@
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Scene = exports.Entity = undefined;
-exports.serializeComponents = serializeComponents;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
 
@@ -17,12 +14,6 @@ var _react2 = _interopRequireDefault(_react);
 var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _styleAttr = require('style-attr');
-
-var _styleAttr2 = _interopRequireDefault(_styleAttr);
-
-var _eventUtils = require('./eventUtils.js');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33,14 +24,42 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * <a-entity>
+ * Call `.setAttribute()` on the `ref`, filtering out what's not relevant to A-Frame.
+ */
+function doSetAttribute(el, props, propName) {
+  if (propName === 'className') {
+    el.setAttribute('class', props.className);
+  } else if (props[propName].constructor === Function) {
+    return;
+  } else {
+    el.setAttribute(propName, props[propName]);
+  }
+}
+
+/**
+ * Batch `.setAttribute()`s.
+ */
+function doSetAttributes(el, props) {
+  // Set attributes.
+  var nonEntityPropNames = ['children', 'events', 'primitive'];
+  Object.keys(props).filter(function (propName) {
+    return propName.indexOf(nonEntityPropNames) === -1;
+  }).forEach(function (propName) {
+    doSetAttribute(el, props, propName);
+  });
+}
+
+/**
+ * Render <a-entity>.
+ * Tell React to use A-Frame's .setAttribute() on the DOM element for all prop initializations
+ * and updates.
  */
 
-var Entity = exports.Entity = (function (_React$Component) {
+var Entity = exports.Entity = function (_React$Component) {
   _inherits(Entity, _React$Component);
 
   function Entity() {
-    var _Object$getPrototypeO;
+    var _ref;
 
     var _temp, _this, _ret;
 
@@ -50,37 +69,62 @@ var Entity = exports.Entity = (function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Entity)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.attachEvents = function (el) {
-      if (!el) {
-        return;
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Entity.__proto__ || Object.getPrototypeOf(Entity)).call.apply(_ref, [this].concat(args))), _this), _this.updateDOM = function (el) {
+      var props = _this.props;
+
+      // Store.
+      _this.el = el;
+
+      // Attach events.
+      if (props.events) {
+        Object.keys(props.events).forEach(function (eventName) {
+          addEventListeners(el, eventName, props.events[eventName]);
+        });
       }
-      attachEventsToElement(el, Object.assign({}, _this.props.events, (0, _eventUtils.getEventMappings)(_this.props)));
+
+      // Update entity.
+      doSetAttributes(el, props);
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(Entity, [{
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps, prevState) {
+      var el = this.el;
+      var props = this.props;
+
+      // Update events.
+      updateEventListeners(el, prevProps.events, props.events);
+
+      // Update entity.
+      doSetAttributes(el, props);
+    }
+
+    /**
+     * In response to initial `ref` callback.
+     */
+
+  }, {
     key: 'render',
+
+
+    /**
+     * Render A-Frame DOM with ref: https://facebook.github.io/react/docs/refs-and-the-dom.html
+     */
     value: function render() {
-      var _this2 = this;
-
-      // Allow through normal attributes..
-      var otherProps = {};
-      ['id', 'mixin'].forEach(function (propName) {
-        if (_this2.props[propName]) {
-          otherProps[propName] = _this2.props[propName];
-        }
-      });
-
-      return _react2.default.createElement(this.props.primitive || 'a-entity', Object.assign({ ref: this.attachEvents }, otherProps, serializeComponents(this.props)), this.props.children);
+      var elementName = this.isScene ? 'a-scene' : this.props.primitive || 'a-entity';
+      return _react2.default.createElement(elementName, { ref: this.updateDOM }, this.props.children);
     }
   }]);
 
   return Entity;
-})(_react2.default.Component);
+}(_react2.default.Component);
 
 /**
- * <a-scene>
+ * Render <a-scene>.
+ * <a-scene> extends from <a-entity> in A-Frame so we reuse <Entity/>.
  */
+
 
 Entity.propTypes = {
   children: _react2.default.PropTypes.any,
@@ -89,132 +133,100 @@ Entity.propTypes = {
   primitive: _react2.default.PropTypes.string
 };
 
-var Scene = exports.Scene = (function (_React$Component2) {
-  _inherits(Scene, _React$Component2);
+var Scene = exports.Scene = function (_Entity) {
+  _inherits(Scene, _Entity);
 
-  function Scene() {
-    var _Object$getPrototypeO2;
-
-    var _temp2, _this3, _ret2;
-
+  function Scene(props) {
     _classCallCheck(this, Scene);
 
-    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      args[_key2] = arguments[_key2];
-    }
+    var _this2 = _possibleConstructorReturn(this, (Scene.__proto__ || Object.getPrototypeOf(Scene)).call(this, props));
 
-    return _ret2 = (_temp2 = (_this3 = _possibleConstructorReturn(this, (_Object$getPrototypeO2 = Object.getPrototypeOf(Scene)).call.apply(_Object$getPrototypeO2, [this].concat(args))), _this3), _this3.attachEvents = function (el) {
-      if (!el) {
-        return;
-      }
-      attachEventsToElement(el, Object.assign({}, _this3.props.events, (0, _eventUtils.getEventMappings)(_this3.props)));
-    }, _temp2), _possibleConstructorReturn(_this3, _ret2);
+    _this2.isScene = true;
+    return _this2;
   }
-
-  _createClass(Scene, [{
-    key: 'render',
-    value: function render() {
-      var _this4 = this;
-
-      // Allow through normal attributes..
-      var otherProps = {};
-      ['id', 'mixin', 'antialias'].forEach(function (propName) {
-        if (_this4.props[propName]) {
-          otherProps[propName] = _this4.props[propName];
-        }
-      });
-
-      return _react2.default.createElement(
-        'a-scene',
-        _extends({
-          ref: this.attachEvents
-        }, otherProps, serializeComponents(this.props)),
-        this.props.children
-      );
-    }
-  }]);
 
   return Scene;
-})(_react2.default.Component);
+}(Entity);
 
 /**
- * Serialize React props to A-Frame components.
+ * Handle diffing of previous and current event maps.
  *
- * {primitive: box; width: 10} to 'primitive: box; width: 10'
+ * @param {Element} el
+ * @param {Object} prevEvents - Previous event map.
+ * @param {Object} events - Current event map.
  */
 
-Scene.propTypes = {
-  events: _react2.default.PropTypes.object
-};
-function serializeComponents(props) {
-  var components = AFRAME.components;
 
-  var serialProps = {};
-  Object.keys(props).forEach(function (component) {
-    // Allow these.
-    if (['class', 'children', 'id', 'mixin'].indexOf(component) !== -1) {
-      return;
-    }
-
-    // className to class.
-    if (component === 'className') {
-      serialProps.class = props[component];
-      serialProps.className = props[component];
-      return;
-    }
-
-    if (props[component] === undefined) {
-      return;
-    }
-
-    if (props[component] && props[component].constructor === Function) {
-      return;
-    }
-
-    var ind = Object.keys(components).indexOf(component.split('__')[0]);
-    // Discards props that aren't components.
-    if (ind === -1) {
-      return;
-    }
-
-    if (props[component] === null) {
-      serialProps[component] = null;
-    } else if (props[component].constructor === Array) {
-      // Stringify components passed as array.
-      serialProps[component] = props[component].join(' ');
-    } else if (props[component].constructor === Object) {
-      // Stringify components passed as object.
-      serialProps[component] = _styleAttr2.default.stringify(props[component]);
-    } else if (props[component].constructor === Boolean) {
-      if (components[component].schema.type === 'boolean') {
-        // If the component takes one property and it is Boolean
-        // just passes in the prop.
-        serialProps[component] = props[component];
-      } else if (props[component] === true) {
-        // Otherwise if it is true, assumes component is blank.
-        serialProps[component] = "";
-      } else {
-        // Otherwise if false lets aframe coerce.
-        serialProps[component] = props[component];
-      }
-    } else {
-      // Do nothing for components otherwise.
-      serialProps[component] = props[component];
-    }
-  });
-  return serialProps;
-};
-
-/**
- * Register event handlers to ref.
- */
-function attachEventsToElement(el, eventMap) {
-  if (!eventMap) {
+function updateEventListeners(el, prevEvents, events) {
+  if (!prevEvents || !events || prevEvents === events) {
     return;
   }
-  Object.keys(eventMap).forEach(function (eventName) {
-    el.addEventListener(eventName, function (event) {
-      eventMap[eventName](event);
-    });
+
+  Object.keys(events).forEach(function (eventName) {
+    // Didn't change.
+    if (prevEvents[eventName].toString() === events[eventName].toString()) {
+      return;
+    }
+
+    // If changed, remove old previous event listeners.
+    if (prevEvents[eventName]) {
+      removeEventListeners(el, eventName, prevEvents[eventName]);
+    }
+
+    // Add new event listeners.
+    addEventListeners(el, eventName, events[eventName]);
+  });
+
+  // See if event handlers were removed.
+  Object.keys(prevEvents).forEach(function (eventName) {
+    if (!events[eventName]) {
+      removeEventListeners(el, eventName, prevEvents[eventName]);
+    }
+  });
+}
+
+/**
+ * Register event handlers for an event name to ref.
+ *
+ * @param {Element} el - DOM element.
+ * @param {string} eventName
+ * @param {array|function} eventHandlers - Handler function or array of handler functions.
+ */
+function addEventListeners(el, eventName, handlers) {
+  if (!handlers) {
+    return;
+  }
+
+  // Convert to array.
+  if (handlers.constructor === Function) {
+    handlers = [handlers];
+  }
+
+  // Register.
+  handlers.forEach(function (handler) {
+    el.addEventListener(eventName, handler);
+  });
+}
+
+/**
+ * Unregister event handlers for an event name to ref.
+ *
+ * @param {Element} el - DOM element.
+ * @param {string} eventName
+ * @param {array|function} eventHandlers - Handler function or array of handler functions.
+ */
+function removeEventListeners(el, eventName, handlers) {
+  if (!handlers) {
+    return;
+  }
+
+  // Convert to array.
+  if (handlers.constructor === Function) {
+    handlers = [handlers];
+  }
+
+  // Unregister.
+  handlers.forEach(function (handler) {
+    el.removeEventListener(eventName, handler);
   });
 }
