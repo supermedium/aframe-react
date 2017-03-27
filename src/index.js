@@ -21,7 +21,7 @@ function doSetAttributes (el, props) {
   // Set attributes.
   const nonEntityPropNames = ['children', 'events', 'primitive'];
   Object.keys(props).filter(
-    propName => propName.indexOf(nonEntityPropNames) === -1
+    propName => nonEntityPropNames.indexOf(propName) === -1
   ).forEach(propName => { doSetAttribute(el, props, propName); });
 }
 
