@@ -83,6 +83,38 @@ suite('aframe-react', () => {
     });
   });
 
+  test('updates deeply-nested entity with new props', done => {
+    ReactDOM.render(
+      <Scene>
+        <Entity>
+          <Entity>
+            <Entity id="el" geometry={{primitive: 'cylinder', height: 5}}/>
+          </Entity>
+        </Entity>
+      </Scene>,
+      div
+    );
+    div.querySelector('a-scene').addEventListener('loaded', () => {
+      ReactDOM.render(
+        <Scene>
+          <Entity>
+            <Entity>
+              <Entity id="el" geometry={{primitive: 'cylinder', height: 25, radius: 5}}/>
+            </Entity>
+          </Entity>
+        </Scene>,
+        div
+      );
+      setTimeout(() => {
+        const geometry = div.querySelector('#el').getAttribute('geometry');
+        assert.equal(geometry.primitive, 'cylinder');
+        assert.equal(geometry.height, 25);
+        assert.equal(geometry.radius, 5);
+        done();
+      });
+    });
+  });
+
   test('does not flush props to DOM', done => {
     ReactDOM.render(<Scene><Entity position={{x: 1, y: 2, z: 3}}/></Scene>, div);
     div.querySelector('a-scene').addEventListener('loaded', () => {
@@ -111,16 +143,16 @@ suite('<Entity primitive/>', () => {
   });
 
   test('handles overrides with updating component', done => {
-    ReactDOM.render(<Scene><Entity primitive='a-cylinder' geometry={{width: 5}}/></Scene>,
+    ReactDOM.render(<Scene><Entity primitive='a-cylinder' geometry={{height: 5}}/></Scene>,
                     div);
     const cylinderEl = div.querySelector('a-cylinder');
     div.querySelector('a-scene').addEventListener('loaded', () => {
       assert.equal(cylinderEl.getAttribute('geometry').primitive, 'cylinder');
-      assert.equal(cylinderEl.getAttribute('geometry').width, 5);
-      ReactDOM.render(<Scene><Entity primitive='a-cylinder' geometry={{width: 10}}/></Scene>,
+      assert.equal(cylinderEl.getAttribute('geometry').height, 5);
+      ReactDOM.render(<Scene><Entity primitive='a-cylinder' geometry={{height: 10}}/></Scene>,
                       div);
       assert.equal(cylinderEl.getAttribute('geometry').primitive, 'cylinder');
-      assert.equal(cylinderEl.getAttribute('geometry').width, 10);
+      assert.equal(cylinderEl.getAttribute('geometry').height, 10);
       done();
     });
   });
