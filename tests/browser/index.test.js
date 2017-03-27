@@ -115,6 +115,30 @@ suite('aframe-react', () => {
     });
   });
 
+  test('renders entity wrapped in React component', done => {
+    class Camera extends React.Component {
+      render() {
+        return (
+          <Entity id='cameraContainer'>
+            <Entity id='camera' camera>
+              <Entity id='cursor'
+                      cursor={{fuse: true, fuseTimeout: 3000}}
+                      raycaster={{objects: '.foo'}}
+                      geometry={{primitive: 'plane'}}/>
+            </Entity>
+          </Entity>
+        );
+      }
+    }
+    ReactDOM.render(<Scene><Camera/></Scene>, div);
+    div.querySelector('a-scene').addEventListener('loaded', () => {
+      assert.ok(div.querySelector('#camera').getAttribute('camera'), 'Has camera');
+      assert.ok(div.querySelector('#cursor').getAttribute('cursor'), 'Has cursor');
+      assert.ok(div.querySelector('#cursor').getAttribute('raycaster'), 'Has raycaster');
+      done();
+    });
+  });
+
   test('does not flush props to DOM', done => {
     ReactDOM.render(<Scene><Entity position={{x: 1, y: 2, z: 3}}/></Scene>, div);
     div.querySelector('a-scene').addEventListener('loaded', () => {
