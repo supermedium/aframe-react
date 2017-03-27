@@ -22,7 +22,7 @@ suite('aframe-react', () => {
   });
 
   test('renders nested entity', () => {
-    ReactDOM.render(<Scene><Entity><Entity/><Entity></Scene>, div);
+    ReactDOM.render(<Scene><Entity><Entity/></Entity></Scene>, div);
     assert.ok(div.querySelector('a-scene a-entity a-entity'));
   });
 
@@ -96,6 +96,15 @@ suite('<Entity primitive/>', () => {
     div.querySelector('a-scene').addEventListener('loaded', () => {
       assert.equal(box.getAttribute('color'), 'red');
       assert.equal(box.getAttribute('geometry').primitive, 'box');
+      done();
+    });
+  });
+
+  test('supports kebab-case', done => {
+    ReactDOM.render(<Scene><Entity primitive='a-box' segments-depth={5}/></Scene>, div);
+    div.querySelector('a-scene').addEventListener('loaded', () => {
+      assert.equal(div.querySelector('a-scene a-box').getAttribute('geometry').segmentsDepth,
+                   5);
       done();
     });
   });
