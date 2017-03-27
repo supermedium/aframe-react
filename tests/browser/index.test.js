@@ -139,6 +139,58 @@ suite('aframe-react', () => {
     });
   });
 
+  test('can attach new entities', done => {
+    ReactDOM.render(
+      <Scene>
+        <Entity id='sphere' geometry={{primitive: 'sphere'}} material={{color: 'blue'}}/>
+      </Scene>,
+      div
+    );
+    div.querySelector('a-scene').addEventListener('loaded', () => {
+      ReactDOM.render(
+        <Scene>
+          <Entity id='sphere' geometry={{primitive: 'sphere'}} material={{color: 'blue'}}>
+            <Entity id='torus' geometry={{primitive: 'torus'}} material={{color: 'orange'}}/>
+          </Entity>
+        </Scene>,
+        div
+      );
+      setTimeout(() => {
+        const sphere = div.querySelector('#sphere');
+        const torus = div.querySelector('#torus');
+        assert.equal(sphere.getAttribute('geometry').primitive, 'sphere');
+        assert.equal(sphere.getAttribute('material').color, 'blue');
+        assert.equal(torus.getAttribute('geometry').primitive, 'torus');
+        assert.equal(torus.getAttribute('material').color, 'orange');
+        done();
+      });
+    });
+  });
+
+  test('can detach entities', done => {
+    ReactDOM.render(
+      <Scene>
+        <Entity id='foo'>
+          <Entity id='bar'/>
+        </Entity>
+      </Scene>,
+      div
+    );
+    div.querySelector('a-scene').addEventListener('loaded', () => {
+      ReactDOM.render(
+        <Scene>
+          <Entity id='foo'/>
+        </Scene>,
+        div
+      );
+      setTimeout(() => {
+        assert.ok(div.querySelector('#foo'));
+        assert.notOk(div.querySelector('#bar'));
+        done();
+      });
+    });
+  });
+
   test('does not flush props to DOM', done => {
     ReactDOM.render(<Scene><Entity position={{x: 1, y: 2, z: 3}}/></Scene>, div);
     div.querySelector('a-scene').addEventListener('loaded', () => {
