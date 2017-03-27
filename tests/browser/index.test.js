@@ -61,6 +61,16 @@ suite('aframe-react', () => {
     });
   });
 
+  test('initializes geometry component to entity from object', done => {
+    ReactDOM.render(<Scene><Entity geometry={{primitive: 'sphere', radius: 2}}/></Scene>,
+                    div);
+    div.querySelector('a-scene').addEventListener('loaded', () => {
+      assert.shallowDeepEqual(div.querySelector('a-entity').getAttribute('geometry'),
+                              {primitive: 'sphere', radius: 2});
+      done();
+    });
+  });
+
   test('updates entity with new props', done => {
     ReactDOM.render(<Scene><Entity scale={{x: 1, y: 2, z: 3}}/></Scene>, div);
     div.querySelector('a-scene').addEventListener('loaded', () => {
@@ -96,6 +106,21 @@ suite('<Entity primitive/>', () => {
     div.querySelector('a-scene').addEventListener('loaded', () => {
       assert.equal(box.getAttribute('color'), 'red');
       assert.equal(box.getAttribute('geometry').primitive, 'box');
+      done();
+    });
+  });
+
+  test.skip('handles overrides with updating component', done => {
+    ReactDOM.render(<Scene><Entity primitive='a-cylinder' geometry={{width: 5}}/></Scene>,
+                    div);
+    const cylinderEl = div.querySelector('a-cylinder');
+    div.querySelector('a-scene').addEventListener('loaded', () => {
+      assert.equal(cylinderEl.getAttribute('geometry').primitive, 'cylinder');
+      assert.equal(cylinderEl.getAttribute('geometry').width, 5);
+      ReactDOM.render(<Scene><Entity primitive='a-cylinder' geometry={{width: 10}}/></Scene>,
+                      div);
+      assert.equal(cylinderEl.getAttribute('geometry').primitive, 'cylinder');
+      assert.equal(cylinderEl.getAttribute('geometry').width, 10);
       done();
     });
   });
@@ -192,6 +217,24 @@ suite('<Entity events/>', () => {
         assert.ok(barHandlerCalled);
         done();
       });
+    });
+  });
+});
+
+suite('<Scene/>', () => {
+  test('can take single-property boolean component as boolean', done => {
+    ReactDOM.render(<Scene embedded={true}/>, div);
+    div.querySelector('a-scene').addEventListener('loaded', () => {
+      assert.ok(div.querySelector('a-scene').getAttribute('embedded'));
+      done();
+    });
+  });
+
+  test('can take single-property boolean component as string', done => {
+    ReactDOM.render(<Scene embedded="true"/>, div);
+    div.querySelector('a-scene').addEventListener('loaded', () => {
+      assert.ok(div.querySelector('a-scene').getAttribute('embedded'));
+      done();
     });
   });
 });
