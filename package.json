@@ -16,6 +16,9 @@
       "tests/react"
     ]
   },
+  "peerDependencies": {
+    "aframe": "*"
+  },
   "devDependencies": {
     "aframe": "^0.5.0",
     "babel": "^6.3.13",
