@@ -3,17 +3,27 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Entity, Scene} from '../../src/index.js';
 
+const div = document.createElement('div');
+document.body.appendChild(div);
+
+setup(function () {
+  this.sinon = sinon.sandbox.create();
+});
+
+teardown(function () {
+  while (div.firstChild) { div.removeChild(div.firstChild); }
+  this.sinon.restore();
+});
+
 suite('aframe-react', () => {
-  const div = document.createElement('div');
-  document.body.appendChild(div);
-
-  teardown(function () {
-    while (div.firstChild) { div.removeChild(div.firstChild); }
-  });
-
   test('renders scene and entity', () => {
     ReactDOM.render(<Scene><Entity/></Scene>, div);
     assert.ok(div.querySelector('a-scene a-entity'));
+  });
+
+  test('renders nested entity', () => {
+    ReactDOM.render(<Scene><Entity><Entity/><Entity></Scene>, div);
+    assert.ok(div.querySelector('a-scene a-entity a-entity'));
   });
 
   test('sets id', () => {
@@ -51,29 +61,14 @@ suite('aframe-react', () => {
     });
   });
 
-  test('handles entity update', done => {
-    class TestScene extends React.Component {
-      constructor(props) {
-        super(props);
-        this.state = {position: {x: 1, y: 2, z: 3}};
-
-        document.addEventListener('changestate', () => {
-          this.setState({position: {x: 2, y: 3, z: 4}});
-        });
-      }
-
-      render() {
-        return (
-          <Scene><Entity position={this.state.position}/></Scene>
-        );
-      }
-    }
-
-    ReactDOM.render(<TestScene/>, div);
+  test('updates entity with new props', done => {
+    ReactDOM.render(<Scene><Entity scale={{x: 1, y: 2, z: 3}}/></Scene>, div);
     div.querySelector('a-scene').addEventListener('loaded', () => {
-      assert.shallowDeepEqual(div.querySelector('a-entity').getAttribute('position'),
-                              {x: 1, y: 2, z: 3});
-      // TODO: Emit.
+      const el = div.querySelector('a-entity');
+      assert.shallowDeepEqual(el.getAttribute('scale'), {x: 1, y: 2, z: 3});
+      // Re-rendering with different props will update and not re-mount.
+      ReactDOM.render(<Scene><Entity scale={{x: 2, y: 3, z: 4}}/></Scene>, div);
+      assert.shallowDeepEqual(el.getAttribute('scale'), {x: 2, y: 3, z: 4});
       done();
     });
   });
@@ -89,13 +84,6 @@ suite('aframe-react', () => {
 });
 
 suite('<Entity primitive/>', () => {
- const div = document.createElement('div');
-  document.body.appendChild(div);
-
-  teardown(function () {
-    while (div.firstChild) { div.removeChild(div.firstChild); }
-  });
-
   test('renders <a-box>', () => {
     ReactDOM.render(<Scene><Entity primitive='a-box'/></Scene>, div);
     assert.ok(div.querySelector('a-scene a-box'));
@@ -109,6 +97,92 @@ suite('<Entity primitive/>', () => {
       assert.equal(box.getAttribute('color'), 'red');
       assert.equal(box.getAttribute('geometry').primitive, 'box');
       done();
+    });
+  });
+});
+
+suite('<Entity events/>', () => {
+  test('adds event listener', function (done) {
+    let handlerCalled = false;
+    function handler () { handlerCalled = true }
+
+    ReactDOM.render(<Scene><Entity events={{foo: handler}}/></Scene>, div);
+    div.querySelector('a-scene').addEventListener('loaded', () => {
+      div.querySelector('a-entity').emit('foo');
+      setTimeout(() => {
+        assert.ok(handlerCalled);
+        done();
+      });
+    });
+  });
+
+  test('can add multiple event listeners', function (done) {
+    let fooHandlerCalled = false;
+    let barHandlerCalled = false;
+    function fooHandler () { fooHandlerCalled = true }
+    function barHandler () { barHandlerCalled = true }
+
+    ReactDOM.render(<Scene><Entity events={{foo: [fooHandler, barHandler]}}/></Scene>, div);
+    div.querySelector('a-scene').addEventListener('loaded', () => {
+      div.querySelector('a-entity').emit('foo');
+      setTimeout(() => {
+        assert.ok(fooHandlerCalled);
+        assert.ok(barHandlerCalled);
+        done();
+      });
+    });
+  });
+
+  test('can replace event listeners', function (done) {
+    let fooHandlerCalled = false;
+    let barHandlerCalled = false;
+    function fooHandler () { fooHandlerCalled = true }
+    function barHandler () { barHandlerCalled = true }
+
+    ReactDOM.render(<Scene><Entity events={{foo: fooHandler}}/></Scene>, div);
+    ReactDOM.render(<Scene><Entity events={{bar: barHandler}}/></Scene>, div);
+    div.querySelector('a-scene').addEventListener('loaded', () => {
+      div.querySelector('a-entity').emit('foo');
+      div.querySelector('a-entity').emit('bar');
+      setTimeout(() => {
+        assert.notOk(fooHandlerCalled);
+        assert.ok(barHandlerCalled);
+        done();
+      });
+    });
+  });
+
+  test('can remove event listener', function (done) {
+    let fooHandlerCalled = false;
+    function fooHandler () { fooHandlerCalled = true }
+
+    ReactDOM.render(<Scene><Entity events={{foo: fooHandler}}/></Scene>, div);
+    ReactDOM.render(<Scene><Entity events={{}}/></Scene>, div);
+    div.querySelector('a-scene').addEventListener('loaded', () => {
+      div.querySelector('a-entity').emit('foo');
+      setTimeout(() => {
+        assert.notOk(fooHandlerCalled);
+        done();
+      });
+    });
+  });
+
+  test('can attach extra event listener', function (done) {
+    let fooHandlerCalled = false;
+    let barHandlerCalled = false;
+    function fooHandler () { fooHandlerCalled = true }
+    function barHandler () { barHandlerCalled = true }
+
+    ReactDOM.render(<Scene><Entity events={{foo: fooHandler, bar: barHandler}}/></Scene>,
+                    div);
+    div.querySelector('a-scene').addEventListener('loaded', () => {
+      div.querySelector('a-entity').emit('foo');
+      div.querySelector('a-entity').emit('bar');
+      setTimeout(() => {
+        assert.ok(fooHandlerCalled);
+        assert.ok(barHandlerCalled);
+        done();
+      });
     });
   });
 });

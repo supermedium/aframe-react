@@ -106,7 +106,8 @@ function updateEventListeners (el, prevEvents, events) {
 
   Object.keys(events).forEach(eventName => {
     // Didn't change.
-    if (prevEvents[eventName].toString() === events[eventName].toString()) { return; }
+    if (events[eventName] && prevEvents[eventName] &&
+        prevEvents[eventName].toString() === events[eventName].toString()) { return; }
 
     // If changed, remove old previous event listeners.
     if (prevEvents[eventName]) {
