@@ -32,7 +32,14 @@ function doSetAttribute(el, props, propName) {
   } else if (props[propName].constructor === Function) {
     return;
   } else {
-    el.setAttribute(propName, props[propName]);
+    if (el.isNode) {
+      el.setAttribute(propName, props[propName]);
+    } else {
+      el.addEventListener('nodeready', function () {
+        console.log("WAITING");
+        el.setAttribute(propName, props[propName]);
+      });
+    }
   }
 }
 
@@ -117,7 +124,7 @@ var Entity = exports.Entity = function (_React$Component) {
     value: function render() {
       var props = this.props;
       var elementName = this.isScene ? 'a-scene' : props.primitive || 'a-entity';
-      return _react2.default.createElement(elementName, Object.assign({ ref: this.updateDOM }, props), props.children);
+      return _react2.default.createElement(elementName, Object.assign({ ref: this.updateDOM }), props.children);
     }
   }]);
 

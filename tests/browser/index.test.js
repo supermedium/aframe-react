@@ -110,7 +110,7 @@ suite('<Entity primitive/>', () => {
     });
   });
 
-  test.skip('handles overrides with updating component', done => {
+  test('handles overrides with updating component', done => {
     ReactDOM.render(<Scene><Entity primitive='a-cylinder' geometry={{width: 5}}/></Scene>,
                     div);
     const cylinderEl = div.querySelector('a-cylinder');
