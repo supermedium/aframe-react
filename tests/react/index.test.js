@@ -5,34 +5,12 @@ import {Entity, Scene} from '../../src/index.js';
 
 jest.mock('react-dom');
 
-global.AFRAME = {
-  components: {
-    camera: {},
-    geometry: {},
-    material: {},
-    position: {},
-    scale: {}
-  }
-};
-
 describe('Entity', () => {
   it('renders <a-entity>', () => {
     const tree = renderer.create(
       <Entity/>
     ).toJSON();
     expect(tree.type).toBe('a-entity');
-  });
-
-  it('renders <a-entity> with components', () => {
-    const tree = renderer.create(
-      <Entity camera="" geometry={{primitive: 'box', width: 5}} position="1 1 1"
-        scale={[2, 2, 2]}/>
-    ).toJSON();
-    expect(tree.type).toBe('a-entity');
-    expect(tree.props.camera).toBe('');
-    expect(tree.props.geometry).toBe('primitive:box;width:5');
-    expect(tree.props.position).toBe('1 1 1');
-    expect(tree.props.scale).toBe('2 2 2');
   });
 
   it('renders <a-entity> with id', () => {
@@ -46,7 +24,6 @@ describe('Entity', () => {
     const tree = renderer.create(
       <Entity className="box"/>
     ).toJSON();
-    expect(tree.props.class).toBe('box');
     expect(tree.props.className).toBe('box');
   });
 
@@ -69,7 +46,6 @@ describe('Entity', () => {
       <Entity primitive='a-sphere' material={{color: 'red'}}/>
     ).toJSON();
     expect(tree.type).toBe('a-sphere');
-    expect(tree.props.material).toBe('color:red');
   });
 });
 

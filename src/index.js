@@ -54,6 +54,7 @@ export class Entity extends React.Component {
    */
   updateDOM = el => {
     const props = this.props;
+    if (!el) { return; }
 
     // Store.
     this.el = el;
@@ -73,8 +74,12 @@ export class Entity extends React.Component {
    * Render A-Frame DOM with ref: https://facebook.github.io/react/docs/refs-and-the-dom.html
    */
   render() {
-    const elementName = this.isScene ? 'a-scene' : (this.props.primitive || 'a-entity');
-    return React.createElement(elementName, {ref: this.updateDOM}, this.props.children);
+    const props = this.props;
+    const elementName = this.isScene ? 'a-scene' : (props.primitive || 'a-entity');
+    return React.createElement(
+      elementName,
+      Object.assign({ref: this.updateDOM}, props),
+      props.children);
   }
 }
 

@@ -71,6 +71,9 @@ var Entity = exports.Entity = function (_React$Component) {
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Entity.__proto__ || Object.getPrototypeOf(Entity)).call.apply(_ref, [this].concat(args))), _this), _this.updateDOM = function (el) {
       var props = _this.props;
+      if (!el) {
+        return;
+      }
 
       // Store.
       _this.el = el;
@@ -112,8 +115,9 @@ var Entity = exports.Entity = function (_React$Component) {
      * Render A-Frame DOM with ref: https://facebook.github.io/react/docs/refs-and-the-dom.html
      */
     value: function render() {
-      var elementName = this.isScene ? 'a-scene' : this.props.primitive || 'a-entity';
-      return _react2.default.createElement(elementName, { ref: this.updateDOM }, this.props.children);
+      var props = this.props;
+      var elementName = this.isScene ? 'a-scene' : props.primitive || 'a-entity';
+      return _react2.default.createElement(elementName, Object.assign({ ref: this.updateDOM }, props), props.children);
     }
   }]);
 
