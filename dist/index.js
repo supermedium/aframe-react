@@ -26,7 +26,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Call `.setAttribute()` on the `ref`, filtering out what's not relevant to A-Frame.
+ * Call `.setAttribute()` on the `ref`, passing prop data directly to A-Frame.
  */
 function doSetAttribute(el, props, propName) {
   if (propName === 'className') {
@@ -39,7 +39,7 @@ function doSetAttribute(el, props, propName) {
 }
 
 /**
- * Batch `.setAttribute()`s.
+ * Batch `.setAttribute()`s, filtering out props not relevant to A-Frame.
  */
 function doSetAttributes(el, props) {
   // Set attributes.
@@ -71,7 +71,7 @@ var Entity = exports.Entity = function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Entity.__proto__ || Object.getPrototypeOf(Entity)).call.apply(_ref, [this].concat(args))), _this), _this.updateDOM = function (el) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Entity.__proto__ || Object.getPrototypeOf(Entity)).call.apply(_ref, [this].concat(args))), _this), _this.initEntity = function (el) {
       var props = _this.props;
       if (!el) {
         return;
@@ -92,8 +92,18 @@ var Entity = exports.Entity = function (_React$Component) {
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
+  /**
+   * In response to initial `ref` callback.
+   */
+
+
   _createClass(Entity, [{
     key: 'componentDidUpdate',
+
+
+    /**
+     * Handle updates after the initial render.
+     */
     value: function componentDidUpdate(prevProps, prevState) {
       var el = this.el;
       var props = this.props;
@@ -106,16 +116,11 @@ var Entity = exports.Entity = function (_React$Component) {
     }
 
     /**
-     * In response to initial `ref` callback.
+     * Render A-Frame DOM with ref: https://facebook.github.io/react/docs/refs-and-the-dom.html
      */
 
   }, {
     key: 'render',
-
-
-    /**
-     * Render A-Frame DOM with ref: https://facebook.github.io/react/docs/refs-and-the-dom.html
-     */
     value: function render() {
       var props = this.props;
       var elementName = this.isScene ? 'a-scene' : props.primitive || 'a-entity';
@@ -128,7 +133,7 @@ var Entity = exports.Entity = function (_React$Component) {
         }
       });
 
-      return _react2.default.createElement(elementName, _extends({ ref: this.updateDOM }, reactProps), props.children);
+      return _react2.default.createElement(elementName, _extends({ ref: this.initEntity }, reactProps), props.children);
     }
   }]);
 

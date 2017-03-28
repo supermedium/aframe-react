@@ -260,20 +260,15 @@ only be one `<Scene/>` per page:
 
 ## Best Practices
 
-aframe-react lets A-Frame and three.js handle the heavy lifting 3D, VR,
-rendering, and behavior pieces. React is delegated to what it was primarily
-meant for: views and state binding.
+Let A-Frame and three.js handle the heavy lifting of 3D rendering and behavior,
+and delegate React to what it was meant for: views, state management, and data
+binding.
 
-For instance, if you wanted to do an animation, do not try to tween a property
-in React land. This is slower due to creating another `requestAnimationFrame`,
-being at the whims of React batched updates, and also due to the overhead of
-passing a property from React to HTML. A-Frame already has a render loop and
-`requestAnimationFrame` set up, write an A-Frame component using the `tick`
-method to hook into the render loop.
-
-Try to use React sparingly in regards to the actual 3D and VR bits. React has a
-bit of overhead and some concerns with the batched updates since it was created
-with the 2D DOM in mind. Do use it for as a view layer and to manage state.
+For example, don't create `requestAnimationFrame`s to continuously throw React
+prop updates to A-Frame. Instead, create an A-Frame component with a tick
+handler such that everything is done in memory with little overhead. Do however
+use React to set up initial state and data binding that might configure that
+A-Frame component.
 
 ## Built with `aframe-react`
 
