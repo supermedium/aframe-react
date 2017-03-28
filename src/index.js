@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 /**
- * Call `.setAttribute()` on the `ref`, filtering out what's not relevant to A-Frame.
+ * Call `.setAttribute()` on the `ref`, passing prop data directly to A-Frame.
  */
 function doSetAttribute (el, props, propName) {
   if (propName === 'className') {
@@ -15,7 +15,7 @@ function doSetAttribute (el, props, propName) {
 }
 
 /**
- * Batch `.setAttribute()`s.
+ * Batch `.setAttribute()`s, filtering out props not relevant to A-Frame.
  */
 function doSetAttributes (el, props) {
   // Set attributes.
@@ -38,21 +38,10 @@ export class Entity extends React.Component {
     primitive: React.PropTypes.string
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    const el = this.el;
-    const props = this.props;
-
-    // Update events.
-    updateEventListeners(el, prevProps.events, props.events);
-
-    // Update entity.
-    doSetAttributes(el, props);
-  }
-
   /**
    * In response to initial `ref` callback.
    */
-  updateDOM = el => {
+  initEntity = el => {
     const props = this.props;
     if (!el) { return; }
 
@@ -65,6 +54,20 @@ export class Entity extends React.Component {
         addEventListeners(el, eventName, props.events[eventName]);
       });
     }
+
+    // Update entity.
+    doSetAttributes(el, props);
+  }
+
+  /**
+   * Handle updates after the initial render.
+   */
+  componentDidUpdate(prevProps, prevState) {
+    const el = this.el;
+    const props = this.props;
+
+    // Update events.
+    updateEventListeners(el, prevProps.events, props.events);
 
     // Update entity.
     doSetAttributes(el, props);
@@ -88,7 +91,7 @@ export class Entity extends React.Component {
 
     return React.createElement(
       elementName,
-      {ref: this.updateDOM, ...reactProps},
+      {ref: this.initEntity, ...reactProps},
       props.children);
   }
 }
