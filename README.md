@@ -176,36 +176,50 @@ as a result. A-Frame provides a proper bridge.
 
 ### API
 
-`aframe-react` has a thin API of just two React Components: `<Entity/>` and
+`aframe-react`'s API is very thin on top of A-Frame, less than 200 lines of
+source code. The API consists of just two React Components: `<Entity/>` and
 `<Scene/>`.
-
-#### \<Scene {...components}/>
-
-The `Scene` React component renders `<a-scene>`. Under the hood, `<Scene/>` is
-the exact same React Component as `<Entity/>`, except it renders `<a-scene>` as
-the DOM element.
-
-```html
-<Scene>
-  <Entity/>
-</Scene>
-```
 
 #### \<Entity {...components}/>
 
-The `Entity` React component renders `<a-entity>`. Then we attach A-Frame
-components as props. A-Frame component values can be passed either as objects
-or strings. Either way, a direct `.setAttribute()` will be called on the
-entity, bypassing DOM serialization for good performance.
+`<Entity/>` wraps
+[`<a-entity>`](https://aframe.io/docs/0.5.0/core/entity.html), the *entity*
+piece of the [entity-component-system
+pattern](https://aframe.io/docs/0.5.0/core/). Plug in [A-Frame
+components](https://aframe.io/docs/0.5.0/introduction/#entity-component-system)
+as React props to attach appearance, behavior, or functionality to the
+`<Entity/>`.
 
 ```html
-<Entity geometry={{primitive: 'box'}} material='color: red'/>
+<Scene>
+  <Entity
+    geometry={{primitive: 'box', width: 5}}
+    material={{color: red, roughness: 0.5, src: texture.png}}
+    scale={{x: 2, y: 2, z: 2}}
+    position={{x: 0, y: 0, z: -5}}/>
+</Scene>
+```
+
+[Community A-Frame components](https://aframe.io/registry/) can be imported and
+installed through npm:
+
+```
+import 'aframe-particle-system-component';
+import 'aframe-mountain-component';
+
+// ...
+
+<Scene>
+  <Entity mountain/>
+  <Entity particle-system={{preset: 'snow', particleCount: 5000}}/>
+</Scene>
 ```
 
 #### `primitive`
 
 To use A-Frame [primitives](https://aframe.io/docs/0.5.0/primitives/), provide
-the `primitive` prop with the primitive's element name (e.g., `a-sphere):
+the `primitive` prop with the primitive's element name (e.g., `a-sphere`).
+Mappings can be applied the same as in HTML through React props:
 
 ```html
 <Entity primitive='a-box' color="red" position="0 0 -5"/>
@@ -216,19 +230,50 @@ the `primitive` prop with the primitive's element name (e.g., `a-sphere):
 
 #### `events`
 
-To register an event handler, use the `events` prop. For example, using the
-synthetic `click` event provided by A-Frame's `cursor` component, or a
-`collided` event possibly provided by a physics component.
+To register event handlers, use the `events` prop. `events` takes a mapping of
+event names to event handler(s). Multiple event handlers can be provided for a
+single event name by providing an array of functions. Try not to pass in inline
+functions to not trigger unnecessary React renders. Pass in binded functions
+instead.
+
+For example, using the synthetic `click` event provided by A-Frame's `cursor`
+component, or a `collided` event possibly provided by a physics component.
 
 ```html
-<Entity events={{
-  click: () => { console.log('Clicked!'); },
-  collided: { console.log('Collided!'); }
+handleClick = () => {
+  console.log('Clicked!');
+}
+
+handleCollide = () => {
+  console.log('Collided!');
+}
+
+render() {
+  return (
+    <Scene>
+      <Entity events={{
+        click: this.handleClick
+        collided: [this.handleCollide]/>
+    </Scene>
+  );
 }}/>
 ```
 
-`aframe-react` currently does not support the React-style `onX` event handlers
-(e.g., `onClick`). Unlike 2D web sites, VR sites are composed entirely of
-custom event names (which could have hyphens, be all lowercase, be camelCase,
-all uppercase, etc.,).  It is necessary to defining events through a single
-object to be explicit.
+`aframe-react` does not support React-style `onXXX` event handlers (e.g.,
+`onClick`). Unlike 2D web pags, VR sites are composed entirely of custom
+synthetic event names (which could have hyphens, be all lowercase, be
+camelCase, all uppercase, camel case, etc.,). The possible event names are
+infinite. The `events` prop makes it explicit what the event names to handle
+are.
+
+#### \<Scene {...components}/>
+
+`<Scene/>` extends `<Entity/>` and renders `<a-scene>` instead of `<a-entity>`.
+Place all `<Entity/>`s as a child of the `<Scene/>` Component. There should
+only be one `<Scene/>` per page:
+
+```html
+<Scene>
+  <Entity/>
+</Scene>
+```
