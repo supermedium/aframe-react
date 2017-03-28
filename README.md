@@ -52,7 +52,7 @@ class VRScene extends React.Component {
         <Entity particle-system={{preset: 'snow'}}/>
         <Entity light={{type: 'point'}}/>
         <Entity gltf-model={{src: 'virtualcity.gltf'}}/>
-        <Entity text={{value: 'Hello, WebVR!'}}>
+        <Entity text={{value: 'Hello, WebVR!'}}/>
       </Scene>
     );
   }
