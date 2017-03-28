@@ -83,9 +83,19 @@ export class Entity extends React.Component {
   render() {
     const props = this.props;
     const elementName = this.isScene ? 'a-scene' : (props.primitive || 'a-entity');
+
+    // Let through props that are OK to render initially.
+    let reactProps = {};
+    Object.keys(props).forEach(propName => {
+      if (['className', 'id', 'mixin'].indexOf(propName) !== -1 ||
+          propName.indexOf('data-') === 0) {
+        reactProps[propName] = props[propName];
+      }
+    });
+
     return React.createElement(
       elementName,
-      Object.assign({ref: this.updateDOM}),
+      {ref: this.updateDOM, ...reactProps},
       props.children);
   }
 }

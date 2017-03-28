@@ -34,13 +34,6 @@ describe('Entity', () => {
     expect(tree.props.mixin).toBe('box');
   });
 
-  it('renders <a-entity> with null component', () => {
-    const tree = renderer.create(
-      <Entity position={null} />
-    ).toJSON();
-    expect(tree.props.position).toBe(null);
-  });
-
   it('renders primitive', () => {
     const tree = renderer.create(
       <Entity primitive='a-sphere' material={{color: 'red'}}/>
@@ -58,15 +51,5 @@ describe('Scene', () => {
     ).toJSON();
     expect(tree.type).toBe('a-scene');
     expect(tree.children[0].type).toBe('a-entity');
-  });
-
-  it('renders <a-scene antialias="true">', () => {
-    const tree = renderer.create(
-      <Scene antialias='true'>
-        <Entity/>
-      </Scene>
-    ).toJSON();
-    expect(tree.type).toBe('a-scene');
-    expect(tree.props.antialias).toBe('true');
   });
 });
