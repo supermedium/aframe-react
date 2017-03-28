@@ -181,7 +181,7 @@ components](https://aframe.io/docs/0.5.0/introduction/#entity-component-system)
 as React props to attach appearance, behavior, or functionality to the
 `<Entity/>`.
 
-```html
+```jsx
 <Scene>
   <Entity
     geometry={{primitive: 'box', width: 5}}
@@ -212,7 +212,7 @@ To use A-Frame [primitives](https://aframe.io/docs/0.5.0/primitives/), provide
 the `primitive` prop with the primitive's element name (e.g., `a-sphere`).
 Mappings can be applied the same as in HTML through React props:
 
-```html
+```jsx
 <Entity primitive='a-box' color="red" position="0 0 -5"/>
 <Entity primitive='a-sphere' color="green" position="-2 0 -3"/>
 <Entity primitive='a-cylinder' color="blue" position="2 0 -3"/>
@@ -230,7 +230,7 @@ instead.
 For example, using the synthetic `click` event provided by A-Frame's `cursor`
 component, or a `collided` event possibly provided by a physics component.
 
-```html
+```jsx
 handleClick = () => {
   console.log('Clicked!');
 }
@@ -263,7 +263,7 @@ are.
 Place all `<Entity/>`s as a child of the `<Scene/>` Component. There should
 only be one `<Scene/>` per page:
 
-```html
+```jsx
 <Scene>
   <Entity/>
 </Scene>
