@@ -61,23 +61,28 @@ ReactDOM.render(<VRScene/>, document.querySelector('#sceneContainer'));
 See [aframe-react-boilerplate](https://github.com/ngokevin/aframe-react-boilerplate)
 for a basic example.
 
-## What `aframe-react` Does
+## Introduction
+
+![A-Frame](https://cloud.githubusercontent.com/assets/674727/24384472/e833ccee-1318-11e7-81a5-61e782f5b472.png)
 
 [A-Frame](https://aframe.io) is a web framework for building virtual reality
-experiences. Since A-Frame is built on top of the DOM, React is able to sit
-cleanly on top of A-Frame.
+experiences. Since A-Frame is built on top of the DOM, web libraries such as
+React, Vue.js, Angular, Ember.js, d3.js are able to sit cleanly on top of
+A-Frame.
 
-If you are not familiar with the specifics of A-Frame, A-Frame is an
-[entity-component-system (ECS) framework on HTML](https://aframe.io/docs/). ECS
-is a pattern used in game development that favors composability over
-inheritance, which is more naturally suited to 3D scenes where objects are
-built of complex appearance, behavior, and functionality.
+A-Frame is an [entity-component-system (ECS) framework exposed through
+HTML](https://aframe.io/docs/). ECS is a pattern used in game development that
+favors composability over inheritance, which is more naturally suited to 3D
+scenes where objects are built of complex appearance, behavior, and
+functionality.
 
 In A-Frame, HTML attributes map to *components* which are composable modules
 that are plugged into **<a-entity>**s to attach appearance, behavior, and
 functionality. `aframe-react` is a very thin layer on top of A-Frame to bridge
-with React. `aframe-react` takes React updates, bypasses the DOM, and directly
-modifies the underlying A-Frame entities.
+with React. `aframe-react` passes React props to directly A-Frame using refs
+and `.setAttribute()`, bypassing the DOM. This works since A-Frame's
+`.setAttribute()`s are able to take non-string data such as objects, arrays, or
+elements and synchronously modify underlying 3D scene graph.
 
 ```js
 // aframe-react's <Entity/> React Component
@@ -87,35 +92,11 @@ modifies the underlying A-Frame entities.
 <a-entity>
 
 // and then applies the data directly to the underlying 3D scene graph, bypassing the DOM.
-// A-Frame's `.setAttribute`s more or less directly modify the underlying 3D objects.
 <a-entity>.setAttribute('geometry', {primitive: 'box', width: 5});
 <a-entity>.setAttribute('position', '0 0 -5');
 ```
 
-### Built with `aframe-react`
-
-<a href="http://360syria.com">
-<img width="320" alt="Fear of the Sky by Amnesty International UK" src="https://cloud.githubusercontent.com/assets/674727/19344336/a5830bbe-90ee-11e6-9f68-2c23a9be4e95.png">
-</a>
-
-### Best Practices
-
-aframe-react lets A-Frame and three.js handle the heavy lifting 3D, VR,
-rendering, and behavior pieces. React is delegated to what it was primarily
-meant for: views and state binding.
-
-For instance, if you wanted to do an animation, do not try to tween a property
-in React land. This is slower due to creating another `requestAnimationFrame`,
-being at the whims of React batched updates, and also due to the overhead of
-passing a property from React to HTML. A-Frame already has a render loop and
-`requestAnimationFrame` set up, write an A-Frame component using the `tick`
-method to hook into the render loop.
-
-Try to use React sparingly in regards to the actual 3D and VR bits. React has a
-bit of overhead and some concerns with the batched updates since it was created
-with the 2D DOM in mind. Do use it for as a view layer and to manage state.
-
-### Why A-Frame with React?
+## Why A-Frame with React?
 
 React was built for large web apps to improve DOM performance. It wasn't meant
 for development of 3D scenes by itself. By attempting to wrap React directly
@@ -174,7 +155,7 @@ binding to A-Frame without using `react-redux`.
 `tl;dr`: Wrapping React directly around three.js/WebGL cuts corners and suffers
 as a result. A-Frame provides a proper bridge.
 
-### API
+## API
 
 `aframe-react`'s API is very thin on top of A-Frame, less than 200 lines of
 source code. The API consists of just two React Components: `<Entity/>` and
@@ -277,3 +258,26 @@ only be one `<Scene/>` per page:
   <Entity/>
 </Scene>
 ```
+
+## Best Practices
+
+aframe-react lets A-Frame and three.js handle the heavy lifting 3D, VR,
+rendering, and behavior pieces. React is delegated to what it was primarily
+meant for: views and state binding.
+
+For instance, if you wanted to do an animation, do not try to tween a property
+in React land. This is slower due to creating another `requestAnimationFrame`,
+being at the whims of React batched updates, and also due to the overhead of
+passing a property from React to HTML. A-Frame already has a render loop and
+`requestAnimationFrame` set up, write an A-Frame component using the `tick`
+method to hook into the render loop.
+
+Try to use React sparingly in regards to the actual 3D and VR bits. React has a
+bit of overhead and some concerns with the batched updates since it was created
+with the 2D DOM in mind. Do use it for as a view layer and to manage state.
+
+## Built with `aframe-react`
+
+<a href="http://360syria.com">
+<img width="320" alt="Fear of the Sky by Amnesty International UK" src="https://cloud.githubusercontent.com/assets/674727/19344336/a5830bbe-90ee-11e6-9f68-2c23a9be4e95.png">
+</a>
