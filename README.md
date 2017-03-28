@@ -68,6 +68,12 @@ for a basic example.
 
 ![A-Frame](https://cloud.githubusercontent.com/assets/674727/24384472/e833ccee-1318-11e7-81a5-61e782f5b472.png)
 
+I was a web developer who had been developing with React at Mozilla in
+production for several months and was an early adopter of Redux (since the day
+it was released). Intimate with the ecosystem and development patterns of
+React, I developed `aframe-react` in a few hours and released it on the same
+day as A-Frame.
+
 [A-Frame](https://aframe.io) is a web framework for building virtual reality
 experiences. Since A-Frame is built on top of the DOM, web libraries such as
 React, Vue.js, Angular, Ember.js, d3.js are able to sit cleanly on top of
@@ -99,10 +105,15 @@ elements and synchronously modify underlying 3D scene graph.
 <a-entity>.setAttribute('position', '0 0 -5');
 ```
 
+`aframe-react` provides the best of both worlds between A-Frame and React, the
+3D and VR-oriented entity-component architecture of A-Frame, and the view and
+state management ergonomics of React, without penalties of attempting to use
+React for a VR application.
+
 ## The Viability of React for VR
 
-**Without A-Frame and aframe-react, React would not be a viable library to use
-in VR applications.** The value proposition of React is limited to the 2D Web:
+Without A-Frame and `aframe-react`, React would not be a viable library to use
+in VR applications. The value proposition of React is limited to the 2D Web:
 
 - Improve rendering performance for 2D web pages by reducing calls to the
   browser's 2D layout engine via the virtual DOM.
