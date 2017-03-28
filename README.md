@@ -14,6 +14,9 @@
   <a href="http://travis-ci.org/ngokevin/aframe-react">
     <img src="https://secure.travis-ci.org/ngokevin/aframe-react.svg?branch=master" alt="Travis CI" />
   </a>
+  <a href="https://npmjs.com/package/aframe-react">
+    <img src="https://img.shields.io/npm/l/aframe-react.svg?style=flat-square" alt="License"></a>
+  </a>
 </div>
 
 <br/>
@@ -96,64 +99,60 @@ elements and synchronously modify underlying 3D scene graph.
 <a-entity>.setAttribute('position', '0 0 -5');
 ```
 
-## Why A-Frame with React?
+## The Viability of React for VR
 
-React was built for large web apps to improve DOM performance. It wasn't meant
-for development of 3D scenes by itself. By attempting to wrap React directly
-over three.js or WebGL, you run into a lot of performance issues.
+**Without A-Frame and aframe-react, React would not be a viable library to use
+in VR applications.** The value proposition of React is limited to the 2D Web:
 
-#### Hooks into the Render Loop
+- Improve rendering performance for 2D web pages by reducing calls to the
+  browser's 2D layout engine via the virtual DOM.
+- Provide an predictable application structure for large 2D web applications through
+  a structured nesting of React components, data binding, and one-way data flow.
 
-Without a framework focused around 3D and VR, there is **no structure to hook
-into the render loop**. React implementations generally just create a new
-`requestAnimationFrame` within the React components, which is very bad for
-performance. Because React only wants data to flow down with no child-to-parent
-communication, entities have a hard time communicating to the scene to hook new
-behaviors into the render loop.
+However, these propositions fall short in 3D and VR applications:
 
-A-Frame, however, provides a `tick` method for components to hook into the
-scene render loop, and these components can be attached to any entity. Here
-is an example of using A-Frame to provide these facilities across multiple
-React components. Note how we can write a component that can be applied to
-different objects.
+- In 3D and VR applications, including A-Frame, the 2D browser layout engine is
+  not touched. Thus React's reconciliation engine can become an unpredictable
+  performance liability for no benefit.
+- In 3D and VR applications, objects are not structured in a top-down hierarchy like
+  2D web applications. 3D objects can exist anywhere and interact with any other 3D object
+  in a many-to-many manner. But React's paradigm prescribes data flow from parent-to-child,
+  which makes it restrictive for 3D and VR applications.
 
-```js
-AFRAME.registerComponent('rotate-on-tick', {
-  tick: function (t, dt) {
-    this.el.object3D.rotation.x += .001;
-  }
-});
+Thinly wrapping React directly around a 3D library, say three.js, would not
+provide a useful abstraction. However, A-Frame and aframe-react gives meaning
+and purpose to React: **A-Frame provides an actual DOM for React to reconcile,
+diff, and bind to**.
 
-<Scene>
-  <Box rotate-on-tick/>  <!-- <Entity geometry="primitive: box" rotate-on-tick/> -->
-  <Sphere rotate-on-tick/> <!-- <Entity geometry="primitive: sphere" rotate-on-tick/> -->
-</Scene>
-```
+React also raises questions around performance; React is a very large library
+designed for a 60fps 2D Web, is it equipped to handle 90fps VR applications?
+90 prop updates per second per object through React's reconciliation engine
+most likely would not work.
 
-#### Provides a DOM
+aframe-react lets A-Frame handle the heavy lifting 3D and VR rendering and
+behavior. A-Frame is optimized from the ground up for WebVR with a 3D-oriented
+entity-component architecture. And **aframe-react lets React do what it's good
+at and no more: views, state management, and data binding.**
 
-By providing a DOM, it gives React the purpose it was meant for, to provide
-quicker DOM updates. Although ideally, we use A-Frame directly since there may
-be performance quirks with React batching its updates which we don't want in
-90fps+ real-time rendering.
+### Entity-Component Meets React
 
-#### Composability
+A-Frame's entity-component-system (ECS) pattern is tailored for 3D and VR
+applications. What React did for 2D web applications is what ECS did for 3D
+applications in terms of providing a useful abstraction. ECS promotes
+composability over hierarchy and inheritance.
 
-A-Frame provides composability over inheritance.  React is based around
-inheritance: to create a new type of object, we extend an existing one. In game
-development where objects are more complex, it is more appropriate to compose
-behavior in order to more easily build new types of objects.
+Unfortunately, React is all about hierarchy and inheritance, which is not
+suited for 3D. Whereas 2D web development consisted of structuring and laying
+out from an assorted set of fixed 2D elements (e.g., `<p>`, `<a>`, `<img>`,
+`<form>`), 3D development involves objects that are infinite in complexity and
+type. ECS provides an easy way of defining those objects by mixing and matching
+plug-and-play components.
 
-#### Community and Ecosystem
-
-Lastly, A-Frame is backed by a large community and ecosystem of tools and
-components. Don't be limited by what an assorted library provides when an
-extensible framework can provide much more. There's even a [Redux
-component](https://github.com/ngokevin/kframe/tree/master/components/redux) for
-binding to A-Frame without using `react-redux`.
-
-`tl;dr`: Wrapping React directly around three.js/WebGL cuts corners and suffers
-as a result. A-Frame provides a proper bridge.
+**With aframe-react, we get the best of both worlds.** The 3D and VR
+architecture of A-Frame, and the view and state ergonomics of React. React can
+be used to bind application and state data to the values of A-Frame components.
+And we still have access to all the features and performance of A-Frame as well
+as [A-Frame's community component ecosystem](https://aframe.io/registry/).
 
 ## API
 
