@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Scene = exports.Entity = undefined;
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -32,14 +34,7 @@ function doSetAttribute(el, props, propName) {
   } else if (props[propName].constructor === Function) {
     return;
   } else {
-    if (el.isNode) {
-      el.setAttribute(propName, props[propName]);
-    } else {
-      el.addEventListener('nodeready', function () {
-        console.log("WAITING");
-        el.setAttribute(propName, props[propName]);
-      });
-    }
+    el.setAttribute(propName, props[propName]);
   }
 }
 
@@ -50,7 +45,7 @@ function doSetAttributes(el, props) {
   // Set attributes.
   var nonEntityPropNames = ['children', 'events', 'primitive'];
   Object.keys(props).filter(function (propName) {
-    return propName.indexOf(nonEntityPropNames) === -1;
+    return nonEntityPropNames.indexOf(propName) === -1;
   }).forEach(function (propName) {
     doSetAttribute(el, props, propName);
   });
@@ -124,7 +119,16 @@ var Entity = exports.Entity = function (_React$Component) {
     value: function render() {
       var props = this.props;
       var elementName = this.isScene ? 'a-scene' : props.primitive || 'a-entity';
-      return _react2.default.createElement(elementName, Object.assign({ ref: this.updateDOM }), props.children);
+
+      // Let through props that are OK to render initially.
+      var reactProps = {};
+      Object.keys(props).forEach(function (propName) {
+        if (['className', 'id', 'mixin'].indexOf(propName) !== -1 || propName.indexOf('data-') === 0) {
+          reactProps[propName] = props[propName];
+        }
+      });
+
+      return _react2.default.createElement(elementName, _extends({ ref: this.updateDOM }, reactProps), props.children);
     }
   }]);
 

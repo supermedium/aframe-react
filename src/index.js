@@ -10,14 +10,7 @@ function doSetAttribute (el, props, propName) {
   } else if (props[propName].constructor === Function) {
     return;
   } else {
-    if (el.isNode) {
-      el.setAttribute(propName, props[propName]);
-    } else {
-      el.addEventListener('nodeready', function () {
-        console.log("WAITING");
-        el.setAttribute(propName, props[propName]);
-      });
-    }
+    el.setAttribute(propName, props[propName]);
   }
 }
 

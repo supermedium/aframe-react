@@ -22,6 +22,18 @@
 </div>
 <br/>
 
+## Installation
+
+Install with [npm](https://www.npmjs.com/package/aframe-react) or
+[yarn](https://github.com/yarnpkg/yarn).
+
+```
+npm install --save aframe aframe-react react react-dom
+yarn add --save aframe aframe-react react react-dom
+```
+
+## Example
+
 ```js
 import 'aframe';
 import 'aframe-particle-system-component';
@@ -42,16 +54,12 @@ class VRScene extends React.Component {
     );
   }
 }
+
+ReactDOM.render(<VRScene/>, document.querySelector('#sceneContainer'));
 ```
 
 See [aframe-react-boilerplate](https://github.com/ngokevin/aframe-react-boilerplate)
 for a basic example.
-
-## Installation
-
-```
-npm install --save aframe aframe-react react react-dom
-```
 
 ## What `aframe-react` Does
 
