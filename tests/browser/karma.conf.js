@@ -13,8 +13,8 @@ module.exports = function (config) {
     ],
     frameworks: ['mocha', 'sinon-chai', 'chai-shallow-deep-equal'],
     preprocessors: {
-      'src/**/*.js': ['webpack'],
-      'browser/**/*.js': ['webpack']
+      'src/**/*.js': ['webpack', 'sourcemap'],
+      'browser/**/*.js': ['webpack', 'sourcemap']
     },
     reporters: ['mocha'],
     webpack: {

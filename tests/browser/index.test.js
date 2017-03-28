@@ -1,4 +1,3 @@
-import 'aframe';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Entity, Scene} from '../../src/index.js';
@@ -6,13 +5,8 @@ import {Entity, Scene} from '../../src/index.js';
 const div = document.createElement('div');
 document.body.appendChild(div);
 
-setup(function () {
-  this.sinon = sinon.sandbox.create();
-});
-
 teardown(function () {
   while (div.firstChild) { div.removeChild(div.firstChild); }
-  this.sinon.restore();
 });
 
 suite('aframe-react', () => {
