@@ -112,8 +112,8 @@ React for a VR application.
 
 ## The Viability of React for VR
 
-Without A-Frame and `aframe-react`, React would not be a viable library to use
-in VR applications. The value proposition of React is limited to the 2D Web:
+A-Frame and `aframe-react` gives some viability for React to use in VR
+applications. The value proposition of React is limited to the 2D Web:
 
 - Improve rendering performance for 2D web pages by reducing calls to the
   browser's 2D layout engine via the virtual DOM.
@@ -124,46 +124,48 @@ However, these propositions fall short in 3D and VR applications:
 
 - In 3D and VR applications, including A-Frame, the 2D browser layout engine is
   not touched. Thus React's reconciliation engine can become an unpredictable
-  performance liability for no benefit.
+  performance liability for little benefit.
 - In 3D and VR applications, objects are not structured in a top-down hierarchy like
   2D web applications. 3D objects can exist anywhere and interact with any other 3D object
   in a many-to-many manner. But React's paradigm prescribes data flow from parent-to-child,
   which makes it restrictive for 3D and VR applications.
 
-Thinly wrapping React directly around a 3D library, say three.js, would not
-provide a useful abstraction. However, A-Frame and aframe-react gives meaning
-and purpose to React: **A-Frame provides an actual DOM for React to reconcile,
-diff, and bind to**.
+A-Frame and aframe-react gives meaning and purpose to React: **A-Frame provides
+an actual DOM for React to reconcile, diff, and bind to**.
 
 React also raises questions around performance; React is a very large library
 designed for a 60fps 2D Web, is it equipped to handle 90fps VR applications?
-90 prop updates per second per object through React's reconciliation engine
-most likely would not work.
+90 prop updates per second per object for many objects through React's engine
+causes concern in the overhead added for each operation.
 
 aframe-react lets A-Frame handle the heavy lifting 3D and VR rendering and
 behavior. A-Frame is optimized from the ground up for WebVR with a 3D-oriented
-entity-component architecture. And **aframe-react lets React do what it's good
-at and no more: views, state management, and data binding.**
+entity-component architecture. And **aframe-react lets React focus on what it's
+good at: views, state management, and data binding.**
 
 ### Entity-Component Meets React
 
 A-Frame's entity-component-system (ECS) pattern is tailored for 3D and VR
 applications. What React did for 2D web applications is what ECS did for 3D
 applications in terms of providing a useful abstraction. ECS promotes
-composability over hierarchy and inheritance.
+composability over hierarchy. In 3D applications, composability refers to
+composition of appearance, behavior, and logic rather than having fixed blocks.
+This lets us do things like define a flying robot that explodes on contact and
+makes robot sounds by snapping together a pre-existing model component, explode
+component, event handler component, sound component, and flying component.
 
-Unfortunately, React is all about hierarchy and inheritance, which is not
-suited for 3D. Whereas 2D web development consisted of structuring and laying
-out from an assorted set of fixed 2D elements (e.g., `<p>`, `<a>`, `<img>`,
-`<form>`), 3D development involves objects that are infinite in complexity and
-type. ECS provides an easy way of defining those objects by mixing and matching
-plug-and-play components.
+Unfortunately, React (and the 2D web for that matter) is heavily hierarchical,
+which is not suited for 3D. Whereas 2D web development consisted of structuring
+and laying out from an assorted set of fixed 2D elements (e.g., `<p>`, `<a>`,
+`<img>`, `<form>`), 3D development involves objects that are infinite in
+complexity and type. ECS provides an easy way of defining those objects by
+mixing and matching plug-and-play components.
 
-**With aframe-react, we get the best of both worlds.** The 3D and VR
-architecture of A-Frame, and the view and state ergonomics of React. React can
-be used to bind application and state data to the values of A-Frame components.
-And we still have access to all the features and performance of A-Frame as well
-as [A-Frame's community component ecosystem](https://aframe.io/registry/).
+With aframe-react, we get the best of both worlds. The 3D and VR architecture
+of A-Frame, and the view and state ergonomics of React. React can be used to
+bind application and state data to the values of A-Frame components. And we
+still have access to all the features and performance of A-Frame as well as
+[A-Frame's community component ecosystem](https://aframe.io/registry/).
 
 ## API
 
