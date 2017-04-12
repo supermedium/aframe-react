@@ -17,6 +17,10 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -147,10 +151,10 @@ var Entity = exports.Entity = function (_React$Component) {
 
 
 Entity.propTypes = {
-  children: _react2.default.PropTypes.any,
-  events: _react2.default.PropTypes.object,
-  mixin: _react2.default.PropTypes.string,
-  primitive: _react2.default.PropTypes.string
+  children: _propTypes2.default.any,
+  events: _propTypes2.default.object,
+  mixin: _propTypes2.default.string,
+  primitive: _propTypes2.default.string
 };
 
 var Scene = exports.Scene = function (_Entity) {
