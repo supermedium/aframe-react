@@ -86,7 +86,7 @@ scenes where objects are built of complex appearance, behavior, and
 functionality.
 
 In A-Frame, HTML attributes map to *components* which are composable modules
-that are plugged into **<a-entity>**s to attach appearance, behavior, and
+that are plugged into `<a-entity>`s to attach appearance, behavior, and
 functionality. `aframe-react` is a very thin layer on top of A-Frame to bridge
 with React. `aframe-react` passes React props to directly A-Frame using refs
 and `.setAttribute()`, bypassing the DOM. This works since A-Frame's
