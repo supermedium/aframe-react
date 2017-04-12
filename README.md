@@ -6,16 +6,16 @@
 
 <div align="center">
   <a href="https://npmjs.org/package/aframe-react">
-    <img src="https://img.shields.io/npm/v/aframe-react.svg?style="flat-square" alt="npm" />
+    <img src="https://img.shields.io/npm/v/aframe-react.svg?style="flat-square" alt="npm">
   </a>
   <a href="https://npmjs.org/package/aframe-react">
-    <img src="https://img.shields.io/npm/dt/aframe-react.svg?style="flat-square" alt="npm" />
+    <img src="https://img.shields.io/npm/dt/aframe-react.svg?style=flat-square" alt="npm">
   </a>
-  <a href="http://travis-ci.org/ngokevin/aframe-react">
-    <img src="https://secure.travis-ci.org/ngokevin/aframe-react.svg?branch=master" alt="Travis CI" />
+  <a href="http://travis-ci.org/aframevr/aframe-react">
+    <img src="https://secure.travis-ci.org/aframevr/aframe-react.svg?branch=master" alt="Travis CI">
   </a>
   <a href="https://npmjs.com/package/aframe-react">
-    <img src="https://img.shields.io/npm/l/aframe-react.svg?style=flat-square" alt="License"></a>
+    <img src="https://img.shields.io/npm/l/aframe-react.svg?style=flat-square" alt="License">
   </a>
 </div>
 
