@@ -44,9 +44,9 @@
     "karma-webpack": "^2.0.3",
     "mocha": "^3.1.2",
     "mozilla-download": "^1.1.1",
-    "react": "^15.5.0",
-    "react-dom": "^15.5.0",
-    "react-test-renderer": "^15.5.0",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-test-renderer": "^15.5.4",
     "sinon": "1.17.5",
     "sinon-chai": "2.8.0",
     "webpack": "^2.3.2"
@@ -73,10 +73,5 @@
   "bugs": {
     "url": "https://github.com/ngokevin/aframe-react/issues"
   },
-  "homepage": "https://github.com/ngokevin/aframe-react#readme",
-  "dependencies": {
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4",
-    "react-test-renderer": "^15.5.4"
-  }
+  "homepage": "https://github.com/ngokevin/aframe-react#readme"
 }
