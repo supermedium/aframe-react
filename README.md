@@ -245,15 +245,15 @@ render() {
   return (
     <Scene>
       <Entity events={{
-        click: this.handleClick
-        collided: [this.handleCollide]/>
+        click: this.handleClick,
+        collided: [this.handleCollide]}}/>
     </Scene>
   );
 }}/>
 ```
 
 `aframe-react` does not support React-style `onXXX` event handlers (e.g.,
-`onClick`). Unlike 2D web pags, VR sites are composed entirely of custom
+`onClick`). Unlike 2D web pages, VR sites are composed entirely of custom
 synthetic event names (which could have hyphens, be all lowercase, be
 camelCase, all uppercase, camel case, etc.,). The possible event names are
 infinite. The `events` prop makes it explicit what the event names to handle
