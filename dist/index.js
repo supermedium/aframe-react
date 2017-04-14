@@ -17,10 +17,6 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -95,7 +91,6 @@ var Entity = exports.Entity = function (_React$Component) {
       doSetAttributes(el, props);
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
-
   /**
    * In response to initial `ref` callback.
    */
@@ -149,13 +144,6 @@ var Entity = exports.Entity = function (_React$Component) {
  * <a-scene> extends from <a-entity> in A-Frame so we reuse <Entity/>.
  */
 
-
-Entity.propTypes = {
-  children: _propTypes2.default.any,
-  events: _propTypes2.default.object,
-  mixin: _propTypes2.default.string,
-  primitive: _propTypes2.default.string
-};
 
 var Scene = exports.Scene = function (_Entity) {
   _inherits(Scene, _Entity);

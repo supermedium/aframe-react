@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
 
 /**
  * Call `.setAttribute()` on the `ref`, passing prop data directly to A-Frame.
@@ -32,13 +31,6 @@ function doSetAttributes (el, props) {
  * and updates.
  */
 export class Entity extends React.Component {
-  static propTypes = {
-    children: PropTypes.any,
-    events: PropTypes.object,
-    mixin: PropTypes.string,
-    primitive: PropTypes.string
-  };
-
   /**
    * In response to initial `ref` callback.
    */

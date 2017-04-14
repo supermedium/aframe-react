@@ -1,6 +1,6 @@
 {
   "name": "aframe-react",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "description": "Build virtual reality experiences with A-Frame and React.",
   "main": "dist/index.js",
   "scripts": {
@@ -44,7 +44,6 @@
     "karma-webpack": "^2.0.3",
     "mocha": "^3.1.2",
     "mozilla-download": "^1.1.1",
-    "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-test-renderer": "^15.5.4",
@@ -54,7 +53,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ngokevin/aframe-react.git"
+    "url": "git+https://github.com/aframevr/aframe-react.git"
   },
   "keywords": [
     "aframe",
@@ -72,7 +71,7 @@
   "author": "Kevin Ngo <kngo@mozilla>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ngokevin/aframe-react/issues"
+    "url": "https://github.com/aframevr/aframe-react/issues"
   },
-  "homepage": "https://github.com/ngokevin/aframe-react#readme"
+  "homepage": "https://github.com/aframevr/aframe-react#readme"
 }
