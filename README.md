@@ -249,7 +249,7 @@ render() {
         collided: [this.handleCollide]}}/>
     </Scene>
   );
-}}/>
+}
 ```
 
 `aframe-react` does not support React-style `onXXX` event handlers (e.g.,
