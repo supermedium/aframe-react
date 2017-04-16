@@ -292,3 +292,7 @@ A-Frame component.
 <a href="https://www.youtube.com/watch?v=japz3zoi8gw&feature=youtu.be">
 <img width="320" height="171" alt="Snowboards" src="https://cloud.githubusercontent.com/assets/674727/24980264/587ded8e-1f8c-11e7-874e-c29264586cd6.png">
 </a>
+
+<a href="https://github.com/michaltakac/mathworldvr">
+<img width="320" alt="MathworldVR" src="https://cloud.githubusercontent.com/assets/674727/25073541/c42e1b12-229d-11e7-946f-02e7e98d2b9f.jpg">
+</a>
