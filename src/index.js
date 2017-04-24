@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 /**
  * Call `.setAttribute()` on the `ref`, passing prop data directly to A-Frame.

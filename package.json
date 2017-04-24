@@ -1,6 +1,6 @@
 {
   "name": "aframe-react",
-  "version": "4.1.1",
+  "version": "4.2.0",
   "description": "Build virtual reality experiences with A-Frame and React.",
   "main": "dist/index.js",
   "scripts": {
@@ -15,10 +15,6 @@
     "testPathDirs": [
       "tests/react"
     ]
-  },
-  "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
   },
   "devDependencies": {
     "aframe": "^0.5.0",
