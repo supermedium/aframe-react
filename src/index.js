@@ -49,6 +49,9 @@ export class Entity extends React.Component {
 
     // Update entity.
     doSetAttributes(el, props);
+
+    // Allow ref.
+    if (props.ref) { ref(el); }
   }
 
   /**
