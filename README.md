@@ -68,11 +68,11 @@ for a basic example.
 
 ![A-Frame](https://cloud.githubusercontent.com/assets/674727/24384472/e833ccee-1318-11e7-81a5-61e782f5b472.png)
 
-I was a web developer who had been developing with React at Mozilla in
+Kevin Ngo was a web developer who had been developing with React at Mozilla in
 production for several months and was an early adopter of Redux (since the day
 it was released). Intimate with the ecosystem and development patterns of
-React, I developed `aframe-react` in a few hours and released it on the same
-day as A-Frame.
+React, Kevin developed `aframe-react` in a few hours and released it on the
+same day as A-Frame.
 
 [A-Frame](https://aframe.io) is a web framework for building virtual reality
 experiences. Since A-Frame is built on top of the DOM, web libraries such as
@@ -110,7 +110,7 @@ elements and synchronously modify underlying 3D scene graph.
 state management ergonomics of React, without penalties of attempting to use
 React for a VR application.
 
-## The Viability of React for VR
+## Making React Viable
 
 A-Frame and `aframe-react` gives some viability for React to use in VR
 applications. The value proposition of React is limited to the 2D Web:
@@ -282,6 +282,19 @@ prop updates to A-Frame. Instead, create an A-Frame component with a tick
 handler such that everything is done in memory with little overhead. Do however
 use React to set up initial state and data binding that might configure that
 A-Frame component.
+
+## Using with Preact
+
+`aframe-react` works with Preact. Since `aframe-react` uses `React.Component`,
+we have to tell Webpack to alias that to `Preact.Component`:
+
+```
+resolve: {
+  alias: {
+    react: 'preact'
+  }
+}
+```
 
 ## Built with `aframe-react`
 

@@ -84,11 +84,12 @@ var Entity = exports.Entity = function (_React$Component) {
       }
 
       // Update entity.
+      console.log(props);
       doSetAttributes(el, props);
 
       // Allow ref.
-      if (props.ref) {
-        ref(el);
+      if (props._ref) {
+        props._ref(el);
       }
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
