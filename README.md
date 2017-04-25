@@ -1,5 +1,11 @@
 <h1 align="center">aframe-react</h1>
 
+<br/>
+
+<div align="center">
+  <img src="https://cloud.githubusercontent.com/assets/674727/19173367/d6590832-8bdb-11e6-9336-658b00bc0460.png" height="200">
+</div>
+
 <h5 align="center">
   Build virtual reality experiences with <b><a href="https://aframe.io">A-Frame</a></b> and <b><a href="https://facebook.github.io/react/">React</a></b>.
 </h5>
@@ -18,12 +24,6 @@
     <img src="https://img.shields.io/npm/l/aframe-react.svg?style=flat-square" alt="License">
   </a>
 </div>
-
-<br/>
-<div align="center">
-  <img src="https://cloud.githubusercontent.com/assets/674727/19173367/d6590832-8bdb-11e6-9336-658b00bc0460.png" height="200">
-</div>
-<br/>
 
 ## Examples
 
