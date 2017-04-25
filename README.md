@@ -25,6 +25,24 @@
 </div>
 <br/>
 
+## Examples
+
+<a href="http://360syria.com">
+<img width="320" alt="Fear of the Sky by Amnesty International UK" src="https://cloud.githubusercontent.com/assets/674727/19344336/a5830bbe-90ee-11e6-9f68-2c23a9be4e95.png">
+</a>
+
+<a href="https://www.youtube.com/watch?v=japz3zoi8gw&feature=youtu.be">
+<img width="320" height="171" alt="Snowboards" src="https://cloud.githubusercontent.com/assets/674727/24980264/587ded8e-1f8c-11e7-874e-c29264586cd6.png">
+</a>
+
+<a href="https://github.com/michaltakac/mathworldvr">
+<img width="320" alt="MathworldVR" src="https://cloud.githubusercontent.com/assets/674727/25073541/c42e1b12-229d-11e7-946f-02e7e98d2b9f.jpg">
+</a>
+
+<a href="https://github.com/aframevr/architect">
+<img width="320" alt="Architect" src="https://cloud.githubusercontent.com/assets/674727/25252157/cda4ef46-25d0-11e7-8e1b-7010b4e358c1.png">
+</a>
+
 ## Installation
 
 Install with [npm](https://www.npmjs.com/package/aframe-react) or
@@ -68,12 +86,6 @@ for a basic example.
 
 ![A-Frame](https://cloud.githubusercontent.com/assets/674727/24384472/e833ccee-1318-11e7-81a5-61e782f5b472.png)
 
-Kevin Ngo was a web developer who had been developing with React at Mozilla in
-production for several months and was an early adopter of Redux (since the day
-it was released). Intimate with the ecosystem and development patterns of
-React, Kevin developed `aframe-react` in a few hours and released it on the
-same day as A-Frame.
-
 [A-Frame](https://aframe.io) is a web framework for building virtual reality
 experiences. Since A-Frame is built on top of the DOM, web libraries such as
 React, Vue.js, Angular, Ember.js, d3.js are able to sit cleanly on top of
@@ -83,15 +95,15 @@ A-Frame is an [entity-component-system (ECS) framework exposed through
 HTML](https://aframe.io/docs/). ECS is a pattern used in game development that
 favors composability over inheritance, which is more naturally suited to 3D
 scenes where objects are built of complex appearance, behavior, and
-functionality.
+functionality. In A-Frame, HTML attributes map to *components* which are
+composable modules that are plugged into `<a-entity>`s to attach appearance,
+behavior, and functionality.
 
-In A-Frame, HTML attributes map to *components* which are composable modules
-that are plugged into `<a-entity>`s to attach appearance, behavior, and
-functionality. `aframe-react` is a very thin layer on top of A-Frame to bridge
-with React. `aframe-react` passes React props to directly A-Frame using refs
-and `.setAttribute()`, bypassing the DOM. This works since A-Frame's
-`.setAttribute()`s are able to take non-string data such as objects, arrays, or
-elements and synchronously modify underlying 3D scene graph.
+Released on the same day as A-Frame, `aframe-react` is a very thin layer on top
+of A-Frame to bridge with React. `aframe-react` passes React props to directly
+A-Frame using refs and `.setAttribute()`, bypassing the DOM. This works since
+A-Frame's `.setAttribute()`s are able to take non-string data such as objects,
+arrays, or elements and synchronously modify underlying 3D scene graph.
 
 ```js
 // aframe-react's <Entity/> React Component
@@ -295,17 +307,3 @@ resolve: {
   }
 }
 ```
-
-## Built with `aframe-react`
-
-<a href="http://360syria.com">
-<img width="320" alt="Fear of the Sky by Amnesty International UK" src="https://cloud.githubusercontent.com/assets/674727/19344336/a5830bbe-90ee-11e6-9f68-2c23a9be4e95.png">
-</a>
-
-<a href="https://www.youtube.com/watch?v=japz3zoi8gw&feature=youtu.be">
-<img width="320" height="171" alt="Snowboards" src="https://cloud.githubusercontent.com/assets/674727/24980264/587ded8e-1f8c-11e7-874e-c29264586cd6.png">
-</a>
-
-<a href="https://github.com/michaltakac/mathworldvr">
-<img width="320" alt="MathworldVR" src="https://cloud.githubusercontent.com/assets/674727/25073541/c42e1b12-229d-11e7-946f-02e7e98d2b9f.jpg">
-</a>

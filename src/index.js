@@ -1,5 +1,12 @@
 import React from 'react';
 
+const options = {
+  // React needs this because React serializes.
+  // Preact does not because Preact runs `.setAttribute` on its own.
+  runSetAttributeOnUpdates: true
+};
+export {options};
+
 /**
  * Call `.setAttribute()` on the `ref`, passing prop data directly to A-Frame.
  */
@@ -57,7 +64,7 @@ export class Entity extends React.Component {
   /**
    * Handle updates after the initial render.
    */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     const el = this.el;
     const props = this.props;
 
@@ -65,13 +72,15 @@ export class Entity extends React.Component {
     updateEventListeners(el, prevProps.events, props.events);
 
     // Update entity.
-    doSetAttributes(el, props);
+    if (options.runSetAttributeOnUpdates) {
+      doSetAttributes(el, props);
+    }
   }
 
   /**
    * Render A-Frame DOM with ref: https://facebook.github.io/react/docs/refs-and-the-dom.html
    */
-  render() {
+  render () {
     const props = this.props;
     const elementName = this.isScene ? 'a-scene' : (props.primitive || 'a-entity');
 

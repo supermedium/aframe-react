@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Scene = exports.Entity = undefined;
+exports.Scene = exports.Entity = exports.options = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -21,9 +21,17 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var options = {
+  // React needs this because React serializes.
+  // Preact does not because Preact runs `.setAttribute` on its own.
+  runSetAttributeOnUpdates: true
+};
+exports.options = options;
+
 /**
  * Call `.setAttribute()` on the `ref`, passing prop data directly to A-Frame.
  */
+
 function doSetAttribute(el, props, propName) {
   if (propName === 'className') {
     el.setAttribute('class', props.className);
@@ -84,7 +92,6 @@ var Entity = exports.Entity = function (_React$Component) {
       }
 
       // Update entity.
-      console.log(props);
       doSetAttributes(el, props);
 
       // Allow ref.
@@ -113,7 +120,9 @@ var Entity = exports.Entity = function (_React$Component) {
       updateEventListeners(el, prevProps.events, props.events);
 
       // Update entity.
-      doSetAttributes(el, props);
+      if (options.runSetAttributeOnUpdates) {
+        doSetAttributes(el, props);
+      }
     }
 
     /**
