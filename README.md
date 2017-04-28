@@ -271,6 +271,15 @@ camelCase, all uppercase, camel case, etc.,). The possible event names are
 infinite. The `events` prop makes it explicit what the event names to handle
 are.
 
+#### `_ref`
+
+Use `aframe-react`'s `_ref` prop to add a callback to the underlying
+`<a-entity>` DOM node:
+
+```
+<Entity _ref={this.entityCallback}/>
+```
+
 #### \<Scene {...components}/>
 
 `<Scene/>` extends `<Entity/>` and renders `<a-scene>` instead of `<a-entity>`.
