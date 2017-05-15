@@ -236,9 +236,10 @@ suite('<Entity primitive/>', () => {
     });
   });
 
-  test('does not set attributes with undefined values', () => {
-    ReactDOM.render(<Scene><Entity example={undefined}/></Scene>, div);
-    assert.notEqual(div.querySelector('a-entity').getAttribute('example'), 'undefined');
+  test('does not set attributes with undefined or null values', () => {
+    ReactDOM.render(<Scene><Entity undefined={undefined} null={null}/></Scene>, div);
+    assert.notEqual(div.querySelector('a-entity').getAttribute('undefined'), 'undefined');
+    assert.notEqual(div.querySelector('a-entity').getAttribute('null'), 'null');
   });
 
   test('can take single-property boolean component as boolean', () => {
