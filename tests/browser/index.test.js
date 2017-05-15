@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Entity, Scene} from '../../src/index.js';
+import {Entity, doSetAttribute, Scene} from '../../src/index.js';
 
 const div = document.createElement('div');
 document.body.appendChild(div);
@@ -235,6 +235,13 @@ suite('<Entity primitive/>', () => {
       done();
     });
   });
+
+  test('supports null or undefined props', () => {
+    ReactDOM.render(<Scene undefined={undefined} null={null} />, div);
+    const scene = div.querySelector('a-scene');
+    assert.equal(scene.getAttribute('undefined'), 'undefined');
+    assert.equal(scene.getAttribute('null'), 'null');
+  });
 });
 
 suite('<Entity events/>', () => {
@@ -325,17 +332,21 @@ suite('<Entity events/>', () => {
 
 suite('<Scene/>', () => {
   test('can take single-property boolean component as boolean', done => {
-    ReactDOM.render(<Scene embedded={true}/>, div);
-    div.querySelector('a-scene').addEventListener('loaded', () => {
-      assert.ok(div.querySelector('a-scene').getAttribute('embedded'));
+    ReactDOM.render(<Scene true={true} false={false}/>, div);
+    const scene = div.querySelector('a-scene');
+    scene.addEventListener('loaded', () => {
+      assert.equal(scene.getAttribute('true'), 'true');
+      assert.equal(scene.getAttribute('false'), 'false');
       done();
     });
   });
 
   test('can take single-property boolean component as string', done => {
-    ReactDOM.render(<Scene embedded="true"/>, div);
-    div.querySelector('a-scene').addEventListener('loaded', () => {
-      assert.ok(div.querySelector('a-scene').getAttribute('embedded'));
+    ReactDOM.render(<Scene true="true" false="false"/>, div);
+    const scene = div.querySelector('a-scene');
+    scene.addEventListener('loaded', () => {
+      assert.equal(scene.getAttribute('true'), 'true');
+      assert.equal(scene.getAttribute('false'), 'false');
       done();
     });
   });
