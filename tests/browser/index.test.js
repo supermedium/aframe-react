@@ -235,6 +235,26 @@ suite('<Entity primitive/>', () => {
       done();
     });
   });
+
+  test('does not set attributes with undefined or null values', () => {
+    ReactDOM.render(<Scene><Entity undefined={undefined} null={null}/></Scene>, div);
+    assert.notEqual(div.querySelector('a-entity').getAttribute('undefined'), 'undefined');
+    assert.notEqual(div.querySelector('a-entity').getAttribute('null'), 'null');
+  });
+
+  test('can take single-property boolean component as boolean', () => {
+    ReactDOM.render(<Scene truevalue={true} falsevalue={false}/>, div);
+    const scene = div.querySelector('a-scene');
+    assert.equal(scene.getAttribute('truevalue'), 'true');
+    assert.equal(scene.getAttribute('falsevalue'), 'false');
+  });
+
+  test('can take single-property boolean component as string', () => {
+    ReactDOM.render(<Scene truevalue="true" falsevalue="false"/>, div);
+    const scene = div.querySelector('a-scene');
+    assert.equal(scene.getAttribute('truevalue'), 'true');
+    assert.equal(scene.getAttribute('falsevalue'), 'false');
+  });
 });
 
 suite('<Entity events/>', () => {
@@ -319,24 +339,6 @@ suite('<Entity events/>', () => {
         assert.ok(barHandlerCalled);
         done();
       });
-    });
-  });
-});
-
-suite('<Scene/>', () => {
-  test('can take single-property boolean component as boolean', done => {
-    ReactDOM.render(<Scene embedded={true}/>, div);
-    div.querySelector('a-scene').addEventListener('loaded', () => {
-      assert.ok(div.querySelector('a-scene').getAttribute('embedded'));
-      done();
-    });
-  });
-
-  test('can take single-property boolean component as string', done => {
-    ReactDOM.render(<Scene embedded="true"/>, div);
-    div.querySelector('a-scene').addEventListener('loaded', () => {
-      assert.ok(div.querySelector('a-scene').getAttribute('embedded'));
-      done();
     });
   });
 });

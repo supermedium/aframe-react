@@ -11,12 +11,14 @@ export {options};
  * Call `.setAttribute()` on the `ref`, passing prop data directly to A-Frame.
  */
 function doSetAttribute (el, props, propName) {
+  const prop = props[propName];
+
   if (propName === 'className') {
     el.setAttribute('class', props.className);
-  } else if (props[propName].constructor === Function) {
+  } else if (typeof prop === 'undefined' || prop === null || prop.constructor === Function) {
     return;
   } else {
-    el.setAttribute(propName, props[propName]);
+    el.setAttribute(propName, prop);
   }
 }
 

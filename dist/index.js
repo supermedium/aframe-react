@@ -33,12 +33,14 @@ exports.options = options;
  */
 
 function doSetAttribute(el, props, propName) {
+  var prop = props[propName];
+
   if (propName === 'className') {
     el.setAttribute('class', props.className);
-  } else if (props[propName].constructor === Function) {
+  } else if (typeof prop === 'undefined' || prop === null || prop.constructor === Function) {
     return;
   } else {
-    el.setAttribute(propName, props[propName]);
+    el.setAttribute(propName, prop);
   }
 }
 
