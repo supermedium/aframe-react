@@ -1,5 +1,8 @@
 import React from 'react';
 
+const nonEntityPropNames = ['children', 'events', 'primitive'];
+const filterNonEntityPropNames = propName => nonEntityPropNames.indexOf(propName) === -1;
+
 const options = {
   // React needs this because React serializes.
   // Preact does not because Preact runs `.setAttribute` on its own.
@@ -24,11 +27,29 @@ function doSetAttribute (el, props, propName) {
  * Batch `.setAttribute()`s, filtering out props not relevant to A-Frame.
  */
 function doSetAttributes (el, props) {
+}
+
+/**
+ * Handle diffing of previous and current attributes.
+ *
+ * @param {Element} el
+ * @param {Object|null} prevProps - Previous props map.
+ * @param {Object} props - Current props map.
+ */
+function updateAttributes (el, prevProps, props) {
+  if (!props || prevProps === props) { return; }
+
   // Set attributes.
-  const nonEntityPropNames = ['children', 'events', 'primitive'];
-  Object.keys(props).filter(
-    propName => nonEntityPropNames.indexOf(propName) === -1
-  ).forEach(propName => { doSetAttribute(el, props, propName); });
+  Object.keys(props).filter(filterNonEntityPropNames).forEach(propName => {
+    doSetAttribute(el, props, propName);
+  });
+
+  // See if attributes were removed.
+  if (prevProps) {
+    Object.keys(prevProps).filter(filterNonEntityPropNames).forEach(propName => {
+      if (props[propName] === undefined) { el.removeAttribute(propName); }
+    });
+  }
 }
 
 /**
@@ -55,7 +76,7 @@ export class Entity extends React.Component {
     }
 
     // Update entity.
-    doSetAttributes(el, props);
+    updateAttributes(el, null, props);
 
     // Allow ref.
     if (props._ref) { props._ref(el); }
@@ -73,7 +94,7 @@ export class Entity extends React.Component {
 
     // Update entity.
     if (options.runSetAttributeOnUpdates) {
-      doSetAttributes(el, props);
+      updateAttributes(el, prevProps, props);
     }
   }
 

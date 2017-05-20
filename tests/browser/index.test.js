@@ -328,6 +328,28 @@ suite('<Entity events/>', () => {
       });
     });
   });
+
+  test('can remove attribute', function (done) {
+    ReactDOM.render(
+      <Scene>
+        <Entity light={{ type: "ambient", color: "#CCC" }} />
+      </Scene>,
+      div
+    );
+    ReactDOM.render(
+      <Scene>
+        <Entity />
+      </Scene>,
+      div
+    );
+    const scene = div.querySelector('a-scene');
+    scene.addEventListener('loaded', () => {
+      setTimeout(() => {
+        assert.equal(div.querySelector('a-entity').hasAttribute('light'), false);
+        done();
+      });
+    });
+  });
 });
 
 suite('<Scene/>', () => {
