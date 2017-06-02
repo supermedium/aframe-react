@@ -74,7 +74,7 @@ export class Entity extends React.Component {
 
     // Allow ref.
     if (props._ref) { props._ref(el); }
-  }
+  };
 
   /**
    * Handle updates after the initial render.
@@ -97,7 +97,6 @@ export class Entity extends React.Component {
     const props = this.props;
 
     if (props.events) {
-
       // Remove events.
       Object.keys(props.events).forEach(eventName => {
         removeEventListeners(el, eventName, props.events[eventName]);
