@@ -24,12 +24,6 @@ function doSetAttribute (el, props, propName) {
 }
 
 /**
- * Batch `.setAttribute()`s, filtering out props not relevant to A-Frame.
- */
-function doSetAttributes (el, props) {
-}
-
-/**
  * Handle diffing of previous and current attributes.
  *
  * @param {Element} el
@@ -95,6 +89,19 @@ export class Entity extends React.Component {
     // Update entity.
     if (options.runSetAttributeOnUpdates) {
       updateAttributes(el, prevProps, props);
+    }
+  }
+
+  componentWillUnmount () {
+    const el = this.el;
+    const props = this.props;
+
+    if (props.events) {
+
+      // Remove events.
+      Object.keys(props.events).forEach(eventName => {
+        removeEventListeners(el, eventName, props.events[eventName]);
+      });
     }
   }
 
