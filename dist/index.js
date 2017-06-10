@@ -21,6 +21,11 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var nonEntityPropNames = ['children', 'events', 'primitive'];
+var filterNonEntityPropNames = function filterNonEntityPropNames(propName) {
+  return nonEntityPropNames.indexOf(propName) === -1;
+};
+
 var options = {
   // React needs this because React serializes.
   // Preact does not because Preact runs `.setAttribute` on its own.
@@ -45,14 +50,33 @@ function doSetAttribute(el, props, propName) {
 /**
  * Batch `.setAttribute()`s, filtering out props not relevant to A-Frame.
  */
-function doSetAttributes(el, props) {
+function doSetAttributes(el, props) {}
+
+/**
+ * Handle diffing of previous and current attributes.
+ *
+ * @param {Element} el
+ * @param {Object|null} prevProps - Previous props map.
+ * @param {Object} props - Current props map.
+ */
+function updateAttributes(el, prevProps, props) {
+  if (!props || prevProps === props) {
+    return;
+  }
+
   // Set attributes.
-  var nonEntityPropNames = ['children', 'events', 'primitive'];
-  Object.keys(props).filter(function (propName) {
-    return nonEntityPropNames.indexOf(propName) === -1;
-  }).forEach(function (propName) {
+  Object.keys(props).filter(filterNonEntityPropNames).forEach(function (propName) {
     doSetAttribute(el, props, propName);
   });
+
+  // See if attributes were removed.
+  if (prevProps) {
+    Object.keys(prevProps).filter(filterNonEntityPropNames).forEach(function (propName) {
+      if (props[propName] === undefined) {
+        el.removeAttribute(propName);
+      }
+    });
+  }
 }
 
 /**
@@ -92,7 +116,7 @@ var Entity = exports.Entity = function (_React$Component) {
       }
 
       // Update entity.
-      doSetAttributes(el, props);
+      updateAttributes(el, null, props);
 
       // Allow ref.
       if (props._ref) {
@@ -121,7 +145,7 @@ var Entity = exports.Entity = function (_React$Component) {
 
       // Update entity.
       if (options.runSetAttributeOnUpdates) {
-        doSetAttributes(el, props);
+        updateAttributes(el, prevProps, props);
       }
     }
 
@@ -187,7 +211,7 @@ function updateEventListeners(el, prevEvents, events) {
 
   Object.keys(events).forEach(function (eventName) {
     // Didn't change.
-    if (events[eventName] && prevEvents[eventName] && prevEvents[eventName].toString() === events[eventName].toString()) {
+    if (prevEvents[eventName] === events[eventName]) {
       return;
     }
 
