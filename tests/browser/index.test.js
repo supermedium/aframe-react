@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Entity, doSetAttribute, Scene} from '../../src/index.js';
+import {Entity, Scene} from '../../src/index.js';
 
 const div = document.createElement('div');
 document.body.appendChild(div);
@@ -305,6 +305,35 @@ suite('<Entity events/>', () => {
       div.querySelector('a-entity').emit('foo');
       setTimeout(() => {
         assert.notOk(fooHandlerCalled);
+        done();
+      });
+    });
+  });
+
+  test('can remove event listener when component is detached', function (done) {
+    let bazHandlerCalled = false;
+    function bazHandler () { bazHandlerCalled = true }
+
+    ReactDOM.render(
+      <Scene>
+        <Entity id='foo'>
+          <Entity id='bar' events={{baz: bazHandler}}/>
+        </Entity>
+      </Scene>,
+      div
+    );
+    div.querySelector('a-scene').addEventListener('loaded', () => {
+      ReactDOM.render(
+        <Scene>
+          <Entity id='foo'/>
+        </Scene>,
+        div
+      );
+      div.querySelector('a-entity').emit('baz');
+      setTimeout(() => {
+        assert.ok(div.querySelector('#foo'));
+        assert.notOk(div.querySelector('#bar'));
+        assert.notOk(bazHandlerCalled);
         done();
       });
     });
