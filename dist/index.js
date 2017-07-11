@@ -48,11 +48,6 @@ function doSetAttribute(el, props, propName) {
 }
 
 /**
- * Batch `.setAttribute()`s, filtering out props not relevant to A-Frame.
- */
-function doSetAttributes(el, props) {}
-
-/**
  * Handle diffing of previous and current attributes.
  *
  * @param {Element} el
@@ -146,6 +141,19 @@ var Entity = exports.Entity = function (_React$Component) {
       // Update entity.
       if (options.runSetAttributeOnUpdates) {
         updateAttributes(el, prevProps, props);
+      }
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      var el = this.el;
+      var props = this.props;
+
+      if (props.events) {
+        // Remove events.
+        Object.keys(props.events).forEach(function (eventName) {
+          removeEventListeners(el, eventName, props.events[eventName]);
+        });
       }
     }
 
