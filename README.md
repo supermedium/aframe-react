@@ -50,7 +50,7 @@ Install with [npm](https://www.npmjs.com/package/aframe-react) or
 
 ```
 npm install --save aframe aframe-react react react-dom
-yarn add --save aframe aframe-react react react-dom
+yarn add aframe aframe-react react react-dom
 ```
 
 ## Example
