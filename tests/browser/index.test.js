@@ -401,4 +401,13 @@ suite('<Scene/>', () => {
       done();
     });
   });
+
+  test('renders <a-scene antialias="true">', done => {
+    ReactDOM.render(<Scene antialias='true'/>, div);
+    const scene = div.querySelector('a-scene');
+    scene.addEventListener('loaded', () => {
+      assert.equal(scene.getAttribute('antialias'), 'true');
+      done();
+    });
+  });
 });
