@@ -55,22 +55,30 @@ function doSetAttribute(el, props, propName) {
  * @param {Object} props - Current props map.
  */
 function updateAttributes(el, prevProps, props) {
+  var propName;
+
   if (!props || prevProps === props) {
     return;
   }
 
   // Set attributes.
-  Object.keys(props).filter(filterNonEntityPropNames).forEach(function (propName) {
+  for (propName in props) {
+    if (!filterNonEntityPropNames(propName)) {
+      continue;
+    }
     doSetAttribute(el, props, propName);
-  });
+  }
 
   // See if attributes were removed.
   if (prevProps) {
-    Object.keys(prevProps).filter(filterNonEntityPropNames).forEach(function (propName) {
+    for (propName in prevProps) {
+      if (!filterNonEntityPropNames(propName)) {
+        continue;
+      }
       if (props[propName] === undefined) {
         el.removeAttribute(propName);
       }
-    });
+    }
   }
 }
 
@@ -96,6 +104,8 @@ var Entity = exports.Entity = function (_React$Component) {
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Entity.__proto__ || Object.getPrototypeOf(Entity)).call.apply(_ref, [this].concat(args))), _this), _this.initEntity = function (el) {
       var props = _this.props;
+      var eventName;
+
       if (!el) {
         return;
       }
@@ -105,9 +115,9 @@ var Entity = exports.Entity = function (_React$Component) {
 
       // Attach events.
       if (props.events) {
-        Object.keys(props.events).forEach(function (eventName) {
+        for (eventName in props.events) {
           addEventListeners(el, eventName, props.events[eventName]);
-        });
+        }
       }
 
       // Update entity.
@@ -148,12 +158,13 @@ var Entity = exports.Entity = function (_React$Component) {
     value: function componentWillUnmount() {
       var el = this.el;
       var props = this.props;
+      var eventName;
 
       if (props.events) {
         // Remove events.
-        Object.keys(props.events).forEach(function (eventName) {
+        for (eventName in props.events) {
           removeEventListeners(el, eventName, props.events[eventName]);
-        });
+        }
       }
     }
 
@@ -166,14 +177,15 @@ var Entity = exports.Entity = function (_React$Component) {
     value: function render() {
       var props = this.props;
       var elementName = this.isScene ? 'a-scene' : props.primitive || 'a-entity';
+      var propName;
 
       // Let through props that are OK to render initially.
       var reactProps = {};
-      Object.keys(props).forEach(function (propName) {
+      for (propName in props) {
         if (['className', 'id', 'mixin'].indexOf(propName) !== -1 || propName.indexOf('data-') === 0) {
           reactProps[propName] = props[propName];
         }
-      });
+      }
 
       return _react2.default.createElement(elementName, _extends({ ref: this.initEntity }, reactProps), props.children);
     }
@@ -213,14 +225,16 @@ var Scene = exports.Scene = function (_Entity) {
 
 
 function updateEventListeners(el, prevEvents, events) {
+  var eventName;
+
   if (!prevEvents || !events || prevEvents === events) {
     return;
   }
 
-  Object.keys(events).forEach(function (eventName) {
+  for (eventName in events) {
     // Didn't change.
     if (prevEvents[eventName] === events[eventName]) {
-      return;
+      continue;
     }
 
     // If changed, remove old previous event listeners.
@@ -230,14 +244,14 @@ function updateEventListeners(el, prevEvents, events) {
 
     // Add new event listeners.
     addEventListeners(el, eventName, events[eventName]);
-  });
+  }
 
   // See if event handlers were removed.
-  Object.keys(prevEvents).forEach(function (eventName) {
+  for (eventName in prevEvents) {
     if (!events[eventName]) {
       removeEventListeners(el, eventName, prevEvents[eventName]);
     }
-  });
+  }
 }
 
 /**
@@ -248,6 +262,9 @@ function updateEventListeners(el, prevEvents, events) {
  * @param {array|function} eventHandlers - Handler function or array of handler functions.
  */
 function addEventListeners(el, eventName, handlers) {
+  var handler;
+  var i;
+
   if (!handlers) {
     return;
   }
@@ -258,9 +275,9 @@ function addEventListeners(el, eventName, handlers) {
   }
 
   // Register.
-  handlers.forEach(function (handler) {
-    el.addEventListener(eventName, handler);
-  });
+  for (i = 0; i < handlers.length; i++) {
+    el.addEventListener(eventName, handlers[i]);
+  }
 }
 
 /**
@@ -271,6 +288,9 @@ function addEventListeners(el, eventName, handlers) {
  * @param {array|function} eventHandlers - Handler function or array of handler functions.
  */
 function removeEventListeners(el, eventName, handlers) {
+  var handler;
+  var i;
+
   if (!handlers) {
     return;
   }
@@ -281,7 +301,7 @@ function removeEventListeners(el, eventName, handlers) {
   }
 
   // Unregister.
-  handlers.forEach(function (handler) {
-    el.removeEventListener(eventName, handler);
-  });
+  for (i = 0; i < handlers.length; i++) {
+    el.removeEventListener(eventName, handlers[i]);
+  }
 }

@@ -31,18 +31,22 @@ function doSetAttribute (el, props, propName) {
  * @param {Object} props - Current props map.
  */
 function updateAttributes (el, prevProps, props) {
+  var propName;
+
   if (!props || prevProps === props) { return; }
 
   // Set attributes.
-  Object.keys(props).filter(filterNonEntityPropNames).forEach(propName => {
+  for (propName in props) {
+    if (!filterNonEntityPropNames(propName)) { continue; }
     doSetAttribute(el, props, propName);
-  });
+  }
 
   // See if attributes were removed.
   if (prevProps) {
-    Object.keys(prevProps).filter(filterNonEntityPropNames).forEach(propName => {
+    for (propName in prevProps) {
+      if (!filterNonEntityPropNames(propName)) { continue; }
       if (props[propName] === undefined) { el.removeAttribute(propName); }
-    });
+    }
   }
 }
 
@@ -57,6 +61,8 @@ export class Entity extends React.Component {
    */
   initEntity = el => {
     const props = this.props;
+    var eventName;
+
     if (!el) { return; }
 
     // Store.
@@ -64,9 +70,9 @@ export class Entity extends React.Component {
 
     // Attach events.
     if (props.events) {
-      Object.keys(props.events).forEach(eventName => {
+      for (eventName in props.events) {
         addEventListeners(el, eventName, props.events[eventName]);
-      });
+      }
     }
 
     // Update entity.
@@ -95,12 +101,13 @@ export class Entity extends React.Component {
   componentWillUnmount () {
     const el = this.el;
     const props = this.props;
+    var eventName;
 
     if (props.events) {
       // Remove events.
-      Object.keys(props.events).forEach(eventName => {
+      for (eventName in props.events) {
         removeEventListeners(el, eventName, props.events[eventName]);
-      });
+      }
     }
   }
 
@@ -110,15 +117,16 @@ export class Entity extends React.Component {
   render () {
     const props = this.props;
     const elementName = this.isScene ? 'a-scene' : (props.primitive || 'a-entity');
+    var propName;
 
     // Let through props that are OK to render initially.
     let reactProps = {};
-    Object.keys(props).forEach(propName => {
+    for (propName in props) {
       if (['className', 'id', 'mixin'].indexOf(propName) !== -1 ||
           propName.indexOf('data-') === 0) {
         reactProps[propName] = props[propName];
       }
-    });
+    }
 
     return React.createElement(
       elementName,
@@ -146,12 +154,14 @@ export class Scene extends Entity {
  * @param {Object} events - Current event map.
  */
 function updateEventListeners (el, prevEvents, events) {
+  var eventName;
+
   if (!prevEvents || !events || prevEvents === events) { return; }
 
-  Object.keys(events).forEach(eventName => {
+  for (eventName in events) {
     // Didn't change.
     if (prevEvents[eventName] === events[eventName]) {
-      return;
+      continue;
     }
 
     // If changed, remove old previous event listeners.
@@ -161,12 +171,12 @@ function updateEventListeners (el, prevEvents, events) {
 
     // Add new event listeners.
     addEventListeners(el, eventName, events[eventName]);
-  });
+  }
 
   // See if event handlers were removed.
-  Object.keys(prevEvents).forEach(eventName => {
+  for (eventName in prevEvents) {
     if (!events[eventName]) { removeEventListeners(el, eventName, prevEvents[eventName]); }
-  });
+  }
 }
 
 /**
@@ -177,13 +187,18 @@ function updateEventListeners (el, prevEvents, events) {
  * @param {array|function} eventHandlers - Handler function or array of handler functions.
  */
 function addEventListeners (el, eventName, handlers) {
+  var handler;
+  var i;
+
   if (!handlers) { return; }
 
   // Convert to array.
   if (handlers.constructor === Function) { handlers = [handlers]; }
 
   // Register.
-  handlers.forEach(handler => { el.addEventListener(eventName, handler); });
+  for (i = 0; i < handlers.length; i++) {
+    el.addEventListener(eventName, handlers[i]);
+  }
 }
 
 /**
@@ -194,11 +209,16 @@ function addEventListeners (el, eventName, handlers) {
  * @param {array|function} eventHandlers - Handler function or array of handler functions.
  */
 function removeEventListeners (el, eventName, handlers) {
+  var handler;
+  var i;
+
   if (!handlers) { return; }
 
   // Convert to array.
   if (handlers.constructor === Function) { handlers = [handlers]; }
 
   // Unregister.
-  handlers.forEach(handler => { el.removeEventListener(eventName, handler); });
+  for (i = 0; i < handlers.length; i++) {
+    el.removeEventListener(eventName, handlers[i]);
+  }
 }
