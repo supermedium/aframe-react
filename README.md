@@ -1,5 +1,7 @@
 <h1 align="center">aframe-react</h1>
 
+> I currently recommend using vanilla A-Frame and [aframe-state-component](https://npmjs.org/aframe-state-component) with [static templating](https://mozilla.github.io/nunjucks/) over `aframe-react`.
+
 <br/>
 
 <div align="center">
@@ -37,10 +39,6 @@
 
 <a href="https://github.com/michaltakac/mathworldvr">
 <img width="320" alt="MathworldVR" src="https://cloud.githubusercontent.com/assets/674727/25073541/c42e1b12-229d-11e7-946f-02e7e98d2b9f.jpg">
-</a>
-
-<a href="https://github.com/aframevr/architect">
-<img width="320" alt="Architect" src="https://cloud.githubusercontent.com/assets/674727/25252157/cda4ef46-25d0-11e7-8e1b-7010b4e358c1.png">
 </a>
 
 ## Installation
