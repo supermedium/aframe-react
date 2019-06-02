@@ -206,7 +206,7 @@ as React props to attach appearance, behavior, or functionality to the
 [Community A-Frame components](https://aframe.io/registry/) can be imported and
 installed through npm:
 
-```
+```jsx
 import 'aframe-particle-system-component';
 import 'aframe-mountain-component';
 
@@ -274,7 +274,7 @@ are.
 Use `aframe-react`'s `_ref` prop to add a callback to the underlying
 `<a-entity>` DOM node:
 
-```
+```jsx
 <Entity _ref={this.entityCallback}/>
 ```
 
@@ -307,7 +307,7 @@ A-Frame component.
 `aframe-react` works with Preact. Since `aframe-react` uses `React.Component`,
 we have to tell Webpack to alias that to `Preact.Component`:
 
-```
+```js
 resolve: {
   alias: {
     react: 'preact'
