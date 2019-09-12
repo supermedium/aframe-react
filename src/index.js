@@ -19,7 +19,11 @@ function doSetAttribute (el, props, propName) {
   } else if (props[propName] && props[propName].constructor === Function) {
     return;
   } else {
-    el.setAttribute(propName, props[propName]);
+    let val = props[propName];
+    if(val === undefined || val === null){
+      val = "";
+    }
+    el.setAttribute(propName, val);
   }
 }
 
@@ -45,7 +49,7 @@ function updateAttributes (el, prevProps, props) {
   if (prevProps) {
     for (propName in prevProps) {
       if (!filterNonEntityPropNames(propName)) { continue; }
-      if (props[propName] === undefined) { el.removeAttribute(propName); }
+      if (Object.keys(props).indexOf(propName) === -1) { el.removeAttribute(propName); }
     }
   }
 }
@@ -122,7 +126,7 @@ export class Entity extends React.Component {
     // Let through props that are OK to render initially.
     let reactProps = {};
     for (propName in props) {
-      if (['className', 'id', 'mixin'].indexOf(propName) !== -1 ||
+      if (['className', 'id', 'mixin', 'loading-screen'].indexOf(propName) !== -1 ||
           propName.indexOf('data-') === 0) {
         reactProps[propName] = props[propName];
       }
