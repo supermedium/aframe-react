@@ -47,7 +47,7 @@ Install with [npm](https://www.npmjs.com/package/aframe-react) or
 [yarn](https://github.com/yarnpkg/yarn).
 
 ```
-npm install --save aframe aframe-react react react-dom
+npm install --save aframe aframe-react aframe-particle-system-component react react-dom
 yarn add aframe aframe-react react react-dom
 ```
 
