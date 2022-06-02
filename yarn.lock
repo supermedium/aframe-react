@@ -1427,6 +1427,14 @@ chai@^3.5.0:
     deep-eql "^0.1.3"
     type-detect "^1.0.0"
 
+chai@~3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/chai/-/chai-3.2.0.tgz#a91c06acc01057f4f4b67ed7785bd7ff4466b2fb"
+  dependencies:
+    assertion-error "^1.0.1"
+    deep-eql "^0.1.3"
+    type-detect "^1.0.0"
+
 chalk@1.1.1, chalk@^1.1.0, chalk@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-1.1.1.tgz#509afb67066e7499f7eb3535c77445772ae2d019"
@@ -1792,6 +1800,13 @@ create-hmac@^1.1.0, create-hmac@^1.1.2:
     create-hash "^1.1.0"
     inherits "^2.0.1"
 
+create-react-class@^15.6.0:
+  version "15.7.0"
+  resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.7.0.tgz#7499d7ca2e69bb51d13faf59bd04f0c65a1d6c1e"
+  dependencies:
+    loose-envify "^1.3.1"
+    object-assign "^4.1.1"
+
 create-server@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/create-server/-/create-server-1.0.1.tgz#164342834f188bbec7c7bc4667463cc2b1304c44"
@@ -2057,9 +2072,10 @@ dmg@0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/dmg/-/dmg-0.0.3.tgz#39fbad284b2f9b5670d5c2dafaa53a442dcb13dd"
 
-"document-register-element@github:dmarcos/document-register-element#8ccc532b7":
+document-register-element@dmarcos/document-register-element#8ccc532b7:
   version "0.5.4"
-  resolved "https://codeload.github.com/dmarcos/document-register-element/tar.gz/8ccc532b7"
+  uid "8ccc532b7f3744be954574caf3072a5fd260ca90"
+  resolved "https://codeload.github.com/dmarcos/document-register-element/tar.gz/8ccc532b7f3744be954574caf3072a5fd260ca90"
 
 dom-serialize@^2.2.0:
   version "2.2.1"
@@ -2410,9 +2426,9 @@ fb-watchman@^1.8.0, fb-watchman@^1.9.0:
   dependencies:
     bser "1.0.2"
 
-fbjs@^0.8.1, fbjs@^0.8.4:
-  version "0.8.11"
-  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.11.tgz#340b590b8a2278a01ef7467c07a16da9b753db24"
+fbjs@^0.8.9:
+  version "0.8.18"
+  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.18.tgz#9835e0addb9aca2eff53295cd79ca1cfc7c9662a"
   dependencies:
     core-js "^1.0.0"
     isomorphic-fetch "^2.1.1"
@@ -2420,7 +2436,7 @@ fbjs@^0.8.1, fbjs@^0.8.4:
     object-assign "^4.1.0"
     promise "^7.1.1"
     setimmediate "^1.0.5"
-    ua-parser-js "^0.7.9"
+    ua-parser-js "^0.7.30"
 
 filename-regex@^2.0.0:
   version "2.0.0"
@@ -3656,6 +3672,10 @@ js-tokens@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.1.tgz#08e9f132484a2c45a30907e9dc4d5567b7f114d7"
 
+"js-tokens@^3.0.0 || ^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
+
 js-yaml@3.6.1:
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.6.1.tgz#6e5fe67d8b205ce4d22fad05b7781e8dadcc4b30"
@@ -3810,11 +3830,13 @@ karma-mocha@^0.2.1:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/karma-mocha/-/karma-mocha-0.2.2.tgz#388ed917da15dcb196d1b915c1934ef803193f8e"
 
-karma-sinon-chai@^1.1.0:
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/karma-sinon-chai/-/karma-sinon-chai-1.2.4.tgz#fea935f62be3366cf0271c8d8be51c0c70e40abc"
+karma-sinon-chai@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/karma-sinon-chai/-/karma-sinon-chai-1.1.0.tgz#eb1451e876ea37eafa20b113d42fd0afd89aed43"
   dependencies:
-    lolex "^1.5.0"
+    chai "~3.2.0"
+    sinon "~1.16.0"
+    sinon-chai "~2.8.0"
 
 karma-sourcemap-loader@^0.3.7:
   version "0.3.7"
@@ -4171,13 +4193,13 @@ log4js@^0.6.31:
     readable-stream "~1.0.2"
     semver "~4.3.3"
 
+lolex@1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/lolex/-/lolex-1.3.1.tgz#92d4973c5fe8b08c0094f73270daf09332bbedf0"
+
 lolex@1.3.2:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/lolex/-/lolex-1.3.2.tgz#7c3da62ffcb30f0f5a80a2566ca24e45d8a01f31"
-
-lolex@^1.5.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/lolex/-/lolex-1.6.0.tgz#3a9a0283452a47d7439e72731b9e07d7386e49f6"
 
 longest@^1.0.1:
   version "1.0.1"
@@ -4188,6 +4210,12 @@ loose-envify@^1.0.0, loose-envify@^1.1.0:
   resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.3.1.tgz#d1a8ad33fa9ce0e713d65fdd0ac8b748d478c848"
   dependencies:
     js-tokens "^3.0.0"
+
+loose-envify@^1.3.1, loose-envify@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
+  dependencies:
+    js-tokens "^3.0.0 || ^4.0.0"
 
 lru-cache@2, lru-cache@2.2.x:
   version "2.2.4"
@@ -4660,7 +4688,7 @@ object-assign@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-3.0.0.tgz#9bedd5ca0897949bca47e7ff408062d549f587f2"
 
-object-assign@^4.0.1, object-assign@^4.1.0:
+object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
 
@@ -4944,8 +4972,8 @@ pkg-up@^1.0.0:
     find-up "^1.0.0"
 
 predefine@0.1.x:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/predefine/-/predefine-0.1.2.tgz#2aa92b4496bc1f8554e43a45f76bfbe50d33d37f"
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/predefine/-/predefine-0.1.3.tgz#833d67afa815c42707845449dbc88d8a307744e5"
   dependencies:
     extendible "0.1.x"
 
@@ -5021,6 +5049,14 @@ promise@^7.1.1:
   resolved "https://registry.yarnpkg.com/promise/-/promise-7.1.1.tgz#489654c692616b8aa55b0724fa809bb7db49c5bf"
   dependencies:
     asap "~2.0.3"
+
+prop-types@^15.5.10:
+  version "15.8.1"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
+  dependencies:
+    loose-envify "^1.4.0"
+    object-assign "^4.1.1"
+    react-is "^16.13.1"
 
 prr@~0.0.0:
   version "0.0.0"
@@ -5135,28 +5171,35 @@ rcloader@0.1.2:
     lodash "~2.4.1"
     rcfinder "~0.1.6"
 
-react-dom@^15.3.2:
-  version "15.4.2"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.4.2.tgz#015363f05b0a1fd52ae9efdd3a0060d90695208f"
+react-dom@^15.5.4:
+  version "15.7.0"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.7.0.tgz#39106dee996d0742fb0f43d567ef8b8153483ab2"
   dependencies:
-    fbjs "^0.8.1"
+    fbjs "^0.8.9"
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
+    prop-types "^15.5.10"
 
-react-test-renderer@^15.3.2:
-  version "15.4.2"
-  resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-15.4.2.tgz#27e1dff5d26d0e830f99614c487622bc831416f3"
+react-is@^16.13.1:
+  version "16.13.1"
+  resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
+
+react-test-renderer@^15.5.4:
+  version "15.7.0"
+  resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-15.7.0.tgz#d52a29b175706ff7ea49c98058ebaafa39321812"
   dependencies:
-    fbjs "^0.8.4"
+    fbjs "^0.8.9"
     object-assign "^4.1.0"
 
-react@^15.3.2:
-  version "15.4.2"
-  resolved "https://registry.yarnpkg.com/react/-/react-15.4.2.tgz#41f7991b26185392ba9bae96c8889e7e018397ef"
+react@^15.5.4:
+  version "15.7.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-15.7.0.tgz#10308fd42ac6912a250bf00380751abc41ac7106"
   dependencies:
-    fbjs "^0.8.4"
+    create-react-class "^15.6.0"
+    fbjs "^0.8.9"
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
+    prop-types "^15.5.10"
 
 read-pkg-up@^1.0.1:
   version "1.0.1"
@@ -5584,7 +5627,7 @@ simple-get@^1.4.3:
     unzip-response "^1.0.0"
     xtend "^4.0.0"
 
-sinon-chai@2.8.0:
+sinon-chai@2.8.0, sinon-chai@~2.8.0:
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/sinon-chai/-/sinon-chai-2.8.0.tgz#432a9bbfd51a6fc00798f4d2526a829c060687ac"
 
@@ -5594,6 +5637,15 @@ sinon@1.17.5:
   dependencies:
     formatio "1.1.1"
     lolex "1.3.2"
+    samsam "1.1.2"
+    util ">=0.10.3 <1"
+
+sinon@~1.16.0:
+  version "1.16.1"
+  resolved "https://registry.yarnpkg.com/sinon/-/sinon-1.16.1.tgz#5e6d6c0e6b2f72a32dcfc66c2407d6d065c8919d"
+  dependencies:
+    formatio "1.1.1"
+    lolex "1.3.1"
     samsam "1.1.2"
     util ">=0.10.3 <1"
 
@@ -6211,9 +6263,9 @@ typedarray@~0.0.5:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-ua-parser-js@^0.7.9:
-  version "0.7.12"
-  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.12.tgz#04c81a99bdd5dc52263ea29d24c6bf8d4818a4bb"
+ua-parser-js@^0.7.30:
+  version "0.7.31"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.31.tgz#649a656b191dffab4f21d5e053e27ca17cbff5c6"
 
 uglify-js@2.4.6:
   version "2.4.6"
@@ -6467,9 +6519,10 @@ webpack@^2.3.2:
     webpack-sources "^0.2.3"
     yargs "^6.0.0"
 
-"webvr-polyfill@github:dmarcos/webvr-polyfill#a02a8089b":
+webvr-polyfill@dmarcos/webvr-polyfill#a02a8089b:
   version "0.9.25"
-  resolved "https://codeload.github.com/dmarcos/webvr-polyfill/tar.gz/a02a8089b"
+  uid a02a8089b755e7e306676030e281d81668adb87d
+  resolved "https://codeload.github.com/dmarcos/webvr-polyfill/tar.gz/a02a8089b755e7e306676030e281d81668adb87d"
   dependencies:
     eventemitter3 "^2.0.2"
     object-assign "^4.0.1"
